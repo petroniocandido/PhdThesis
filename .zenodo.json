@@ -1,0 +1,48 @@
+{
+    "license": "other-open", 
+    "contributors": [
+        {
+            "orcid": "0000-0001-9238-8839", 
+            "affiliation": "Electrical Engineering Dept, Federal University of Minas Gerais (UFMG), Brazil", 
+            "type": "Researcher", 
+            "name": "Frederico Gadelha Guimar\u00e3es"
+        }, 
+        {
+            "orcid": "0000-0002-0848-9280", 
+            "affiliation": "MINDS - Machine Learning and Data Science", 
+            "type": "Researcher", 
+            "name": "Hossein Javedani Sadaei"
+        }
+    ], 
+    "language": "eng", 
+    "title": "Scalable Models For Probabilistic Forecasting With Fuzzy Time Series (PhD Thesis)", 
+    "thesis_university": "Federal University of Minas Gerais (UFMG), Brazil", 
+    "thesis_supervisors": [
+        {
+            "orcid": "0000-0001-9238-8839", 
+            "affiliation": "Electrical Engineering Dept, Federal University of Minas Gerais (UFMG), Brazil", 
+            "name": "Frederico Gadelha Guimar\u00e3es"
+        }, 
+        {
+            "orcid": "0000-0002-0848-9280", 
+            "affiliation": "MINDS - Machine Learning and Data Science", 
+            "name": "Hossein Javedani Sadaei"
+        }
+    ], 
+    "upload_type": "software", 
+    "keywords": [
+        "probabilistic forecasting", 
+        "interval forecasting", 
+        "fuzzy time series", 
+        "scalability"
+    ], 
+    "creators": [
+        {
+            "orcid": "0000-0002-1202-2552", 
+            "affiliation": "IFNMG - Instituto Federal do Norte de Minas Gerais", 
+            "name": "Petr\u00f4nio C\u00e2ndido de Lima e Silva"
+        }
+    ], 
+    "access_right": "open", 
+    "description": "<p><em><strong>Scalable Models For Probabilistic Forecasting With Fuzzy Time Series (PhD Thesis)</strong></em></p>\n\n<p></p>"
+}
