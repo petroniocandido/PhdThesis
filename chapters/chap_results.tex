@@ -1,0 +1,591 @@
+\chapter[Computational experiments]{Computational experiments} \label{chap:results} \index{Computational experiments}
+
+\newepigraph{No amount of experimentation can ever prove me right; a single experiment can prove me wrong}{Einstein}
+
+\section{Experimental design}
+
+\begin{table}[htb]
+\begin{tabular}{|c|c|c|c|c|} \hline
+\textbf{Data Set} & \textbf{Time Unit} & \textbf{Stationarity} & \textbf{Seasonality} & \textbf{Trend}  \\ \hline
+TAIEX & Day & Yes & - & -  \\ \hline
+NASDAQ & Day & Yes & - & Linear \\ \hline
+S\&P 500 & Day & Yes & -  & -  \\ \hline
+BEST & Daily & Yes & Yearly & Linear  \\ \hline
+SONDA & Hourly & Yes & Yearly &  - \\ \hline
+SONDA & Hourly & Yes & Yearly &  -  \\ \hline
+Gaussian Process & - & Yes & - & -  \\ \hline
+\end{tabular}
+\caption{Summary of experimental data}
+\label{tab:datasets}
+\end{table}
+
+To measure the performance of the proposed models three well known financial time series data (the TAIEX, NASDAQ and SP\&P500 data sets), three environmental time series (Berkeley Earth, SONDA and ...) and a simple synthetic Gaussian process were selected. A rolling window cross validation methodology \cite{Tashman2000} was applied, using a working set of 2000 instances, 1600 for training (80\%) and 400 for test (20\%) and a sliding increment of 100 instances, totalizing 30 experiments.
+
+The Taiwan Stock Exchange Capitalization Weighted Stock Index (TAIEX)\footnote{\url{http://www.twse.com.tw/en/products/indices/Index_Series.php}. Access in 23/05/2016}, plotted on Figure \ref{fig:taiex}, is a well known economic time series data commonly used in FTS literature (see for instance \cite{yu2005weighted}, \cite{Chen2011}, \cite{Bajestani2011},  \cite{Lee2013}, \cite{Chen2015a},  \cite{JavedaniSadaei2016c}, etc). This dataset is sampled from 1995 to 2014 time window, and has the averaged daily index by business day. This is a stationary time series dataset whose Augmented Dickey-Fuller (ADF) statistic is $-2.65$ where the critical value for $\alpha = 0.05$ is $-2.86$.
+
+The National Association of Securities Dealers Automated Quotations - Composite Index (NASDAQ \^IXIC)\footnote{\url{http://www.nasdaq.com/aspx/flashquotes.aspx?symbol=IXIC\&selected=IXIC}. Access in 23/05/2016} plotted at Figure \ref{fig:nasdaq} is a economical index already used in FTS literature (see \cite{Chen2011}, \cite{Sadaei2013}, \cite{Sadaei2014a}, \cite{Talarposhti2016a}). The historical data was sampled from 2000 to 2016 time window, and has the averaged daily index by business day. This is a stationary time series dataset whose ADF statistic is $0.04$ where the critical value for $\alpha = 0.05$ is $-2.86$.
+
+The S\&P500 - Standard \& Poor's 500 \footnote{\url{https://finance.yahoo.com/quote/\%5EGSPC/history?p=\%5EGSPC}. Access in 19/03/2017}, plotted on Figure \ref{fig:sp500}, is an market index composed by 500 assets quoted on New York Stock Exchange and Nasdaq. This dataset was already used by \cite{Sadaei2014a} and \cite{Chen2015a} and contains the averaged daily index, by business day, from 1950 to 2017 with 16000 instances. This is a stationary dataset whose ADF Statistic is 0.00 where critical value for $\alpha = 0.05$ is $-2.86$.
+
+%http://berkeleyearth.lbl.gov/auto/Global/Complete_TMAX_daily.txt
+%http://berkeleyearth.lbl.gov/auto/Global/Complete_TAVG_daily.txt
+%http://berkeleyearth.lbl.gov/locations/23.31S-46.31W
+
+The BEST - Berkley Earth Surface Temperature dataset, plotted on Figure \ref{fig:best}, contains the monthly maximum surface temperature for the city of São Paulo (Brasil) \footnote{\url{http://berkeleyearth.lbl.gov/locations/23.31S-46.31W}. Access in 01/05/2017} from 1832 to 2013. This dataset measures the temperature anomaly from the long-term average Earth surface temperature using the methodology described at \cite{Rohde2013}, where a positive anomaly indicates a warmer observed temperature than the reference value and the negative anomaly indicates a cooler temperature than the reference value. The dataset has 49308 instances with the daily mean anomaly between 1880 and 2014. This is a non-stationary time series dataset whose ADF statistic is -10.65 where the critical value for $\alpha=0.05$ is -2.862.
+
+The SONDA - Sistema de Organização Nacional de Dados Ambientais (System of National Organization of Environmental Data)\footnote{\url{http://sonda.ccst.inpe.br/basedados/brasilia.html}. Access in } groups environmental data from INPE - Instituto Nacional de Pesquisas Espaciais (Brazilian Institute of Spatial Research) . This dataset is present in other studies on forecasting literature, for instance \cite{Martins2012}. The original dataset is measured by minute between 2012 and 2016 from the station located on city of Brasília, Brasil. For this research the data was aggregated by one hour average, resulting on 35136 instances. From this dataset were utilized two measures:
+\begin{itemize}
+\item \textbf{Solar Radiation}: Represents the solar mean global horizontal radiation in  $Wm^{-2}$, and is plotted on Figure \ref{fig:sonda_solar}. On original dataset this measure is called \textit{glo\_avg}. The ADF Statistic is -15.326310 / -2.862
+\item \textbf{Wind Speed}: Represents the mean wind velocity at 10m in $ms^{-1}$, and is plotted on Figure \ref{fig:sonda_wind}. On original dataset this measure is called \textit{ws\_10m} whose ADF Statistic is -14.778924.
+\end{itemize}
+
+The Gaussian process is a synthetic dataset which contains 5000 realizations of a stochastic process $X \sim  \mathcal{N}(\mu = 0, \sigma = 1)$, plotted at Figure \ref{fig:gauss}. This is a stationary dataset with ADF Statistic of -15.816510 where the critical value for $\alpha = 0.05$ is $-2.863$.
+
+\begin{figure}
+\begin{subfloat}[TAIEX]{
+\includegraphics[width=2.92in,height=1.5in]{figures/taiex.png}
+\label{fig:taiex}}
+\end{subfloat}
+~
+\begin{subfloat}[NASDAQ]{
+\includegraphics[width=2.92in,height=1.5in]{figures/nasdaq.png}
+\label{fig:nasdaq}}
+\end{subfloat}
+
+\begin{subfloat}[S\&P 500]{
+\includegraphics[width=2.92in,height=1.5in]{figures/sp500.png}
+\label{fig:sp500}}
+\end{subfloat}
+~
+\begin{subfloat}[BEST]{
+\includegraphics[width=2.92in,height=1.5in]{figures/best.png}
+\label{fig:best}}
+\end{subfloat}
+
+\begin{subfloat}[SONDA - Solar Radiance]{
+\includegraphics[width=2.92in,height=1.5in]{figures/sonda_solar.png}
+\label{fig:sonda_solar}}
+\end{subfloat}
+~
+\begin{subfloat}[SONDA - Wind Speed]{
+\includegraphics[width=2.92in,height=1.5in]{figures/sonda_wind.png}
+\label{fig:sonda_wind}}
+\end{subfloat}
+
+\begin{subfloat}[Gaussian Process]{
+\includegraphics[width=2.92in,height=1.5in]{figures/gauss.png}
+\label{fig:gauss}}
+\end{subfloat}
+
+\caption{Datasets used in empirical analysis.}
+\end{figure}
+
+ In the following sections will be presented the benchmarks for point, interval e distribution forecasts, where the evaluation metrics are discussed and the presented models are compared with other models in FTS literature.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Point Forecasts}\index{Point Forecasts}
+
+\index{ARIMA}\index{Na\"{i}ve method}\index{Quantile Auto Regression}\index{QAR}
+
+To evaluate the point forecast method, their results were compared with the Na\"{i}ve method (just repeat the last value), ARIMA \citep{boxjenkins1970}, Quantile Auto Regression \citep{Koenker2001}, Conventional FTS from \cite{song1993fuzzy} and \cite{chen1996forecasting}, Weighted FTS  \citep{yu2005weighted}, Improved Weighted FTS \citep{ismail2011enrollment}, Trend Weighted FTS \citep{Cheng2008}, Exponentially Weighted FTS \citep{Sadaei2013}, High Order FTS of \cite{Chen2011} and \cite{hwang1998handling}. All of them trained with the same methods and data and the high-order models where tested for $n = [1,2,3]$. The parameters of ARIMA and QAR models where estimated from the ACF and PACF most significant lags of each dataset.
+
+\index{Symmetrical Mean Average Percent Error}\index{Root Mean Squared Error}
+
+The accuracy metrics used to evaluate models are the Symmetrical Mean Average Percent Error (SMAPE), described in Equation \eqref{eqn:smape}, Root Mean Squared Error (RMSE), described in Equation \eqref{eqn:rmse} and Theil's U Statistic, described in Equation \eqref{eqn:theilu},  where $Y$ means the real data and $\hat{Y}$ the forecasted values. The U Statistic measures how much the forecaster is better than the Na\"{i}ve method, being $U = 1$ meaning both methods are equal, $U > 1$ the proposed method is worst than Na\"{i}ve and $U < 1$ is better.  
+
+The universe of discourse was partitioned in a grid scheme, where all partitions have the same length. Each model was trained and tested with $q \in [10,200]$ for original data and $q \in [3,20]$ for differentiated data. The models trained with differentiated data performs better than the trained with original data and only their best results were selected.
+\index{SMAPE}\index{RMSE}\index{Theil's U Statistic}
+\begin{equation}
+SMAPE = \frac{1}{n} \sum_{i=1}^n  \frac{|Y_i - \hat{Y}_i|}{|\hat{Y}_i| +  |Y_i|} 
+\label{eqn:smape}
+\end{equation}
+
+\begin{equation}
+RMSE = \sqrt{\frac{\sum_{i=1}^n (Y_i - \hat{Y}_i)^2}{n}}
+\label{eqn:rmse}
+\end{equation}
+
+\begin{equation}
+U = \sqrt{\frac{\sum_{t=1}^{n-1} \left( \frac{\hat{Y}_{t+1}-Y_{t-1}}{Y_t} \right)^2}{\sum_{t=1}^{n-1} \left( \frac{Y_{t+1}-Y_{t-1}}{Y_t} \right)^2}}
+\label{eqn:theilu}
+\end{equation}
+
+The empirical results are available in Figures  \ref{fig:experiments_taiex_point} (for TAIEX dataset),  \ref{fig:experiments_nasdaq_point} (for NASDAQ dataset),  \ref{fig:experiments_sp500_point} (for S\&P 500 dataset),  \ref{fig:experiments_gauss_point} (for Gaussian Process dataset),  \ref{fig:experiments_best_point} (for BEST dataset),  \ref{fig:experiments_sondasun_point} (for solar radiance on SONDA dataset) and \ref{fig:experiments_sondawind_point} (for wind speed on SONDA dataset). On Table \ref{tab:point_methods} the parameters (order and number of partitions)  and total number of FLRG's for the best FTS models on tests. A small sample of the model's behavior is also available at Figures  \ref{fig:taiex_point_forecasts} (for TAIEX dataset),  \ref{fig:nasdaq_point_forecasts} (for NASDAQ dataset),  \ref{fig:sp500_point_forecasts} (for S\&P 500 dataset),  \ref{fig:gauss_point_forecasts} (for Gaussian Process dataset),  \ref{fig:best_point_forecasts} (for BEST dataset),  \ref{fig:sondasun_point_forecasts} (for solar radiance on SONDA dataset) and \ref{fig:sondawind_point_forecasts} (for wind speed on SONDA dataset).  $\mathbb{P}$WFTS models have shown competitive performance among the tested models in all measurements but it failed to beat the Na\"{i}ve model. This fact is, however, a drawback of many complex forecasting methods, already described in \cite{Makridakis2000}.  The first order $\mathbb{P}$WFTS model achieves the best results among the methods and the higher orders ($n \in \{2,3\}$) achieve close results to the first order model. The residuals of the point forecast models were also evaluated. In Figure \ref{fig:residual_analysis} it is possible to check that there is no autocorrelation between lags of the residuals, and according to the Box-Ljung statistic the residuals are normally distributed.
+
+\newcommand{\AVG}{$\mu$}
+\newcommand{\STD}{$\sigma^2$}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_taiex_point.png}
+\caption{Point forecasts experiments for TAIEX dataset}
+\label{fig:experiments_taiex_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_nasdaq_point.png}
+\caption{Point forecasts experiments for NASDAQ dataset}
+\label{fig:experiments_nasdaq_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sp500_point.png}
+\caption{Point forecasts experiments for S\&P 500 dataset}
+\label{fig:experiments_sp500_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_gauss_point.png}
+\caption{Point forecasts experiments for Gaussian dataset}
+\label{fig:experiments_gauss_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_best_point.png}
+\caption{Point forecasts experiments for BEST dataset}
+\label{fig:experiments_best_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondasun_point.png}
+\caption{Point forecasts experiments for solar radiance on SONDA dataset}
+\label{fig:experiments_sondasun_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondawind_point.png}
+\caption{Point forecasts experiments for wind speed on SONDA dataset}
+\label{fig:experiments_sondawind_point}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/taiex_point_forecasts.png}
+\caption{Point forecasting samples for TAIEX dataset}
+\label{fig:taiex_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/nasdaq_point_forecasts.png}
+\caption{Point forecasting samples for NASDAQ dataset}
+\label{fig:nasdaq_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/sp500_point_forecasts.png}
+\caption{Point forecasting samples for S\&P 500 dataset}
+\label{fig:sp500_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/gauss_point_forecasts.png}
+\caption{Point forecasting samples for Gaussian Process dataset}
+\label{fig:gauss_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/best_point_forecasts.png}
+\caption{Point forecasting samples for BEST dataset}
+\label{fig:best_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/sondasun_point_forecasts.png}
+\caption{Point forecasting samples for Solar Radiance on SONDA dataset}
+\label{fig:sondasun_point_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/sondawind_point_forecasts.png}
+\caption{Point forecasting samples for Wind Speed on SONDA dataset}
+\label{fig:sondawind_point_forecasts}
+\end{figure}
+ 
+ \begin{table}
+ \centering
+ \begin{tabular}{|c|c|c|c|}\hline
+\textbf{Method} & \textbf{Order} & \textbf{Partitions} & \textbf{Number of rules}  \\ \hline
+Nive & 1 & - & - \\ \hline
+ARIMA & (1,1,1) & - & -  \\ \hline
+CFTS  & 1 & 19 & 18 \\ \hline
+EWFTS & 1 & 19 & 18 \\ \hline
+FTS  & 1 & 19 & - \\ \hline
+HOFTS & 2 & 15 & 62 \\ \hline
+HOFTS & 3 & 19 & 308 \\ \hline
+Hwang & 2 & 5 & 0 \\ \hline
+Hwang & 3 & 5 & 0 \\ \hline
+IWFTS  & 1 & 13 & 12 \\ \hline
+PWFTS  & 1 & 19 & 19 \\ \hline
+PWFTS  & 2 & 17 & 99 \\ \hline
+PWFTS  & 3 & 17 & 460 \\ \hline
+QAR $\tau=0.5$ & 1 & - & -  \\ \hline
+TWFTS  & 1 & 19 & 18 \\ \hline
+WFTS  & 1 & 19 & 18 \\ \hline
+ \end{tabular}
+\caption{Point forecasting methods best configurations }
+\label{tab:point_methods}
+ \end{table}
+ 
+\begin{figure*}
+\begin{center}
+\begin{subfloat}[TAIEX]{
+\includegraphics[width=2.85in,height=1.5in]{figures/taiex_residuals.png}
+\label{fig:taiex_residuals}}
+\end{subfloat}
+~
+\begin{subfloat}[NASDAQ]{
+\includegraphics[width=2.85in,height=1.5in]{figures/nasdaq_residuals.png}
+\label{fig:nasdaq_residuals}}
+\end{subfloat}
+
+\begin{subfloat}[S\&P 500]{
+\includegraphics[width=2.85in,height=1.5in]{figures/sp500_residuals.png}
+\label{fig:sp500_residuals}}
+\end{subfloat}
+~
+\begin{subfloat}[BEST]{
+\includegraphics[width=2.85in,height=1.5in]{figures/best_residuals.png}
+\label{fig:best_residuals}}
+\end{subfloat}
+
+\begin{subfloat}[SONDA - Solar Radiance]{
+\includegraphics[width=2.85in,height=1.5in]{figures/sondasun_residuals.png}
+\label{fig:sondasun_residuals}}
+\end{subfloat}
+~
+\begin{subfloat}[SONDA - Wind Speed]{
+\includegraphics[width=2.85in,height=1.5in]{figures/sondawind_residuals.png}
+\label{fig:sondawind_residuals}}
+\end{subfloat}
+
+\begin{subfloat}[Gaussian Process]{
+\includegraphics[width=2.85in,height=1.5in]{figures/gauss_residuals.png}
+\label{fig:gauss_residuals}}
+\end{subfloat}
+
+\caption{Residuals of PWFTS first order model}
+\label{fig:residual_analysis}
+\end{center}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Interval Forecasts}\index{Interval Forecasts}\index{Interval metrics}
+
+\index{ARIMA}\index{Quantile Auto Regression}\index{QAR}\index{Mean-variance prediction intervals}
+
+To evaluate the method for one step ahead interval forecasting, $\mathbb{P}$WFTS and [$\mathbb{I}$]FTS results were compared with ARIMA combined with the mean-variance and Quantile Auto Regression. [$\mathbb{I}$]FTS and $\mathbb{P}$WFTS methods were trained with orders $n \in \{1,2,3\}$ and partitions $q \in [10,200]$ for original data and $q \in [3,35]$ for differentiated data, but only the best results for each order is presented. The parameters of ARIMA and QAR models where estimated from the ACF and PACF most significant lags of each dataset and each model was trained for $\alpha = [0.05, 0.25]$.
+
+The accuracy metrics used to evaluate the models are the \textit{coverage rate}, \textit{calibration} and \textit{sharpness}, as proposed in \cite{Gneiting2007} and \cite{Pinson2006}. The \textit{coverage} refers to the statistical consistency between the forecasts and the observations, and measures which proportion of the observations are inside the interval. This can be done by an Indicator Function, developed by \cite{Christoffersen1998}, as shown in Equation \ref{eqn:indicator}. Given a forecasting interval $\mathcal{I}=[\underline{\alpha},\overline{\beta}]$ and the real value $y$, the value of an indicator function $I$ verifies if $y$ is covered by $\mathcal{I}$ or not.
+
+\begin{equation}
+I(y,\mathcal{I}) = \left\{ \begin{array}{cl}
+1 & \text{if }y \in \mathcal{I} \\
+0 & \text{if }y \ni \mathcal{I} 
+\end{array} \right.
+\label{eqn:indicator}
+\end{equation}
+
+\index{Coverage Rate}\index{Interval metrics}
+
+The \textit{coverage rate} is the average value of indicator function between forecasted intervals and the real values, in which the ideal value is 1. The coverage rate is shown at Equation \eqref{eqn:coverage} where $y_i \in Y$ are the real values and $\mathcal{I}_i \in \mathcal{I}$ are the predicted intervals for these values.
+
+\begin{equation}
+C(Y,\mathcal{I}) = \frac{\sum_{i = 1 }^{|Y|} I(y_i,\mathcal{I}_i)}{|Y|}
+\label{eqn:coverage}
+\end{equation}
+
+\index{Sharpness}\index{Resolution}\index{Interval metrics}
+
+The property of \textit{sharpness} and \textit{resolution} refers to the concentration of the predictive distribution, or how wide and variable are the intervals and refers uniquely to the forecasts. \textit{Sharpness}, presented in Equation \eqref{eqn:sharpnes}, is the average size of the intervals and \textit{resolution}, presented in the equation \eqref{eqn:resolution}, is the variability of the intervals.   
+
+\begin{equation}
+\bar{\delta_{\mathcal{I}}} = \frac{\sum_{i=1}^{|\mathcal{I}|} \delta_{\mathcal{I}_i}}{|\mathcal{I}|} =  \frac{\sum_{i=1}^{|\mathcal{I}|} \overline{\beta_i} - \underline{\alpha_i}}{|\mathcal{I}|}
+\label{eqn:sharpnes}
+\end{equation}
+\begin{equation}
+\sigma_{\mathcal{I}} = \frac{\sum_{i=1}^{|\mathcal{I}|} | \delta_{\mathcal{I}_i} - \bar{\delta_{\mathcal{I}}}|}{|\mathcal{I}|}
+\label{eqn:resolution}
+\end{equation}
+
+While small values of $\bar{\delta_{\mathcal{I}}}$ are desirable, meaning a compact interval, wide values of $\sigma_{\mathcal{I}}$ are best, meaning the capability of the model to adapt the length of interval with the increase of uncertainty. There are no absolute reference values for sharpness and resolution, which depend on the statistical properties of the data. Empirically, when the sharpness is reduced to make the intervals thinner and more precise, the risk of reducing the coverage increase, and that's why the resolution is important. 
+
+\index{Pinball Loss Function}\index{Pinball Score}\index{Interval metrics}
+
+\cite{Steinwart2011} proposed the use of Pinball Loss Function - $L_\tau(Y,\hat{Y})$, defined on equation \ref{eqn:pinball}, indicates the proximity of a forecast $\hat{Y}$ with a certain $\tau$ quantile of the true value $Y$. As a loss function, the minor value of $L$ indicates the closest forecast to quantile $\tau$. The Pinball Score $L_\tau^S$ is defined as the mean $L_\tau$ for a set true values $Y(t)$ and forecasts $\hat{Y}(t)$, listed on Equation \ref{eqn:pinball_score}. At this research were chosen the quantiles $\tau = \{0.05, 0.25, 0.75, 0.95\}$ for testing the intervals, where the lower quantiles were compared with the interval lower bound and the upper quantiles with the interval upper bounds.
+
+\begin{equation}
+L_\tau(Y,\hat{Y}) = \left\{ \begin{array}{cl}
+(1 - \tau)(\hat{Y}-Y) & \text{if } Y < \hat{Y} \\
+\tau(Y-\hat{Y}) & \text{if }Y > \hat{Y}
+\end{array} \right.
+\label{eqn:pinball}
+\end{equation}
+
+\begin{equation}
+L_\tau^S(Y(t),\hat{Y}(t)) = \frac{1}{n}\sum_{i=1}^n L_\tau(Y_i,\hat{Y}_i)
+\label{eqn:pinball_score}
+\end{equation}
+
+The sharpness, resolution and coverage empirical results are shown on Figures  \ref{fig:experiments_taiex_interval} (for TAIEX dataset),  \ref{fig:experiments_nasdaq_interval} (for NASDAQ dataset),  \ref{fig:experiments_sp500_interval} (for S\&P 500 dataset),  \ref{fig:experiments_gauss_interval} (for Gaussian Process dataset),  \ref{fig:experiments_best_interval} (for BEST dataset),  \ref{fig:experiments_sondasun_interval} (for solar radiance on SONDA dataset) and \ref{fig:experiments_sondawind_interval} (for wind speed on SONDA dataset) . A small sample of the models behavior is also available on Figures  \ref{fig:taiex_interval_forecasts} (for TAIEX dataset),  \ref{fig:nasdaq_interval_forecasts} (for NASDAQ dataset),  \ref{fig:sp500_interval_forecasts} (for S\&P 500 dataset),  \ref{fig:gauss_interval_forecasts} (for Gaussian Process dataset),  \ref{fig:best_interval_forecasts} (for BEST dataset),  \ref{fig:sondasun_interval_forecasts} (for solar radiance on SONDA dataset) and \ref{fig:sondawind_interval_forecasts} (for wind speed on SONDA dataset). 
+
+While [$\mathbb{I}$]FTS has higher coverage and resolution, $\mathbb{P}$WFTS has the best sharpness. Due to the probabilistic nature of the $\mathbb{P}$WFTS models, the intervals tend to follow the same stochastic trends of data, independently of the model's order. The [$\mathbb{I}$]FTS model ignores these trends and transmits to forecasts all the fuzzy uncertainty causing wide intervals. The drawback of this behavior is to turn the interval useless for the user in some scenarios - wider intervals are also most imprecise, what can be seen in Figure \ref{fig:gauss_interval_forecasts} where the intervals are much wider than all the real data. The $\mathbb{P}$WFTS intervals are thinner and fits better on time series data, but have no variability and this cause loss of coverage. 
+
+The empirical pinball scores are compared on Figures \ref{fig:experiments_taiex_interval_pinball} (for TAIEX dataset),  \ref{fig:experiments_nasdaq_interval_pinball} (for NASDAQ dataset),  \ref{fig:experiments_sp500_interval_pinball} (for S\&P 500 dataset),  \ref{fig:experiments_gauss_interval_pinball} (for Gaussian Process dataset),  \ref{fig:experiments_best_interval_pinball} (for BEST dataset),  \ref{fig:experiments_sondasun_interval_pinball} (for solar radiance on SONDA dataset) and \ref{fig:experiments_sondawind_interval_pinball} (for wind speed on SONDA dataset). Is possible to note that [$\mathbb{I}$]FTS intervals are wider than the $\alpha=0.05$ range when compared with the QAR quantiles and  $\mathbb{P}$WFTS intervals are located between $\alpha=0.05$ and $\alpha=0.25$.
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_taiex_interval.png}
+\caption{Interval forecasts experiments for TAIEX dataset}
+\label{fig:experiments_taiex_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_nasdaq_interval.png}
+\caption{Interval forecasts experiments for NASDAQ dataset}
+\label{fig:experiments_nasdaq_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sp500_interval.png}
+\caption{Interval forecasts experiments for S\&P 500 dataset}
+\label{fig:experiments_sp500_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_gauss_interval.png}
+\caption{Interval forecasts experiments for Gaussian dataset}
+\label{fig:experiments_gauss_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_best_interval.png}
+\caption{Interval forecasts experiments for BEST dataset}
+\label{fig:experiments_best_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondasun_interval.png}
+\caption{Interval forecasts experiments for solar radiance on SONDA dataset}
+\label{fig:experiments_sondasun_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondawind_interval.png}
+\caption{Interval forecasts experiments for wind speed on SONDA dataset}
+\label{fig:experiments_sondawind_interval}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/taiex_interval_forecasts.png}
+\caption{Interval forecasting samples for TAIEX dataset}
+\label{fig:taiex_interval_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/nasdaq_interval_forecasts.png}
+\caption{Interval forecasting samples for NASDAQ dataset}
+\label{fig:nasdaq_interval_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/sp500_interval_forecasts.png}
+\caption{Interval forecasting samples for S\&P 500 dataset}
+\label{fig:sp500_interval_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/gauss_interval_forecasts.png}
+\caption{Interval forecasting samples for Gaussian Process dataset}
+\label{fig:gauss_interval_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/best_interval_forecasts.png}
+\caption{Interval forecasting samples for BEST dataset}
+\label{fig:best_interval_forecasts}
+\end{figure}
+
+%\begin{figure}\ContinuedFloat
+%\includegraphics[width=6in,height=1.8in]{figures/sondasun_interval_forecasts.png}
+%\caption{Interval forecasting samples for Solar Radiance on SONDA dataset}
+%\label{fig:sondasun_interval_forecasts}
+%\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/sondawind_interval_forecasts.png}
+\caption{Interval forecasting samples for Wind Speed on SONDA dataset}
+\label{fig:sondawind_interval_forecasts}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_taiex_interval_pinball.png}
+\caption{Pinball scores for TAIEX dataset}
+\label{fig:experiments_taiex_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_nasdaq_interval_pinball.png}
+\caption{Interval forecasts experiments for NASDAQ dataset}
+\label{fig:experiments_nasdaq_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sp500_interval_pinball.png}
+\caption{Pinball scores for S\&P 500 dataset}
+\label{fig:experiments_sp500_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_gauss_interval_pinball.png}
+\caption{Pinball scores for Gaussian dataset}
+\label{fig:experiments_gauss_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_best_interval_pinball.png}
+\caption{Pinball scores for BEST dataset}
+\label{fig:experiments_best_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondasun_interval_pinball.png}
+\caption{Pinball scores for solar radiance on SONDA dataset}
+\label{fig:experiments_sondasun_interval_pinball}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondawind_interval_pinball.png}
+\caption{Pinball scores for wind speed on SONDA dataset}
+\label{fig:experiments_sondawind_interval_pinball}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{m-Steps Ahead forecasts}\index{m-Steps Ahead Forecasts}
+
+\index{Ensemble Learning}
+
+To evaluate the $m$ steps ahead interval forecasting and probabilistic forecasting methods, $\mathbb{P}$WFTS results were compared with ARIMA with mean-variance interval ahead model and an Ensemble Learning approach based on \citep{Mohammed2016}, whose internal models are those on Table \ref{tab:point_methods}.
+
+\index{Continuous Ranked Probability Score}\index{CRPS}\index{Probabilistic forecast metrics}
+
+The metric chosen to assess the distributions is the Continuous Ranked Probability Score (CRPS). CRPS is a proper measure for probabilistic forecasts, defined by  \cite{Gneiting2007b} as Equation \eqref{eqn:crps1} for one forecast and by \cite{Gneiting2007b} as Equation \eqref{eqn:crps2} for more than one forecasts. CRPS provides a direct way to benchmark probabilistic forecast since it is expressed in the same unit as the observed variable and is a generalization of the Mean Absolute Error (MAE). Therefore, the perfect score for CRPS, as in MAE, is 0.
+
+\begin{equation}
+CRPS(F,x) = \int_{-\infty}^{+\infty} (F(y) - \mathbf{1}\{y \geq x\})^2  dy
+\label{eqn:crps1}
+\end{equation}
+
+\begin{equation}
+CRPS(F) = \frac{1}{N} \sum_{1}^{N} \int_{x=-\infty}^{x=+\infty} (F(y) - \mathbf{1}\{y \geq x\})^2  dy
+\label{eqn:crps2}
+\end{equation}
+where $F$ is the cumulative distribution function (CDF) of the forecasted distribution, $x$ is  an, $\mathbf{1}\{y \geq x\}$ is the Heavyside function representing the CDF of this punctual value.
+
+Here, the $m$-steps ahead interval forecasts are considered uniform probability distributions and are also measured by CRPS. All methods at the ensemble and also $\mathbb{P}$WFTS were trained with orders $n \in \{1,2,3\}$, partitions $q \in [3,35]$, for $m = 10$ steps ahead and the number of bins $b$ was such that the length of each bin was equivalent to 5\% of the UoD.
+
+In Figures \ref{fig:experiments_taiex_ahead} (for TAIEX dataset),  \ref{fig:experiments_nasdaq_ahead} (for NASDAQ dataset),  \ref{fig:experiments_sp500_ahead} (for S\&P 500 dataset),  \ref{fig:experiments_gauss_ahead} (for Gaussian Process dataset),  \ref{fig:experiments_best_ahead} (for BEST dataset),  \ref{fig:experiments_sondasun_ahead} (for solar radiance on SONDA dataset) and \ref{fig:experiments_sondawind_ahead} (for wind speed on SONDA dataset) are presented the empirical results for the best performance models. A small sample of each model performance is shown in Figures \ref{fig:taiex_ahead_forecasts} (for TAIEX dataset),  \ref{fig:nasdaq_ahead_forecasts} (for NASDAQ dataset),  \ref{fig:sp500_ahead_forecasts} (for S\&P 500 dataset),  \ref{fig:gauss_ahead_forecasts} (for Gaussian Process dataset),  \ref{fig:best_ahead_forecasts} (for BEST dataset),  \ref{fig:sondasun_ahead_forecasts} (for solar radiance on SONDA dataset) and \ref{fig:sondawind_ahead_forecasts} (for wind speed on SONDA dataset). The distribution forecasts are more precise (lowest CRPS) than the interval forecasts with uniform distribution.
+
+It is possible to verify that the probability distributions start very concentrated on first steps and, as expected, become less concentrated until stabilizing with a distribution close to the \textit{priori} probabilities, represented by $P_k$ weight in the LHS of the PFLRG's. This process represents the dilution of the certainty as time goes by from the known value to the steps ahead, i.e., the increase of the uncertainty. The number of steps needed to stabilization depends on the data set.
+
+The performance of PWFTS on intervals ahead was below the Ensemble and ARIMA models, whose intervals are more precise. PWFTS intervals are based on the bounds of the fuzzy sets and are wider than ARIMA and the Ensemble intervals, which are based on the variance of the errors. On the probabilistic distribution the performance is improved become similar to ARIMA models between $\alpha = 0.05$ and $\alpha = 0.25$. 
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_taiex_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for TAIEX dataset}
+\label{fig:experiments_taiex_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_nasdaq_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for NASDAQ dataset}
+\label{fig:experiments_nasdaq_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sp500_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for S\&P 500 dataset}
+\label{fig:experiments_sp500_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_gauss_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for Gaussian dataset}
+\label{fig:experiments_gauss_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_best_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for BEST dataset}
+\label{fig:experiments_best_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondasun_ahead.png}
+\caption{10-steps ahead probabilistic forecasts experiments for solar radiance on SONDA dataset}
+\label{fig:experiments_sondasun_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=4in]{figures/experiments_sondawind_ahead.png}
+\caption{60-steps ahead probabilistic forecasts experiments for wind speed on SONDA dataset}
+\label{fig:experiments_sondawind_ahead}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=6in,height=1.8in]{figures/taiex_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for TAIEX dataset}
+\label{fig:taiex_ahead_forecasts}
+\end{figure}
+
+\begin{figure}\ContinuedFloat
+\includegraphics[width=6in,height=1.8in]{figures/nasdaq_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for NASDAQ dataset}
+\label{fig:nasdaq_ahead_forecasts}
+\end{figure}
+
+\begin{figure}\ContinuedFloat
+\includegraphics[width=6in,height=1.8in]{figures/sp500_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for S\&P 500 dataset}
+\label{fig:sp500_ahead_forecasts}
+\end{figure}
+
+\begin{figure}\ContinuedFloat
+\includegraphics[width=6in,height=1.8in]{figures/gauss_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for Gaussian Process dataset}
+\label{fig:gauss_ahead_forecasts}
+\end{figure}
+
+\begin{figure}\ContinuedFloat
+\includegraphics[width=6in,height=1.8in]{figures/best_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for BEST dataset}
+\label{fig:best_ahead_forecasts}
+\end{figure}
+
+%\begin{figure}\ContinuedFloat
+%\includegraphics[width=6in,height=1.8in]{figures/sondasun_ahead_forecasts.png}
+%\caption{60-steps ahead probabilistic forecasting samples for Solar Radiance on SONDA dataset}
+%\label{fig:sondasun_ahead_forecasts}
+%\end{figure}
+
+\begin{figure}\ContinuedFloat
+\includegraphics[width=6in,height=1.8in]{figures/sondawind_ahead_forecasts.png}
+\caption{60-steps ahead probabilistic forecasting samples for Wind Speed on SONDA dataset}
+\label{fig:sondawind_ahead_forecasts}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusion}
+
+On this chapter was conduced a set of experiments to compare the performance of [$\mathbb{I}$]WFTS and $\mathbb{P}$WFTS methods with known FTS and other statistical methods. The experiments were divided by forecasting type: point forecasts, interval and probabilistic distribution. Point were tested for one step ahead using RMSE, SMAPE and Theil's U statistics. Interval forecasts were tested for one step ahead using Sharpness, Resolution and Coverage metrics. The probabilistic forecasting, for 10-steps ahead, were tested with the Continuous Ranked Probability Score - CRPS.
+
+The results showed that [$\mathbb{I}$]FTS has high coverage, but the generated intervals are the wider between the tested interval methods. The length of the interval is variable due to model order and partitioning scheme. These results makes sense because [$\mathbb{I}$]FTS was developed to represent the total amount of fuzzy uncertainty on forecasting. When associated with other FTS point forecasting method it can be used to represent the impact of the fuzziness uncertainty.
+
+$\mathbb{P}$WFTS improved [$\mathbb{I}$]FTS by incorporating empirical probabilities on the models, allowing to forecast points, intervals and probability distributions. These results show that $\mathbb{P}$WFTS has competitive accuracy when compared with standard FTS methods with point forecasts, and outperforms some of them in some scenarios. The great advantage of $\mathbb{P}$WFTS is that it can be used with accuracy also for interval and probabilistic forecasting, where the reliability (CRPS or calibration) is adjustable according to the number of the partitions on the Universe of Discourse. $\mathbb{P}$WFTS intervals were located between the $\alpha=0.05$ and $\alpha=0.25$ intervals and the probability distributions performs close to ARIMA but better than an Ensemble with all other FTS models together.
+
+[$\mathbb{I}$]FTS and $\mathbb{P}$WFTS show that interval and probabilistic forecasting with FTS methods are feasible and also accurate, although the performance enhancements can be done to outperform QAR and ARIMA models. 
+
+In next chapter is presented a review of this work, pointing out the partial contributions, the limitations of the proposed methods and future investigations.

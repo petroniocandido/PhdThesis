@@ -1,0 +1,277 @@
+%-----------------------------------
+%-----------------------------------
+% Msc Dissertation / Phd Thesis Template - Minds Lab
+% Based on Abntex2
+% Updated: November, 2018
+%-----------------------------------
+%-----------------------------------
+
+\documentclass[
+	12pt,				
+	openright,			
+	twoside,			
+	a4paper,
+	%brazil, % Texts in pt-br
+	english			
+]{abntex2}
+
+%-----------------------------------
+% Basic packages
+%-----------------------------------
+\usepackage[T1]{fontenc}		% Font
+%\usepackage{times}
+\usepackage[utf8]{inputenc}		% Special pt-br characters
+\usepackage{lastpage}			% Catalographic card
+\usepackage{indentfirst}		% Indent 1st paragraph
+\usepackage{color}				
+\usepackage{graphicx}			
+\usepackage{microtype} 			% Justify (left and right side) 
+\usepackage{makeidx}            % Remissive Index
+
+%-----------------------------------
+% Additional packages
+%-----------------------------------
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{multirow}           % Merge rows and columns in tables
+\usepackage{longtable}          % Large tables
+\usepackage{fancyvrb}           % Codes and Outputs commands
+\usepackage{listings}           % Codes and Outputs commands
+\usepackage{pdflscape}
+\usepackage{float}
+\usepackage[authoryear]{natbib} % Authors imputation
+\usepackage{subfig}             % Subfigures
+\usepackage{latexsym}           % Extra symbols of Latex
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{acronym}
+\usepackage{algorithm}          % Algorithms
+%\usepackage[portuguese, ruled, linesnumbered]{algorithm2e} %to portuguese text, include this linha and comment the top row: \usepackage{algorithm}  
+\usepackage[noend]{algpseudocode}
+\usepackage{url}
+%\let\realurl\url
+%\renewcommand{\url}[1]{\realurl{#1}\wlog{URLX #1}}
+\usepackage{rotating}
+\usepackage{epigraph}
+\usepackage{pbox}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{nameref}
+\usepackage{psfrag}
+\usepackage{epstopdf}
+\usepackage{makeidx}
+\usepackage{authorindex}
+\usepackage{pdflscape}
+\usepackage{fancyhdr,fancybox}
+%\usepackage[algochapter,algoruled,linesnumbered,vlined]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{amssymb,amsmath,amstext,amscd}
+\usepackage{amsthm}
+\usepackage{booktabs} 
+
+%-----------------------------------
+% Box the algorithm
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+%-----------------------------------
+% Front pages
+%-----------------------------------
+\titulo{Scalable Models for Probabilistic Forecasting with Fuzzy Time Series}
+\autor{Petrônio Cândido de Lima e Silva}
+\local{Belo Horizonte - Minas Gerais}
+\data{July, 2019}
+\orientador{Frederico Gadelha Guimarães}
+\coorientador{Hossein Javedani Sadaei}
+\instituicao{%
+ 	Federal University of Minas Gerais - UFMG
+ 	\par  
+ 	Graduate Program in Electrical Engineering - PPGEE
+	\par 
+	Machine Intelligence and Data Science Laboratory - MINDS
+}
+
+\tipotrabalho{Thesis (Doctorate)}
+%\preambulo{Tese de Doutorado submetida à Banca	Examinadora 
+% designada pelo Colegiado do Programa de Pós-Graduação em Engenharia Elétrica
+% da Escola de Engenharia da Universidade Federal de Minas Gerais, como
+% requisito para obtenção do Título de Doutor em Engenharia Elétrica.} 
+\preambulo{Final thesis presented to the Graduate Program in Electrical Engineering  of  the  Federal  University  of  Minas  Gerais  in partial  fulfillment  of  the  requirements  for  the  degree  of Doctor in Electrical Engineering.}
+
+%-----------------------------------
+% Set the final PDF
+%-----------------------------------
+\definecolor{blue}{RGB}{41,5,195} % setting the blue color
+
+% PDF informations
+\makeatletter                   
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+		colorlinks=true,        % false: boxed links; true: colored links
+    	linkcolor=blue,         % color of internal links
+    	citecolor=blue,        	% color of links to bibliography
+    	filecolor=magenta,      % color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+
+%-----------------------------------
+% Spacing between lines and paragraphs
+%-----------------------------------
+\setlength{\parindent}{1.5cm}   % Set length of indent
+\setlength{\parskip}{0.2cm}     % Set length among the paragraphs 
+
+%Index
+\makeindex
+
+\setlength\epigraphwidth{.8\textwidth}
+\setlength\epigraphrule{0pt}
+\renewcommand{\epigraphflush}{flushleft}
+\renewcommand{\sourceflush}{flushleft}
+
+\newcommand{\newepigraph}[2]{\epigraph{\itshape ``#1''}{\hspace{5 mm}--- #2}}
+
+%-----------------------------------
+% Main document
+%-----------------------------------
+\begin{document}
+
+\input{definitions.tex}
+
+%-----------------------------------
+%Language
+%\selectlanguage{brazil}        % Texts in pt-br
+\selectlanguage{english} 
+\frenchspacing                  % Remove obsolete spaces between phrases
+
+%-----------------------------------
+% Pre-textual elements
+\pretextual
+
+%-----------------------------------
+% Cover
+\imprimircapa                   
+
+% Folha de rosto
+\imprimirfolhaderosto* % (o * indica que haverá a ficha bibliográfica)
+
+
+
+%\input{pre_textuals/cataloging.tex}
+
+\newpage
+
+%-----------------------------------
+% Dedication 
+\include{pre_textuals/dedication}
+
+%-----------------------------------
+% Acknowledgments
+\include{pre_textuals/acknowledgments}
+
+%-----------------------------------
+% Epigraph
+\include{pre_textuals/epigraph}
+
+%-----------------------------------
+% Resumo (abstract in Portuguese)
+%\setlength{\absparsep}{18pt} % set spacing between the paragraphs
+
+\include{pre_textuals/abstract}
+
+%-----------------------------------
+% Preface
+\include{pre_textuals/preface}
+
+
+%-----------------------------------
+% Figures list
+\pdfbookmark[0]{\listfigurename}{lof}
+%\listoffigures*
+%\cleardoublepage
+
+%-----------------------------------
+% Tables list
+\pdfbookmark[0]{\listtablename}{lot}
+%\listoftables*
+%\cleardoublepage
+
+%-----------------------------------
+% Algorithms list
+%\pdfbookmark[0]{\listtablename}{loa}
+%\listofalgorithms
+%\cleardoublepage
+
+%-----------------------------------
+% Abbreviations
+\input{pre_textuals/acronyms.tex}
+%\cleardoublepage
+
+%-----------------------------------
+% Symbols
+\input{pre_textuals/symbols.tex}
+%\cleardoublepage
+
+%-----------------------------------
+% Summary
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+%\cleardoublepage
+
+
+%-----------------------------------
+% TEXTUAL ELEMENTS
+%-----------------------------------
+\textual
+
+%-----------------------------------
+% Chapters
+\include{chapters/chp1_introduction}
+\include{chapters/chp2_review_fts}
+\include{chapters/chp3_review_prob}
+\include{chapters/chp4_pwfts}
+\include{chapters/chp5_hyperparamopt}
+\include{chapters/chp6_granular}
+\include{chapters/chp7_conclusion}
+
+%-----------------------------------
+% Finaliza a parte no bookmark do PDF
+% para que se inicie o bookmark na raiz
+% e adiciona espaço de parte no Sumário
+
+\phantompart
+
+%-----------------------------------
+% Bibliography
+\bibliography{references.bib}
+\bibliographystyle{abbrvnat}
+%\bibliographystyle{unsrtnat}
+
+%-----------------------------------
+% POST-TEXTUAL ELEMENTS
+%-----------------------------------
+\postextual
+
+% Attachments
+%\include{post_textuals/attachments}
+
+% Appendix
+\include{post_textuals/appendix}
+
+% Remissive Index
+%\renewcommand{\indexname}{Índice Remissivo}
+%\renewcommand{\indexname}{Index}
+%\printindex
+
+\end{document}

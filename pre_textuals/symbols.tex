@@ -1,0 +1,36 @@
+%-----------------------------------
+% Symbols
+%-----------------------------------
+
+\begin{simbolos}
+
+\item[$Y \in \mathbb{R}^n$]  the crisp time series data 
+\item[$n = |\var|$] the number of variables of $Y$, univariate if $n=1$ or multivariate if $n > 1$
+\item[$y(t) \in Y$] an individual instance of $Y$ on time $t$
+\item[$F \in \ulvar$] Linguistic time series produced by $Y$ fuzzyfication 
+\item[$f(t) \in F$] an individual instance of $F$ on time $t$, such that $f(t) = \{ \ufset\;|\; \mu_{\ufset}(y(t)) \geq \alpha\; \forall \ufset \in \ulvar \}$
+\item[$U = (\underline{l},\overline{u})$] the Universe of Discourse of a univariate $Y$, where the lower bound is $l = \min Y$ and the upper bound is $u = \max Y$.
+\item[$T \in \mathbb{N}^+$] the total length of $Y$
+\item[$t \in T$]  the time index
+\item[$k \in \mathbb{N}^+$] the number of partitions of $U$
+\item[$\alpha \in (0,1)$] the Alfa-Cut, the minimal membership grade to be considered in fuzzyfication process
+\item[$\Omega \in \mathbb{N}^+$] the Model order, the number of time series lags used by model
+\item[$L$] the lag indexes
+\item[$\mu_{\ufset}: U \rightarrow (0,1)$] the fuzzy membership function for fuzzy set $\ufset$, $j = 1..k$ 
+\item[$\ulvar$] the linguistic variable for univariate $Y$
+\item[$\ufset \in \ulvar$] the individual fuzzy sets in $\ulvar$, $j = 1..k$
+\item[$\var$] the set of variables of a multivariate $Y$
+\item[$\vari \in \var$] an individual variable of $Y$, $i = 1..n$
+\item[$*\var \in \var$] the target variable (or endogenous variable) of $Y$ 
+\item[$U_i$]  the Universe of Discourse of each  $\vari$, for multivariate $Y$ , $i = 1..n$
+\item[$k_i$] Number of partitions of $U_i$ for each  $\vari$, for multivariate $Y$, $i = 1..n$
+\item[$\alpha_i$] Alpha-Cut for each $\vari \in \var$, $i = 1..n$
+\item[$\mlvar$] the linguistic variable for each $\vari \in \var$, the group of fuzzy sets, $i = 1..n$
+\item[$\mfset \in \mlvar$] the individuals fuzzy sets in $\mlvar$, $i = 1..n$ and $j = 1..k_i$
+\item[$\model$] the FTS model, including the linguistic variable $\ulvar$ and the knowledge model
+\item[$|\model|$] the model parsimony, the amount of parameters of the model
+\item[$H \in \mathbb{N}^+$] The forecasting horizon, i.e, the number of steps to predict ahead
+\item[$\estimate \in \mathbb{R}^n$] a point forecast for time $t+1$
+\item[$\interval$] a prediction interval for time $t+1$ with lower bound $l \in \mathbb{R}$ and upper bound $u \in \mathbb{R}$
+\item[$P: U \rightarrow [0,1)$] a probability distribution forecast for time $t+1$
+\end{simbolos}

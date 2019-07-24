@@ -1,0 +1,94 @@
+\chapter[Conclusion]{Conclusion} 
+ \label{chap:conclusions} \index{Conclusion}
+
+\newepigraph{...it is good to have measured myself, to recognize my limitations.}
+{Charles Francis Richter}
+
+On the forecasting research field, dealing with uncertainties is somehow mandatory, but still many of the forecasting methods are only concerned with point forecasting. The point forecasting methods have as their main general drawback the inability to measure the uncertainty of their results and, depending on the field of application, this is a crucial information. The direct alternative are the probabilistic methods as intervals and probability distributions \cite{Gneiting2014b}.
+
+There are statistical forecasting methods available for probabilistic and interval forecasting, as instance Auto Regressive Integrated Moving Average (ARIMA), Quantile Auto-Regression (QAR), Bayesian Structural Time Series (BSTS), k-Nearest Neighbors (k-NN), among others. However these methods suffer from several limitations as lack of scalability, parametric assumptions, explainability or computational performance.
+
+In the other hand, the Fuzzy Time Series (FTS) methods represent a growing field that has been gaining more attention in recent years. FTS forecasting methods produce data driven and non-parametric models, and have become attractive due to their simplicity, versatility, forecasting accuracy and computational performance, and it also produces human readable representations of the time series patterns, making its knowledge transferable, auditable, easily reusable and updatable. The variants of Fuzzy Time Series methods were investigated on Chapter \ref{chap:review_fts}. Within these variants, this work delimited its scope on time invariant rule-based FTS methods. The rule-based conventional High-Order Fuzzy Time Series (HOFTS) and the Weighted  High-Order Fuzzy Time Series (WHOFTS) were studied and its accuracy was assessed and compared with conventional statistical forecasting methods which showed accuracy equivalence between the methods.
+
+However, the FTS methods also suffer from lack of forecasting uncertainty representation, more specifically the absence of probabilistic forecasting methods. To deepen the discussion about the probabilistic forecasting, the Chapter \ref{chap:review_probforecasting} presented a review of the classical methods for interval and probability distribution forecasting and its main features. In order to fill the probabilistic forecasting gap at FTS field, the three first FTS methods for probabilistic forecasting in literature were proposed : $\ifts$, $W\ifts$ and Ensemble FTS. 
+
+$\ifts$ and $W\ifts$ extends HOFTS and WHOFTS methods, enabling the generating of predict intervals that represents the fuzzy uncertainty around the point forecasts. The Ensemble FTS method aims to represent the parameter uncertainty by embodying internally several FTS models with variations in their parameters. Ensemble FTS is capable to forecast intervals and probability distributions for one to more steps ahead. The accuracy of these methods was assessed and compared with the main statistical probabilistic methods which showed their accurate performance.
+
+Nevertheless, until this point still missing a method that incorporate all uncertainties, capable to forecast points, intervals and probability distributions, for one to more steps ahead. To fill this lack the Probabilistic Weighted Fuzzy Time Series (PWFTS) method were proposed on Chapter \ref{chap:pwfts}. The PWFTS method use empirical fuzzy probabilities associated with their rules to represent the ontological uncertainty of data, and propose new deffuzyfication methods that exploit this probabilities. The PWFTS accuracy was assessed with computational experiments, compared with the previous FTS methods and the classical methods which showed the effectivenes of the method.
+
+The  main contribution of PWFTS is to combine versatility, accuracy and human readability. PWFTS is a versatile data driven, non parametric approach which integrates point, interval and probabilistic forecasting for one or multiple steps ahead, for first or higher orders. The measured accuracy shows its compatibility with, when it is not better than, standard approaches in the literature. The PWFTPG rule model is human-readable, easy to understand and interchangeable, which allows its assessment by experts and also non technical people. The PWFTPG rule set can be viewed as the conditional probability distribution of the fuzzy sets, and its visualization can even be used for data description and comprehension tasks.
+
+Once flexible and accurate FTS models were proposed, new questions arise as result of its employment in real world problems, as instance big data scalability,  model optimization and multivariate time series. The first question, discussed in Chapter \ref{chap:scalability}, concerns in the impact of the data volume on FTS training and forecasting performances. The optimization of machine learning models for big time series is a challenging task to execute with sequential procedures or even parallel ones executed on a single machine. Thanks to the distributed computation frameworks, these methods are now enabled to work with massive datasets using cheap and available hardware infrastructure.To tackle this problem a distributed training method was proposed for computational clusters of commodity hardware using the Map/Reduce paradigm. 
+
+The second question concerns in the hyperparameter optimization which search for accurate and simultaneously parsimonic models. Generally, in fuzzy time series models, the increase of the number of rules leads to improvement on accuracy. But there is a trade off between the increase of the number of rules and the model overfitting. The Distributed Evolutionary Hyperparameter Optimization (DEHO) method is proposed embracing the distributed training and genetic algorithms, producing accurate and parsimonic models in feasible time.
+
+The last question concerns in the forecasting of complex dynamics systems composed by many interacting variables. Dealing with multivariate and spatio-temporal time series was always a challenging task for FTS methods, specially because of the complexity growth of the rules as the dimension increases. To acomplish this task, in Chapter \ref{chap:multivariate}, the Fuzzy Information Granular Fuzzy Time Series method ($\mathcal{FIG}$-FTS) is proposed, an approach that incorporates Fuzzy Information Granules (FIG) to the FTS methodology in order to simplify the processing of the multivariate crisp data. First, individual Universe of Discourse partitioning schemes are provided for each variable and then Fuzzy Information Granules $\figi$ are created as combinations of the fuzzy sets of the variables. Each $\fig$ is created on demand, on the fuzzyfication phase, by selecting one fuzzy set of each variable. After that, each multivariate data point can be replaced by an univariate one, identified with a corresponding $\fig$.
+
+This work performed computational experiments to assess the $\mathcal{FIG}$-FTS method performance, and applied the proposed method to model and forecast the
+
+In this way, the proposed method family is useful for a wide range of applications and user needs due its flexibility and customizability. The experimental analysis showed the effectiveness of the proposed methods and their flexibility on several scenarios. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary of contributions}
+\begin{itemize}
+    \item First interval forecasting approaches for FTS methods: Interval Fuzzy Time Series ($\ifts$), Weighted Interval Fuzzy Time Series($W\ifts$), Ensemble FTS, Probabilistic Weighted Fuzzy Time Series  (PWFTS) and Fuzzy Information Granule Fuzzy Time Series ($\mathcal{FIG}$-FTS);
+    \item First probabilistic forecasting approaches for FTS methods:  Ensemble FTS, PWFTS and $\mathcal{FIG}$-FTS; 
+    \item The PWFTS method, an high-order integrated method capable to produce point, interval and probabilistic forecasts for one and many steps ahead, with a white-box model;
+    \item Two new scalability approaches for FTS distributed training and forecasting using clusters of commodity hardware;
+    \item The Distributed Evolutionary Hyperparameter Optimization (DEHO) method, an optimization engine for FTS models;
+    \item $\mathcal{FIG}$-FTS an extension of PWFTS for multivariate data, bringing all features of PWFTS method to the multivariate time series.
+    \item pyFTS - An free and open source library for Fuzzy Time Series in Python language to grant the research reproducibility and easy employment.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary of methods limitations}
+
+This research limited its scope to rule based time-invariant methods,   which reduced the applicability of the proposed methods to stationary and well behaved time series with or without data pre-processing. 
+
+The presented methods lacks abilities on forecasting with trend and  demands previous data transformations to deal with this kind of time series. It also lacks mechanisms to deal with concept drifts a heteroskedastic time series. Despite being easily upgradable, the models produced by the proposed methods needs to be frequently updated to follow new data behaviors. For the presented non-weighted methods, outliers may be hard to trick and can reduce the accuracy of the methods. It is advisable to perform outlier removal pre-processing tasks before train the models. 
+
+On PWFTS method, as the order and number of partitions increases the a priori probabilities may vanish to very low numbers, limited to the computational numerical precision.
+
+The tuning of multivariate models is an open issue, demanding new hyperparameter optimization strategies. Without tuning, the models produced by $FIG$-FTS methods are not parsimonious and can be computationally expensive.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Future Investigations}
+
+Some future research directions must be pointed, some of them extracted from methods limitations:
+
+\begin{itemize}
+    \item Time variant extensions for the proposed methods should be investigated, including the use of non-stationary fuzzy sets proposed by \cite{Garibaldi2008};
+    \item The use of Approximate Bayesian Methods will be examined for the substitution of the $\pi_k$ fixed probabilities for probability distributions, to embrace the uncertainty of these quantities;
+    \item Extension of DEHO method for MVFTS and $\FIG$-FTS should be investigated;
+    \item A new probabilistic forecasting method that produces joint probability distributions for multivariate forecasting in $\FIG$-FTS should be investigated.
+\end{itemize}
+
+
+\section{Publications}
+
+From this research methods were extracted the following publications:
+
+\subsection{Journal Papers}
+\begin{enumerate}
+    \item SILVA, Petrônio C. L.; SADAEI, Hossein J. ; BALLINI, Rosângela ; GUIMARÃES, Frederico G. . Probabilistic Forecasting With Fuzzy Time Series. IEEE Transactions on Fuzzy Systems, v. 1, p. 1-1, 2019. DOI: 10.1109/tfuzz.2019.2922152
+    \item SADAEI, Hossein J.; SILVA, Petrônio C. L.; GUIMARÃES, Frederico G.; LEE, Muhammad H. Short-term load forecasting by using a combined method of convolutional neural networks and fuzzy time series. ENERGY, v. 174, p. 1, 2019. DOI: 10.1016/j.energy.2019.03.081
+\end{enumerate}
+
+\subsection{Conference Papers}
+\begin{enumerate}
+\item SILVA, Petrônio C. L.; SEVERIANO Jr., Carlos A.; ALVES, Marcos A. ; COHEN, Miri W.; GUIMARÃES, Frederico G. A New Granular Approach for Multivariate Forecasting. 2nd Latin American Workshop on Computational Neuroscience. Communications in Computer and Information Science, 2019.
+\item SILVA, Petrônio C. L.; LUCAS, Patrícia O. ; GUIMARÃES, Frederico G. A Distributed Algorithm for Scalable Fuzzy Time Series. Lecture Notes in Computer Science. 1ed.: Springer International Publishing, 2019, v. , p. 42-56. DOI: 10.1007/978-3-030-19223-5\_4
+\item ALVES, Marcos A. ; SILVA, Petrônio C. L. ; SEVERIANO JR., Carlos A. ; VIEIRA, Gustavo L. ; GUIMARAES, Frederico G. ; SADAEI, Hossein J. . An extension of nonstationary fuzzy sets to heteroskedastic fuzzy time series. In: 26th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, 2018, Bruges, Bélgica. 26th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, 2018.
+\item SILVA, Petrônio C. L.; ALVES, Marcos A. ; SEVERIANO JR., Carlos A. ; VIEIRA, Gustavo L. ; GUIMARAES, Frederido G. ; SADAEI, Hossein J. . Probabilistic Forecasting with Seasonal Ensemble Fuzzy Time-Series. In: XIII Brazilian Congress on Computational Intelligence, 2017, Niterói. Anais do XIII Brazilian Congress on Computational Intelligence, 2017.
+\item COSTA, Francirley R. B. ; SILVA, Petrônio C. L.; GUIMARAES, Frederico G. ; BATISTA, Lucas S. . Regressão Linear Aplicada na Predição de Séries Temporais Fuzzy. In: XIII Simpósio Brasileiro de Automação Inteligente, 2017, Porto Alegre. Anais do XIII Simpósio Brasileiro de Automação Inteligente, 2017. 
+\item SEVERIANO Jr, Carlos A.; SILVA, Petrônio C.; SADAEI, Hossein J.; GUIMARÃES, Frederico G. Very Short-term Solar Forecasting using Fuzzy Time Series. 2017 IEEE Conference on Fuzzy Systems. DOI: 10.1109/fuzz-ieee.2017.8015732
+\item SILVA, Petrônio C. L.; SADAEI, Hossein J.; GUIMARÃES, Frederico G. Interval Forecasting with Fuzzy Time Series. In Computational Intelligence (SSCI), 2016 IEEE Symposium Series on (pp. 1-8). IEEE. DOI: 10.1109/ssci.2016.7850010
+\end{enumerate}
+
+\subsection{Software Libraries}
+
+Silva, P. C. L, et al. pyFTS: Fuzzy Time Series for Python. Source Code: \url{http://pyfts.github.io/pyFTS} DOI: 10.5281/zenodo.597359. 
+
+
+
