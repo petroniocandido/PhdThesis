@@ -2,18 +2,6 @@
     "contributors": [], 
     "language": "eng", 
     "title": "Scalable Models For Probabilistic Forecasting With Fuzzy Time Series (PhD Thesis)", 
-    "related_identifiers": [
-        {
-            "scheme": "url", 
-            "identifier": "https://github.com/petroniocandido/PhdThesis/tree/0.1", 
-            "relation": "isSupplementTo"
-        }, 
-        {
-            "scheme": "doi", 
-            "identifier": "10.5281/zenodo.3350888", 
-            "relation": "isVersionOf"
-        }
-    ], 
     "thesis_university": "Federal University of Minas Gerais (UFMG), Brazil", 
     "thesis_supervisors": [
         {
@@ -28,7 +16,6 @@
         }
     ], 
     "publication_type": "thesis", 
-    "version": "0.1", 
     "references": [
         "Petr\u00f4nio C\u00e2ndido de Lima e Silva et al. pyFTS: Fuzzy Time Series for Python. Stable version 1.6 (Version pkg1.6). Zenodo. http://doi.org/10.5281/zenodo.597359", 
         "SILVA, Petr\u00f4nio C. L.; SADAEI, Hossein J. ; BALLINI, Ros\u00e2ngela ; GUIMAR\u00c3ES, Frederico G. . Probabilistic Forecasting With Fuzzy Time Series. IEEE Transactions on Fuzzy Systems, v. 1, p. 1-1, 2019. DOI: 10.1109/tfuzz.2019.2922152", 
