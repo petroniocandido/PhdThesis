@@ -1,21 +1,19 @@
 {
-    "license": "other-open", 
-    "contributors": [
-        {
-            "orcid": "0000-0001-9238-8839", 
-            "affiliation": "Electrical Engineering Dept, Federal University of Minas Gerais (UFMG), Brazil", 
-            "type": "Researcher", 
-            "name": "Frederico Gadelha Guimar\u00e3es"
-        }, 
-        {
-            "orcid": "0000-0002-0848-9280", 
-            "affiliation": "MINDS - Machine Learning and Data Science", 
-            "type": "Researcher", 
-            "name": "Hossein Javedani Sadaei"
-        }
-    ], 
+    "contributors": [], 
     "language": "eng", 
     "title": "Scalable Models For Probabilistic Forecasting With Fuzzy Time Series (PhD Thesis)", 
+    "related_identifiers": [
+        {
+            "scheme": "url", 
+            "identifier": "https://github.com/petroniocandido/PhdThesis/tree/0.1", 
+            "relation": "isSupplementTo"
+        }, 
+        {
+            "scheme": "doi", 
+            "identifier": "10.5281/zenodo.3350888", 
+            "relation": "isVersionOf"
+        }
+    ], 
     "thesis_university": "Federal University of Minas Gerais (UFMG), Brazil", 
     "thesis_supervisors": [
         {
@@ -29,13 +27,24 @@
             "name": "Hossein Javedani Sadaei"
         }
     ], 
-    "upload_type": "software", 
+    "publication_type": "thesis", 
+    "version": "0.1", 
+    "references": [
+        "Petr\u00f4nio C\u00e2ndido de Lima e Silva et al. pyFTS: Fuzzy Time Series for Python. Stable version 1.6 (Version pkg1.6). Zenodo. http://doi.org/10.5281/zenodo.597359", 
+        "SILVA, Petr\u00f4nio C. L.; SADAEI, Hossein J. ; BALLINI, Ros\u00e2ngela ; GUIMAR\u00c3ES, Frederico G. . Probabilistic Forecasting With Fuzzy Time Series. IEEE Transactions on Fuzzy Systems, v. 1, p. 1-1, 2019. DOI: 10.1109/tfuzz.2019.2922152", 
+        "SADAEI, Hossein J.; SILVA, Petr\u00f4nio C. L.; GUIMAR\u00c3ES, Frederico G.; LEE, Muhammad H. Short-term load forecasting by using a combined method of convolutional neural networks and fuzzy time series. ENERGY, v. 174, p. 1, 2019. DOI: 10.1016/j.energy.2019.03.081", 
+        "SILVA, Petr\u00f4nio C. L.; LUCAS, Patr\u00edcia O. ; GUIMAR\u00c3ES, Frederico G. A Distributed Algorithm for Scalable Fuzzy Time Series. Lecture Notes in Computer Science. 1ed.: Springer International Publishing, 2019, v. , p. 42-56. DOI: 10.1007/978-3-030-19223-5\\_4", 
+        "SEVERIANO Jr, Carlos A.; SILVA, Petr\u00f4nio C.; SADAEI, Hossein J.; GUIMAR\u00c3ES, Frederico G. Very Short-term Solar Forecasting using Fuzzy Time Series. 2017 IEEE Conference on Fuzzy Systems. DOI: 10.1109/fuzz-ieee.2017.8015732", 
+        "SILVA, Petr\u00f4nio C. L.; SADAEI, Hossein J.; GUIMAR\u00c3ES, Frederico G. Interval Forecasting with Fuzzy Time Series. In Computational Intelligence (SSCI), 2016 IEEE Symposium Series on (pp. 1-8). IEEE. DOI: 10.1109/ssci.2016.7850010"
+    ], 
+    "upload_type": "publication", 
     "keywords": [
         "probabilistic forecasting", 
         "interval forecasting", 
         "fuzzy time series", 
         "scalability"
     ], 
+    "publication_date": "2019-07-24", 
     "creators": [
         {
             "orcid": "0000-0002-1202-2552", 
@@ -43,6 +52,6 @@
             "name": "Petr\u00f4nio C\u00e2ndido de Lima e Silva"
         }
     ], 
-    "access_right": "open", 
-    "description": "<p><em><strong>Scalable Models For Probabilistic Forecasting With Fuzzy Time Series (PhD Thesis)</strong></em></p>\n\n<p></p>"
+    "access_right": "closed", 
+    "description": "<p><strong>Abstract</strong></p>\n\n<p>On time series forecasting field the most known methods are based on point forecasting. However, this kind of forecasting has a serious drawback: it does not quantify the uncertainties inherent to natural and social processes neither other uncertainties caused by the data capturing and processing. Because this in last years the interval and probabilistic forecasting methods have gaining more attention of researches, specially on environmental and economical sciences. But these techniques also have its own issues due the methods being black-boxes and use stochastic simulations and ensembles of multiple forecasting methods which are computationally expensive.</p>\n\n<p>In other hand, the data volume (number of instances) and dimensionality (number of variables) have reached magnitudes even greater, due to the commoditizing of the capturing and storing computational devices, in a phenom knows as Big Data. Such factors impact directly in the models&#39;s training and updating costs, and for time series with Big Data characteristics, the scalability became a decisive factor in the choosing of predictive methods.</p>\n\n<p>In this context emerge the Fuzzy Time Series (FTS) methods, which have growing in recent years due their accurate results, easy to implement, low computational cost and model explainability. The Fuzzy Time Series methods have been applied to forecast electric load, market assets, economical indicators, tourism demand, etc. But there is a lack on FTS literature regarding to interval and probabilistic forecasting.</p>\n\n<p>This thesis proposes new scalable Fuzzy Time Series methods and discuss its application on point, interval and probabilistic forecasting of mono and multivariate time series, for one to many steps ahead. The parameters and hyper-parameters are discussed and fine tunning alternatives are presented. Finally the proposed methods are compared with the main Fuzzy Time Series techniques and other literature approaches using environmental and stock market data. The proposed methods obtained promising results on point, interval and probabilistic forecasting and presented low computational cost, making it useful for a wide range of applications.</p>\n\n<p>&nbsp;</p>\n\n<p>&nbsp;</p>"
 }
