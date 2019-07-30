@@ -45,7 +45,7 @@ In next sections this mechanism is detailed, starting in Section \ref{sec:pwfts_
 
 %A Fuzzy Time Series $F(t)$ is a transformation of $Y(t)$ using the linguistic variable $F$. $F(t) = \{ f(0), f(1),..., f(n) \}$ where $f(i) = \{ \mu_{A_0}(y(i)), ..., \mu_{A_p}(y(i)) \}\ \forall i \in t$. $F(t)$ can also be represented by the linguistic values instead of the membership values, just by defining $f(i) = \{ A_k |  \mu_{A_k}(y(i)) > 0 \}\ \forall k \in [0,p]\ \forall i \in t$.
 
-The core concept of PWFTS is the fuzzy empirical probability, used to compute the weights of the model, whose intuition is discussed in this section. The initial Zadeh's proposition of fuzzy probability, $P(A) = E[\mu_A]$, proposed in \cite{Zadeh1968}, demands the previous knowledge of the probability distribution over the universe of discourse. Once this distribution for $Y$ is unknown, an empirical distribution must take place. The simplest definition of empirical probability is the relative frequency of a discrete value or of a range of continuous values. Fuzzy Theory provides a different look at traditional Probability Theory because it affects the way the events are counted. On fuzzy sets the notion of event is more complex because the same value can belong to several sets with different degrees of membership. In that case, instead of accounting the integral (i.e. unary) occurrence of the event, their partial occurrence is accounted as the membership value. This method is known by fuzzy frequency, and was firstly  developed in \cite{Luo2000}. A related formulation can be found in \cite{Perfilieva2006}, with the concept of F-Transform, which decomposes the original domain of the time series into fuzzy frequencies over the fuzzy sets. This decomposition can also recreate the time series using the inverse transform. 
+The core concept of PWFTS is the fuzzy empirical probability, used to compute the weights of the model, whose intuition is discussed in this section. The initial Zadeh's proposition of fuzzy probability, $P(A) = E[\mu_A]$, proposed in \cite{Zadeh1968}, demands the previous knowledge of the probability distribution over the universe of discourse. Once this distribution for $Y$ is unknown, an empirical distribution must take place. The simplest definition of empirical probability is the relative frequency of a discrete value or of a range of continuous values. Fuzzy Theory provides a different look at traditional Probability Theory because it affects the way the events are counted. On fuzzy sets the notion of event is more complex because the same value can belong to several sets with different degrees of membership, as shown in Figure \ref{fig:pwfts_fuzzyfrequency}. In that case, instead of accounting the integral (i.e. unary) occurrence of the event, their partial occurrence is accounted as the membership value. This method is known by fuzzy frequency, and was firstly  developed in \cite{Luo2000}. A related formulation can be found in \cite{Perfilieva2006}, with the concept of F-Transform, which decomposes the original domain of the time series into fuzzy frequencies over the fuzzy sets. This decomposition can also recreate the time series using the inverse transform. 
 
 Given the sample space $U$ and the fuzzy sets $\ulvar$ over $U$, the partition function $Z_{\ufset}$, $\forall \ufset \in \ulvar$, is the integral of the membership function $\mu_{\ufset}$ over the sample space $U$, such that $Z_{\ufset} = \int_U \mu_{\ufset}(y) dy$ or the discrete approximation $Z_{\ufset} = \sum_{y \in U} \mu_{\ufset}(y)$. With the $Z_{\ufset}$ it is possible to approximate the empirical probability of a fuzzy set $\ufset \in \ulvar$ as the sum of its memberships $\mu_{\ufset}(y)$, $\forall y \in U$ divided by the sum of the partition functions $Z_{\ufset}$ of all fuzzy sets $\ufset \in \ulvar$, as presented in Equation \eqref{eqn:prob_conj_fuzzy}. 
 
@@ -54,19 +54,28 @@ P(\ufset) = \frac{\sum_{y \in U} \mu_{\ufset}(y)}{\sum_{\ufset \in \ulvar}Z_{\uf
 \label{eqn:prob_conj_fuzzy}
 \end{equation}
 
-The intuition behind this equation is that the empirical probability $P(\ufset)$ is evenly spread over the shape of the fuzzy membership function $\mu_{\ufset}$, and the point $y$ is a slice of this shape whose area is equal to the value $\mu_{\ufset}(y)$, and the area of $\mu_{\ufset}$ is $Z_{\ufset}$. $P(A_i)$ is measured from a sample of $U$, and this empirical value is an approximation of the real, but unknown, probability. This approximation is used in \eqref{eqn:prob_fuzzy} to approximate the conditional probability of a value $y \in U$, given a fuzzy set $\ufset \in \ulvar$:
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/pwfts_fuzzyfrequency.pdf}
+    \caption{Fuzzy frequencies of each $y(t) \in Y$ used to approximate the fuzzy empirical probabilities $P(A_i)$ for each fuzzy set $A_i$}
+    \label{fig:pwfts_fuzzyfrequency}
+\end{figure}
+
+The intuition behind this equation is that the empirical probability $P(\ufset)$ is evenly spread over the shape of the fuzzy membership function $\mu_{\ufset}$, and the point $y$ is a slice of this shape whose area is equal to the value $\mu_{\ufset}(y)$ (as shown in Figure \ref{fig:pwfts_fuzzyfrequency}), and the area of $\mu_{\ufset}$ is $Z_{\ufset}$. $P(A_i)$ is measured from a sample of $Y$, and this empirical value is an approximation of the true (but unknown) probability. This approximation is used in \eqref{eqn:prob_fuzzy} to approximate the conditional probability of a value $y \in U$, given a fuzzy set $\ufset \in \ulvar$:
 
 \begin{equation}
 P(y | \ufset) = P(\ufset) \cdot \frac{\mu_{\ufset}(y)}{Z_{\ufset}}
 \label{eqn:prob_fuzzy}
 \end{equation}
 
-Using \eqref{eqn:prob_conj_fuzzy} and \eqref{eqn:prob_fuzzy} and the Law of Total Probability the empirical probability $P(y)$ can be approximated as 
+Using \eqref{eqn:prob_conj_fuzzy} and \eqref{eqn:prob_fuzzy} and the Law of Total Probability the empirical probability $P(y)$ can be approximated using the Equation \eqref{eqn:total_probability}. 
+
 \begin{equation}
 P(y,\ulvar) = \sum_{\ufset \in \ulvar} P(y | \ufset)\cdot P(\ufset)
+\label{eqn:total_probability}
 \end{equation}
 
-The advantage of this approach is the convenience to obtain $P(\ufset)$ from a time series dataset $Y$. The accuracy of $P(\ufset)$ will be determined by $k$, the number of partitions of the universe of discourse $U$.
+The advantage of this approach is the convenience to obtain $P(\ufset)$ from a sample of the time series dataset $Y$. The accuracy of $P(\ufset)$ is determined mainly by $k$, the number of partitions of the universe of discourse $U$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -123,6 +132,14 @@ Each weight $w_{ji}$ is associated with a fuzzy set $\ufset$ on the RHS of the F
 
 The outcome of the Training Procedure is the PWFTPG set and it represents the temporal dynamics of the original data. It is an empirical probability distribution of the linguistic variable $A$ over the time series $Y$ with sample space $U$, where each rule contains the unconditional probability $P(\ufset) = \pi_j$ and conditional probabilities $P(A_i | \ufset) = w_{ji}$, for $A_i,A_j \in \ulvar$.
 
+\begin{figure}
+    \centering
+    \includegraphics{figures/pwfts_rules_firstorder.png}
+    \caption{Representation of first order PWFTPG ruleset}
+    \label{fig:pwfts_rules_firstorder}
+\end{figure}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Forecasting Procedure}
 \label{sec:pwfts_forecasting}
@@ -168,6 +185,13 @@ P(y(t+1) | y(t)) &=  \displaystyle \sum_{\ufset \in  \ulvar}\frac{\displaystyle 
 \end{array}
 \label{eqn:pwfts_probabilistic}
 \end{equation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth,height=7cm]{figures/pwfts_probabilistic_forecasting.pdf}
+    \caption{Representation of PWFTS probabilistic forecasting procedure, where the length of blue boxes represents the magnitude of $\pi_j$ weights and the height of yellow boxes represents the magnitude of $\omega_{ji}$ weights.}
+    \label{fig:pwfts_probabilistic_forecasting}
+\end{figure}
 
 \begin{figure}[htb]
     \centering
@@ -238,8 +262,8 @@ To produce point forecasts $\estimate$ from the existing distribution $P(\cdot|y
 In the next subsections the basic first-order and one-step-ahead method is extended to higher orders and wider forecasting horizons in order to increase PWFTS method flexibility and versatility.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Multi step ahead forecasting}
-\label{sec:pwfts_multi_step}
+\subsection{Many steps ahead forecasting}
+\label{sec:pwfts_many_step}
 
 The forecasting procedures listed in Section \ref{sec:pwfts_forecasting} are one step ahead methods. To extend the forecasting procedures to many steps ahead forecasting, an iterative approach is adopted, in which the $t+1$ step is computed with the previously presented methods and its output is fed back as input to the next $H$ steps. From the step $t+2$ on, let $h \in [t+2, t+H]$ be the new time indexer. The simpler approach is to perform the point forecast of $y(h+1)$  with the input $y(h)$.
 
@@ -257,6 +281,13 @@ Finally, the probabilistic forecasting for $P(y(h+1)|y(h))$ given the input will
 P(y(h+1) | y(h))  = \displaystyle \sum_{\ufset \in \ulvar} \frac{ P(y(h)| y(h-1), \ufset)}{ \sum_{i = 1}^k P(y(h)| y(h-1), A_i)} \times  \left(  \sum_{z = 1}^k  P(y(h+1) | A_z,\ufset) \right)
 \label{eqn:extension_probabilistic}
 \end{equation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/pwfts_probabilistic_manysteps.pdf}
+    \caption{Caption}
+    \label{fig:pwfts_probabilistic_manysteps}
+\end{figure}
  
 \begin{figure}[htb]
     \centering

@@ -6,7 +6,7 @@
 
 This chapter aims to introduce the Fuzzy Time Series methods and review the relevant literature, offering a soft background on  the key concepts and models on this research field.
 
-The name Fuzzy Time Series (FTS) can be used to refer to $F$, a time series composed by fuzzy linguistic terms, or the family of non-parametric forecasting methods introduced by \cite{song1993fuzzy} based on Fuzzy Set theory \cite{Zadeh1965}. These methods are easy to implement and very flexible, affording ways to  deal with numeric and non-numeric data.  FTS methods have been commonly used on forecasting of university enrollments (\cite{song1993fuzzy}, \cite{Song1994}, \cite{ismail2011enrollment}), 
+The name Fuzzy Time Series (FTS) can be used to refer to $F$, a time series composed by fuzzy linguistic terms, or the family of non-parametric forecasting methods introduced by \cite{song1993fuzzy} based on Fuzzy Set theory \cite{Zadeh1965}. These methods are easy to implement and very flexible, affording ways to  deal with numeric and non-numeric data.  FTS methods have been commonly employed in forecasting of university enrollments (\cite{song1993fuzzy}, \cite{Song1994}, \cite{ismail2011enrollment}), 
 stock markets (\cite{Sadaei2016}, \cite{Lee2013},  \cite{chen2014high}, \cite{Sun2015}, \cite{Talarposhti2016a}, \cite{efendi2013improved}), 
 tourism (\cite{Lee2011}), 
 electric load (\cite{Ismail2015}, \cite{Sadaei2017}),  
@@ -20,9 +20,9 @@ There are still some gaps in FTS methods (\cite{Sadaei2013} and \cite{Georgescu2
     \label{fig:fts_taxonomy}
 \end{figure}
 
-The most important category of FTS methods is the time behavior. The Time Invariant models are the ones used when the Universe of Discourse and data behavior  does not change with time, as in stationary time series. Non stationary time series, in its turn, require Time Variant models as proposed in \cite{Song1994} and \cite{Wong2010}. This research is focused on Time Invariant models and hereinafter all models discussed belongs to it. However, Time Variant models are not discarded for future investigations.
+The most important categories of FTS methods are related with their the time behavior. The time invariant models are the ones used when the Universe of Discourse and data behavior  does not change with time, as in stationary time series. Non stationary time series, in its turn, require time variant models as proposed in \cite{Song1994} and \cite{Wong2010}. This research is focused on time invariant models and hereinafter all models discussed belongs to it. However, Time Variant models are not discarded for future investigations.
 
-This chapter also focus only on monovariate and non Big Data time series, which will be discussed in the following chapters. In the next section the main processes of the FTS are introduced and discussed.
+This chapter also focus only on monovariate and non Big Data time series. The multivariate and Big Data methods will be discussed in the following chapters. In the next section the main processes of the FTS are introduced and discussed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,7 +32,7 @@ This chapter also focus only on monovariate and non Big Data time series, which 
 
 \index{Universe of Discourse}\index{UoD}\index{Fuzzy Time Series}\index{FTS}
 
-The definition of Fuzzy Time Series, from \cite{song1993fuzzy}, starts with a univariate time series $Y \in \mathbb{R}^1$, for $t = 0,1,...,T$, where the the Universe of Discourse $U$ is delimited by the known bounds of $Y$, such that $U = [\min(Y),\max(Y)]$. Upon $U$ are defined $k$ fuzzy sets $\ufset$, for $j = 1..k$, each one with his own membership function $\mu_{\ufset}$. $F$ is called a Fuzzy Time Series over $Y$ if $f(t) = \mu_{\ufset}(y(t))$ is the collection of fuzzyfied values of $Y$ for $j = 1..k$ and $t = 0,1,...,T$. The group of fuzzy sets $\ufset$, for $j = 1..k$, can also be understood as a Linguistic Variable $\ulvar$, and each fuzzy set $\ufset \in \ulvar$ is a linguistic value of the linguistic variable. 
+The definition of Fuzzy Time Series, from \cite{song1993fuzzy}, starts with a univariate time series $Y \in \mathbb{R}^1$, for $t = 0,1,...,T$, where the Universe of Discourse $U$ is delimited by the known bounds of $Y$, such that $U = [\min(Y),\max(Y)]$. Upon $U$, $k$ fuzzy sets $\ufset$, for $j = 1..k$, are defined and each one with its own membership function $\mu_{\ufset}$. $F$ is called a Fuzzy Time Series over $Y$ if $f(t) = \mu_{\ufset}(y(t))$ is the collection of fuzzyfied values of $Y$ for $j = 1..k$ and $t = 0,1,...,T$. The group of fuzzy sets $\ufset$, for $j = 1..k$, can also be understood as a Linguistic Variable $\ulvar$, and each fuzzy set $\ufset \in \ulvar$ is a linguistic value of the linguistic variable. 
 
 \begin{figure}
     \centering
@@ -41,30 +41,30 @@ The definition of Fuzzy Time Series, from \cite{song1993fuzzy}, starts with a un
     \label{fig:fts_training}
 \end{figure}
 
-\cite{Song1993partI} proposed the first FTS methodology and the following authors basically extended or modified some steps of the method. A generic method can be extracted from the wide range of variations of FTS methods by splitting the FTS approach in two main procedures, the training and forecasting methods. The training method, illustrated on Figure \ref{fig:fts_training}, has the basic objective to create the linguistic variable $\ulvar$ and a knowledge representation of the time series dynamics, and this both objects compose the FTS model $\model$. The main components of this process are listed below:
+\cite{Song1993partI} proposed the first FTS methodology and the following authors basically extended or modified some steps of the method. A generic method can be extracted from the wide range of variations of FTS methods by splitting the FTS approach in two main procedures, the training and forecasting methods. The training method, illustrated on Figure \ref{fig:fts_training}, has the basic objective to create the linguistic variable $\ulvar$ and a knowledge representation of the time series dynamics. These two objects compose the FTS model $\model$. The main components of this process are listed below:
 
 \begin{enumerate}
-    \item[Step 1] - \textbf{Pre-processing}: First, one or more pre-processing data transformations can be applied on input data $Y$, responsible to reduce noise, detrending, or de-seasonalize, or change the $U$, etc. Several methods contains these operators and their impact will be discussed in detail on Section \ref{sec:fts_transformations}.
+    \item[Step 1] - \textbf{Pre-processing}: First, one or more pre-processing data transformations can be applied to input data $Y$, responsible to reduce noise, detrending, or de-seasonalize, or change the $U$, etc. Several methods contain these operators and their impact will be discussed in detail in Section \ref{sec:fts_transformations}.
     
-    \item[Step 2] - \textbf{Partitioning}: The most important process of the training is executed, the partitioning. This processes is responsible to split the universe of discourse $U$ in $k$ fuzzy sets $\ufset$, creating the linguistic variable $\ulvar$ used to describe $Y$. There are many ways that the partitioning can be performed, and the most important are discussed on Section \ref{sec:fts_partitioning}.
+    \item[Step 2] - \textbf{Partitioning}: The most important process of the training is executed, the partitioning. This process is responsible to split the universe of discourse $U$ into $k$ fuzzy sets $\ufset$, creating the linguistic variable $\ulvar$ used to describe $Y$. There are many ways that the partitioning can be performed, and the most important are discussed in Section \ref{sec:fts_partitioning}.
     
-    \item[Step 3] - \textbf{Fuzzyfication}: With the linguistic variable $\ulvar$ the crisp data $Y$ can be transformed in a linguistic representation, the fuzzy time series $F$ where each $f(t) \in F$ is a fuzzyfied version of $y(t) \in Y$. Details of the fuzzyfication are discussed on Section \ref{sec:fts_fuzzyfication}.
+    \item[Step 3] - \textbf{Fuzzyfication}: With the linguistic variable $\ulvar$ the crisp data $Y$ can be transformed in a linguistic representation, the fuzzy time series $F$ where each $f(t) \in F$ is a fuzzyfied version of $y(t) \in Y$. Details of the fuzzyfication are discussed in Section \ref{sec:fts_fuzzyfication}.
     
-    \item[Step 4] - \textbf{Knowledge Extraction and Representation}: The second most important process is the knowledge extraction. This process is responsible to induce the knowledge model $\model$ by performing a pattern recognition over $F$ and learning the temporal patterns between  $\Omega$ lags, whose indexes are identified by $L$, and their consequent ones. The most important learning algorithms and knowledge models are discussed on Section \ref{sec:fts_knowledge}.
+    \item[Step 4] - \textbf{Knowledge Extraction and Representation}: The second most important process is the knowledge extraction. This process is responsible to induce the knowledge model $\model$ by performing a pattern recognition over $F$ and learning the temporal patterns between  $\Omega$ lags, whose indexes are identified by $L$, and their consequent ones. The most important learning algorithms and knowledge models are discussed in Section \ref{sec:fts_knowledge}.
 \end{enumerate}
 
-Once the linguistic variable $\ulvar$ is defined and the FTS model $\model$ was learned, new samples $y(t) \in U$ can be presented to produce a forecast $\hat{y}(t+1)$. The generic forecasting procedure is illustrated on Figure \ref{fig:fts_forecasting}, and its main components are listed below:
+Once the linguistic variable $\ulvar$ is defined and the FTS model $\model$ was learned, new samples $y(t) \in U$ can be presented to produce a forecast $\hat{y}(t+1)$. The generic forecasting procedure is illustrated in Figure \ref{fig:fts_forecasting}, and its main components are listed below:
 
 \begin{enumerate}
-    \item [Step 1] - \textbf{Pre-processing}: First, one or more pre-processing and post-processing data transformations can be applied on input sample $y(t)$ (the data transformations are discussed on Section \ref{sec:fts_transformations}).
+    \item [Step 1] - \textbf{Pre-processing}: First, one or more pre-processing and post-processing data transformations can be applied to input sample $y(t)$ (the data transformations are discussed in Section \ref{sec:fts_transformations}).
     
     \item[Step 2] - \textbf{Fuzzyfication}: The fuzzyfication procedure follows the same schema of the training procedure and it is discussed in Section \ref{sec:fts_fuzzyfication}. 
     
-    \item[Step 3] - \textbf{Inference}: The inference engine deeply depends of the knowledge model $\model$. Indeed, the learning algorithm, the knowledge model and the inference engine are intrinsically correlated, and they are discussed on Section \ref{sec:fts_knowledge}. The aim of the inference process is to produce $f(t+1)$, candidate fuzzy sets (and other additional information, as weights) to represent the future crisp value $y(t+1)$.
+    \item[Step 3] - \textbf{Inference}: The inference engine deeply depends on the knowledge model $\model$. Indeed, the learning algorithm, the knowledge model and the inference engine are intrinsically correlated, and they are discussed in Section \ref{sec:fts_knowledge}. The aim of the inference process is to produce $f(t+1)$, candidate fuzzy sets (and other additional information, as weights) to represent the future crisp value $y(t+1)$.
     
-    \item[Step 4] - \textbf{Deffuzyfication}: The deffuzyfication process aims to transform the $f(t+1)$ in a crisp numeric estimate $\estimate$ for the real (but unknown) value $y(t+1)$. The deffuzyfication usually also depends on the inference engine but there are common methods discussed on Section \ref{sec:fts_defuzzyfication}. The present work extended the possibilities of deffuzyfication for beyond of point forecasting, proposing methods for prediction intervals $\mathbb{I}$ and probabilistic distributions $P$.
+    \item[Step 4] - \textbf{Deffuzyfication}: The deffuzyfication process aims to transform the $f(t+1)$ to a crisp numeric estimate $\estimate$ for the real (but unknown) value $y(t+1)$. The deffuzyfication usually also depends on the inference engine but there are common methods discussed in Section \ref{sec:fts_defuzzyfication}. The present work extended the possibilities of deffuzyfication to beyond of point forecasting, proposing methods for prediction intervals $\mathbb{I}$ and probabilistic distributions $P$.
     
-    \item [Step 5] - \textbf{Post-processing}: Finally, one or more post-processing data transformations can be applied on output forecast $\estimate$  (the data transformations are discussed on Section \ref{sec:fts_transformations}).
+    \item [Step 5] - \textbf{Post-processing}: Finally, one or more post-processing data transformations can be applied to output forecast $\estimate$  (the data transformations are discussed in Section \ref{sec:fts_transformations}).
 \end{enumerate}
 
 \begin{figure}
@@ -75,7 +75,7 @@ Once the linguistic variable $\ulvar$ is defined and the FTS model $\model$ was 
 \end{figure}
 
 
-The main hyper-parameters which affect these processes are listed on Table \ref{tab:fts_hyperparameters}. In the following sections each one of these processes are discussed in detail recurring to the most relevant works in the FTS literature, while its strengths and drawbacks are highlighted.
+The main hyper-parameters which affect these processes are listed in Table \ref{tab:fts_hyperparameters}. The selection of the values for these hyperparameters affects the training process and the parameters of the model, including its accuracy and parsimony (the length of the model).  In the following sections each one of these processes are discussed in detail recurring to the most relevant works in the FTS literature, while its strengths and drawbacks are highlighted.
 
 \begin{table}[]
     \centering
@@ -104,12 +104,12 @@ This process aims to split the Universe of Discourse $U$ and to create the lingu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Definition of the Universe of Discourse $U$}
-\label{sec:fts_uod}
+\subsection{Universe of Discourse $U$}
+\label{sec:fts_uod} \index{Universe of Discourse}
 
-The natural definition of the Universe of Discourse is $U = [\min(Y),\max(Y)]$, but it is common that the upper and lower bounds be exceeded by a confidence margin. Then, it can be established as $U = [\underline{l}, \overline{u}]$, with the lower bound as $\underline{l} = \min(Y) + l_d$, where $l_d = \min(Y)*0.2$ (exceeding the original lower bound by 20\%) and the upper bound as $\overline{u} = \max(Y) + u_d$, where $u_d = \max(Y)*0.2$ (exceeding the original upper bound by 20\%). 
+The natural definition of the Universe of Discourse is $U = [\min(Y),\max(Y)]$, but it is common that the upper and lower bounds be exceeded by a confidence margin. Then, it can be established as $U = [\underline{l}, \overline{u}]$, with the lower bound as $\underline{l} = \min(Y) + l_d$, where $l_d = \min(Y)\cdot 0.2$ (exceeding the original lower bound by 20\%) and the upper bound as $\overline{u} = \max(Y) + u_d$, where $u_d = \max(Y)\cdot 0.2$ (exceeding the original upper bound by 20\%). 
 
-Even considering just time invariant methods in this section and a stationary time series $Y$, it is natural that the testing $U$ will be a little different from the training $U$, sometimes by a small fraction of the original values. Even on stationary processes the presence of outliers cannot be discarded. The objective of these exceeding margins $l_d$ and $u_d$ is to help in the fuzzyfication process of the forecasting procedure, in order to accommodate fluctuations in the bounds of the known $U$.
+Even considering just time invariant methods in this work and a stationary time series $Y$, it is natural that the testing $U$ will be a little different from the training $U$, sometimes by a small fraction of the original values. Even on stationary processes the presence of outliers cannot be discarded. The objective of these exceeding margins $l_d$ and $u_d$ is to help in the fuzzyfication process of the forecasting procedure, in order to accommodate fluctuations in the bounds of the known $U$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -117,9 +117,9 @@ Even considering just time invariant methods in this section and a stationary ti
 \subsection{Membership function $\mu$}
 \label{sec:fts_membership}
 
-Once defined $U$ three hyper-parameters will determine the creation of $\ulvar$: the number of partitions $k$, the membership function $\mu$ and the partitioning scheme. The membership function $\mu: U \rightarrow [0,1]$ define how much a crisp value belongs to a fuzzy set, in terms of the membership grade $[0,1]$. Some options of fuzzy membership functions are shown on Table \ref{tab:fts_membership}, and simple partitioning using these functions are shown in Figure \ref{fig:membership}. The real impact of the membership function on accuracy is low, it will be demonstrated empirically later on this work, but the chosen of the correct $\mu$ can help in the readability and explainability of the model.
+Once $U$ has been defined, three hyper-parameters will determine the creation of $\ulvar$: the number of partitions $k$, the membership function $\mu$ and the partitioning scheme. The membership function $\mu: U \rightarrow [0,1]$ defines how much a crisp value belongs to a fuzzy set, in terms of the membership grade $[0,1]$. Some options of fuzzy membership functions are shown in Table \ref{tab:fts_membership}, and simple partitioning using these functions are shown in Figure \ref{fig:membership}. The real impact of the membership function on accuracy is low, it will be demonstrated empirically later on this work, but the chosen of the correct $\mu$ can help in the readability and explainability of the model.
 
-Several other kinds of fuzzy sets are present in the literature and FTS methods were developed using them, as instance Type 2 fuzzy sets \cite{huarng2005type, Bajestani2011}, Hesitant fuzzy sets \cite{}, non-stationary fuzzy sets \cite{}, etc. These fuzzy sets and the methods developed with them, however, are considered out of the scope of this research.
+Many other kinds of fuzzy sets were presented in the literature and new FTS methods were developed using them, as instance Type 2 fuzzy sets \citep{huarng2005type, Bajestani2011}, Hesitant fuzzy sets \citep{Bisht2016}, non-stationary fuzzy sets \citep{Alves2018}, etc. These fuzzy sets and the methods developed with them, however, are considered out of the scope of this research.
 
 \index{Membership function}\index{$\mu$}
 \begin{table}[]
@@ -169,11 +169,11 @@ $\mu(x,m,d) = \exp \left(-\frac{(x-d)^2}{2m^2}\right)$ \\ \hline
 \index{overfit}\index{underfit}\index{hyperparameter optimization}\index{model accuracy}\index{model performance}
 The selection of the hyperparameter $k$ impact directly on the model accuracy and parsimony, as discussed in \cite{Duru2012}. The number of partitions impact on the model parsimony directly and, for instance, given a rule model the maximum number of rules is the cartesian product between the fuzzy sets $\ufset \in \ulvar$ for each order $\Omega$. 
 
-There is a non-linear relationship between $k$ and the model accuracy, a trade off between specific accuracy (bias) and overall generalization (variance). A small value of $k$ will generate too few fuzzy sets to represent $Y$ correctly, making the model $\model$ underfit by producing a gross generalization with simplistic patterns. A high value of $k$ will generate too much fuzzy sets, exceeding the needed to represent $Y$ and makes the model $\model$ overfit by reproducing excessive specificities and small noisy fluctuations. The optimal number of $k$ must be optimized for each problem, balancing the accuracy and the model parsimony, since this last value affects the computational performance as the number of parameters grows.
+There is a non-linear relationship between $k$ and the model accuracy, a trade off between specific accuracy (bias) and overall generalization (variance). A small value of $k$ will generate too few fuzzy sets to represent $Y$ correctly, making the model $\model$ underfit by producing a gross generalization with simplistic patterns. A high value of $k$ will generate too much fuzzy sets, exceeding the needed to represent $Y$ and makeing the model $\model$ overfit by reproducing excessive specificities and small noisy fluctuations. The optimal number of $k$ must be optimized for each problem, balancing the accuracy and the model parsimony, since this last value affects the computational performance as the number of parameters grows.
 
-The impact of the UoD partitining can also be seen by other perspectives: the model human readability and model explainability. In his seminal work, \cite{Miller1956} stated that the human being, on average, can learn $7 \pm 2$ concepts. In other words, the linguistic variable $\ulvar$ to be reasonable for human understanding must have around this number of fuzzy sets. But this, depending on the range of $U$ and the behavior of $Y$, may be a very small number of partitions. In other hand, the explainability does not depend on how much humans can learn from $\model$ but how easily the forecastings produced can be explained, as a white box model. In this last case the type of the knowledge representation of $\model$ has greater impact than the number of fuzzy sets in $\ulvar$. 
+The impact of the $U$ partitioning can also be seen by other perspectives: the model human readability and model explainability. In his seminal work, \cite{Miller1956} stated that the human being, on average, can learn $7 \pm 2$ concepts. In other words, the linguistic variable $\ulvar$ to be reasonable for human understanding must have around this number of fuzzy sets. But this, depending on the range of $U$ and the behavior of $Y$, may be a very small number of partitions. Otherwise, the explainability does not depend on how much humans can learn from $\model$ but how easily the forecastings produced can be explained, as a white box model. In this last case the type of the knowledge representation of $\model$ has greater impact than the number of fuzzy sets in $\ulvar$. 
 
-An study of the linguistic characterization of time series can be found in \cite{Novak2016}. using Fuzzy Transform (\cite{Perfilieva2006}) to generate linguistic summaries of time series. In \cite{Novak2016a} can be found a study on mining information from fuzzyfied linguistic time series, and present the impacts of fuzzyfication on the knowledge extraction.
+A study of the linguistic characterization of time series can be found in \cite{Novak2016}. using Fuzzy Transform (\cite{Perfilieva2006}) to generate linguistic summaries of time series. A study on mining information from fuzzyfied linguistic time series can be found in \cite{Novak2016a}, where are presented the impacts of fuzzyfication on the knowledge extraction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -181,15 +181,15 @@ An study of the linguistic characterization of time series can be found in \cite
 \subsection{The partitioning method - $\Pi$}\index{UoD Partitioning}\index{Partitioning Schemes}
 \label{sec:fts_partitioningmethod}
 
-The partitioning method will determine, for each fuzzy set,  their length, midpoints and bounds and also have impact on accuracy. The simplest partitioning scheme -  the division of the data range in $k$ equal length intervals - is called Grid Partitioning and was proposed in \cite{song1993fuzzy}. \index{Grid Partitioning} In the Grid Partitioning, $U$ is scliced in $k+2$ even intervals $u_1, u_2, ..., u_k$ whose midpoints are $c_1, c_2, ..., c_k$. Then with this $k$ intervals are defined  $k$  overlapped fuzzy sets $A_1,A_2,...,A_k$ using triangular membership functions whose parameters are $c_{j-1},c_j,c_{j+1}$ for each $j = 2..k-1$. 
+The partitioning method will determine, for each fuzzy set,  their length, midpoints and bounds and also have impact on accuracy. The simplest partitioning scheme -- the division of the data range in $k$ equal length intervals -- is called Grid Partitioning and was proposed in \cite{song1993fuzzy}. \index{Grid Partitioning} In the Grid Partitioning, $U$ is divided in $k+2$ even intervals $u_1, u_2, ..., u_k$ whose midpoints are $c_1, c_2, ..., c_k$. Then with these $k$ intervals $k$ overlapped fuzzy sets $A_1,A_2,...,A_k$ are defined using triangular membership functions whose parameters are $c_{j-1},c_j,c_{j+1}$ for each $j = 2..k-1$. 
 
-Some works use simple heuristics to define $k$ or even the lengths of the fuzzy sets. \cite{huarng2001effective}\index{Huarng Partitioning}\index{Heuristic Partitioning} use a grid partitioning approach, but it proposes an empirical method to find the ideal number of partition lengths according to the magnitude of $U$, in a work that was the first to deeply discuss the impact of the partitioning on FTS forecast accuracy. Several other works used this or define other simple heuristic for $U$ partitioning, as instance \cite{Chang1997, huarng2005type, Rubio2016, Cheng2018}.
+Some works use simple heuristics to define $k$ or even the lengths of the fuzzy sets. \cite{huarng2001effective}\index{Huarng Partitioning}\index{Heuristic Partitioning} use a grid partitioning approach, but it proposes an empirical method to find the ideal number of partition lengths according to the magnitude of $U$, in a work that was the first to deeply discuss the impact of the partitioning on FTS forecast accuracy. Several other works used this or define other simple heuristic for $U$ partitioning, see for instance \cite{Chang1997, huarng2005type, Rubio2016, Cheng2018}.
 
-$U$ partitionings were the fuzzy sets have unequal lengths are also present in literature. \cite{Cheng2006a} employs a fixed value of $k$ but the entropy of data that define the best midpoints for the fuzzy sets, which also use trapezoidal membership functions. This method is known by Entropy Partitioning and is also employed in \cite{Cheng2008} and \cite{Chen2014}.\index{Entropy Partitioning} The statistical approaches yet count with \cite{Ismail2015}, which determine the length of the fuzzy sets proposing a method based on data quantiles, and \cite{Yang2017} which use a Chi-Square distribution do identify the fuzzy sets number and lengths.
+$U$ partitionings where the fuzzy sets have unequal lengths are also present in the literature. \cite{Cheng2006a} employ a fixed value of $k$ but the entropy of data that defines the best midpoints for the fuzzy sets, which also use trapezoidal membership functions. This method is known by Entropy Partitioning and is also employed in \cite{Cheng2008} and \cite{Chen2014}.\index{Entropy Partitioning} The statistical approaches yet count with \cite{Ismail2015}, which determine the length of the fuzzy sets proposing a method based on data quantiles, and \cite{Yang2017} which use a Chi-Square distribution do identify the fuzzy sets number and lengths.
 
 Clustering techniques are used in several works, as Fuzzy C-Means in \cite{Li2008b, Askari2015, Bas2015, Sun2015, Yolcu2017}, Fuzzy K-Medoids in \cite{Dincer2018}, Self Organizing Maps in \cite{Bahrepour2011}, and other methods as in \cite{Saberi2017} and \cite{Bose2017}.\index{FCM Partitioning}\index{Cluster Partitioning}
 
-The use of metaheuristics, especially of nature-inspired optimization approaches, is spread on literature. Particle Swarm Optimization is used on \cite{Davari2009, Kuo2009, Hsu2010, Huang2011, Zhang2018a}, Genetic Algorithms in \cite{Chen2006a, Enayatifar2013, Zhang2018}, and other less known methods as Harmony Search in \cite{Talarposhti2016a, Jiang2017} and Imperialist Competitive in \cite{Sadaei2017}. \index{Evolutionary Partitioning}\index{Metaheuristic Partitioning}\index{PSO Partitioning}
+The use of metaheuristics, especially of nature-inspired optimization approaches, is also spread in the literature. Particle Swarm Optimization is used by \cite{Davari2009, Kuo2009, Hsu2010, Huang2011a, Zhang2018a}, Genetic Algorithms in \cite{Chen2006a, Enayatifar2013, Zhang2018}, and other less known methods such as Harmony Search in \cite{Talarposhti2016a, Jiang2017} and Imperialist Competitive in \cite{Sadaei2017}. \index{Evolutionary Partitioning}\index{Metaheuristic Partitioning}\index{PSO Partitioning}
 
 \begin{figure}
     \centering
@@ -198,9 +198,9 @@ The use of metaheuristics, especially of nature-inspired optimization approaches
     \label{fig:partitioners}
 \end{figure}
 
-A sample of different partitioning schemes on the same data can be seen in Figure \ref{fig:partitioners}. The partitioning method have influence on the model accuracy, parsimony and readability but its computational cost must be also considered. The Grid Partitioning give a uniform distribution of the fuzzy sets over $U$ but, if in one hand it is computationally cheaper, in other hand it may not represent the importance of some data regions accordingly. It is probable that some specific regions of $U$ have more variance than others, depending on $Y$ behavior, and some regions may be better represented having more fuzzy sets than others. It also can not be denied that some approaches are computationally expensive, as the clustering and metaheuristics ones, and in Big Data scenarios this may be prohibitive. Despite the fact the the Grid Partitioning should be always the first approach to choose, due its simplicity and small cost, the fine tuning of FTS models can not exclude more sophisticated methods.
+A sample of different partitioning schemes on the same data can be seen in Figure \ref{fig:partitioners}. The partitioning method has influence on the model accuracy, parsimony and readability but its computational cost must be also considered. The Grid Partitioning gives a uniform distribution of the fuzzy sets over $U$ but, if in one hand it is computationally cheaper, however it may not represent the importance of some data regions accordingly. It is probable that some specific regions of $U$ have more variance than others, depending on $Y$ behavior, and some regions may be better represented having more fuzzy sets than others. It also can not be denied that some approaches are computationally expensive, as the clustering and metaheuristics ones, and in Big Data scenarios this may be prohibitive. Despite the fact that the Grid Partitioning should be always the first approach to start with, due to its simplicity and small cost, the fine tuning of FTS models can not exclude more sophisticated methods.
 
-Once the linguistic variable $\ulvar$ is created, the fuzzyfication process is able to start. This process and its parameters are discussed in the next section.
+Once the linguistic variable $\ulvar$ is created, the fuzzyfication process can be started. This process and its parameters are discussed in the next section.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,7 +212,7 @@ Once the linguistic variable $\ulvar$ is created, the fuzzyfication process is a
 
 This process aims to transform the crisp numerical time series $Y$ into a linguistic time series $F$, also known as fuzzy time series. There are few, but important, variations of the fuzzyfication method.
 
-The initial FTS methods, for instance \cite{song1993fuzzy}, \cite{chen1996forecasting} and \cite{yu2005weighted}, only considered on fuzzyfication process one fuzzy set, by instance $y(t) \in Y$, the one with the greatest membership grade. More specifically:
+The initial FTS methods, for instance \cite{song1993fuzzy}, \cite{chen1996forecasting} and \cite{yu2005weighted}, only considered one fuzzy set in fuzzyfication process, for instance $y(t) \in Y$, the one with the greatest membership grade. More specifically:
 
 \begin{equation}
 f(t) = \ufset\; |\; \mu_{\ufset}(y(t)) = \max\{ \mu_{A_1}(y(t)), \ldots, \mu_{A_k}(y(t)) \}    
@@ -220,9 +220,9 @@ f(t) = \ufset\; |\; \mu_{\ufset}(y(t)) = \max\{ \mu_{A_1}(y(t)), \ldots, \mu_{A_
 \end{equation}
 
 \index{overfit}\index{underfit}
-If this method help to control overfit, reducing the number of spurious patterns generated by low membership grades fuzzy sets, in other hand it can also contribute to underfit the learning by eliminating fuzzy sets which are very close to the maximum grade. It is possible to deduce that much information can be lost when several minor membership grades are discarded.
+This method helps to control overfit, reducing the number of spurious patterns generated by low membership grades fuzzy sets. However, it can also contribute to underfit the learning by eliminating fuzzy sets which are very close to the maximum grade. It is possible to deduce that some relevant information can be lost when several minor membership grades are discarded.
 
-The opposite method is the holistic fuzzyfication where all the membership grades, despite their magnitude, are considered. The fuzzyfied value $f(t)$ is the the vector of the $y(t)$ membership grades with respect to each $\ufset \in \ulvar$:
+A contrasting method is the holistic fuzzyfication, where all the membership grades, despite their magnitude, are considered. The fuzzyfied value $f(t)$ is the the vector of the $y(t)$ membership grades with respect to each $\ufset \in \ulvar$:
 
 \begin{equation}
 f(t) = [\mu_{A_1}(y(t)), \ldots, \mu_{A_k}(y(t)) ]    
@@ -230,17 +230,16 @@ f(t) = [\mu_{A_1}(y(t)), \ldots, \mu_{A_k}(y(t)) ]
 \end{equation}
 
 \index{Alpha cut}\index{$\alpha$-cut}
-As discussed before, this method can lead to the learning overfit, because even very small membership grades, which can be considered insignificant for that fuzzy set, are considered. The intermediate approach make use of the $\alpha$-cut hyper-parameter.
-The $\alpha$-cut represents the minimal value of the membership grade that will be accepted. Membership values below the $\alpha$-cut means that value do not belong to that fuzzy set. 
+The holistic fuzzyfication can help to the learning overfit, because even very small membership grades, which can be considered insignificant for that fuzzy set, are considered. An intermediate approach can be achieved by using the $\alpha$-cut hyper-parameter. The $\alpha$-cut represents the minimal value of the membership grade that will be accepted in fuzzyfication, while membership values below the $\alpha$-cut will not be considered. 
 
 \begin{equation}
 f(t) = \ufset\; |\; \mu_{\ufset}(y(t)) \geq \alpha \;\; \forall \ufset \in \ulvar    
 \label{eqn:fuzzyfication_alpha}
 \end{equation}
 
-The $\alpha$-cut make the sensibility of the fuzzyfication process adjustable and the method user can control it, unlike the maximum membership and the holistic methods. The fuzzyfication method is significant in the search of the training best fit, controlling the accuracy and models parsimony. Particularly, the method of \cite{CarvalhoJr2017} make a explicit use of the $\alpha$-cut parameter and make a comprehensive study of its impact on method accuracy.
+The $\alpha$-cut makes the sensibility of the fuzzyfication process adjustable and the user can control it, unlike the maximum membership and the holistic methods. The fuzzyfication method is significant in the search of the training best fit, controlling the accuracy and models parsimony. Particularly, the method of \cite{CarvalhoJr2017} makes an explicit use of the $\alpha$-cut parameter and conduct a comprehensive study of its impact on the method accuracy.
 
-Once the crisp data $Y$ is converted on the fuzzy time series $F$ the process of knowledge extraction and representation are ready to start. This process and its variations are discussed in next section.
+Once the crisp data $Y$ is converted to the fuzzy time series $F$ the process of knowledge extraction and representation is ready to start. This process and its variations are discussed in the next section.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
