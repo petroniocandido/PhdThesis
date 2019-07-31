@@ -4,9 +4,9 @@
 
 \newepigraph{Water is the softest thing, yet it can penetrate mountains and earth. This shows clearly the principle of softness overcoming hardness.}{Lao Tsu}
 
-In this chapter proposes the basic  Probabilistic Weighted Fuzzy Time Series (PWFTS) method, a new FTS method for point, interval and probabilistic forecasting for one to many steps ahead. The PWFTS method aims to produce forecasts by dealing with two sources of uncertainty: fuzzy measurements and stochastic behavior. The fuzziness is induced for a data reduction purpose, in a process that reminds a simple bin discretization. The stochastic behavior is deduced by the  frequentist approach over the previous fuzzyfication. 
+This chapter proposes the Probabilistic Weighted Fuzzy Time Series (PWFTS) method, a new FTS method for point, interval and probabilistic forecasting for one to many steps ahead. The PWFTS method aims to produce forecasts by dealing with two sources of uncertainty: fuzzy measurements and stochastic behavior. The fuzziness is induced for a data reduction purpose, in a process that reminds a simple bin discretization. The stochastic behavior is deduced by the  frequentist approach over the previous fuzzyfication. 
 
-Regarding to Chapter \ref{chap:review_fts} fuzzy time series architectural chooses, the PWFTS method is a  time invariant and heuristic method to produce probabilistic weighted rules model $\model$. This method embodied all explored hyperparameters but their definition involves more complex optimization methods, that will be explored in Chapter \ref{chap:scalability}. Default values were defined for hyperparameters, except $k$ and $\Omega$ which must be determined by the user, as shown in Table \ref{tab:pwfts_hyperparam}. These values, however, can be overridden by user. 
+Regarding to fuzzy time series architectural design, discussed in Chapter \ref{chap:review_fts}, the PWFTS method is a  time invariant and heuristic method to produce probabilistic weighted rules model $\model$. This method embodied all explored hyperparameters but their definition involves more complex optimization methods, which will be explored in Chapter \ref{chap:scalability}. Default values were defined for hyperparameters, except $k$ and $\Omega$ which must be determined by the user, as shown in Table \ref{tab:pwfts_hyperparam}. These values, however, can be overridden by user. 
 
 \begin{table}[htb] 
     \centering
@@ -29,25 +29,23 @@ The option for a weighted rule knowledge model has the objective to help in the 
 
 The model rules (the Probabilistic Weighted FLRG's) describe the most probable future behavior (the $RHS$ - right hand side of the rule) given some past behavior (the $LHS$ - left hand side of the rule). For a given data sample there will be  many applicable rules with different activations (the membership weights) and all of them are taken into account.
 
-The conception of this method mix the statistical approach of time series forecasting with the FTS techniques. Given some stochastic process $Y$, their best predictor is given by the conditional expectation $\mathbb{E}[y(t+1)\ |\ y(t),...]$. The FTS methods, especially that ones based on \cite{chen1996forecasting}, try to represent the behavior of $Y$ process by splitting their UoD in overlapping fuzzy sets, fuzzyfying the crisp data $Y$ to transform it on the fuzzy time series $F$ and identifying the sequential patterns.  The fuzzy sets are used to define zones, or fuzzy states, at the universe of discourse which have a common set of rules. That's what FLRGs really are: rules that describe sequential patterns. 
+The conception of this method combines the statistical approach of time series forecasting with the FTS techniques. Given some stochastic process $Y$, their best predictor is given by the conditional expectation $\mathbb{E}[y(t+1)\ |\ y(t),...]$. The FTS methods, especially those ones based on \cite{chen1996forecasting}, try to represent the behavior of $Y$ process by splitting their UoD in overlapping fuzzy sets, fuzzyfying the crisp data $Y$ to transform it on the fuzzy time series $F$ and identifying the sequential patterns.  The fuzzy sets are used to define zones, or fuzzy states, at the universe of discourse which have a common set of rules. That's what FLRGs really are: rules that describe sequential patterns. 
 
-Then, for a given FLRG with form $LHS \rightarrow RHS$, where $F(t-1) = LHS$ and $F(t) \in RHS$ our best predictor can be rewritten from $\mathbb{E}[F(t+1)\ |\ F(t),...]$ to $\mathbb{E}[RHS|LHS]$.  The weights assigned to these rules are the frequentist probabilities of the fuzzy sets, measured during the training phase. 
+For a given FLRG with the form $LHS \rightarrow RHS$, where $F(t-1) = LHS$ and $F(t) \in RHS$ our best predictor can be rewritten from $\mathbb{E}[F(t+1)\ |\ F(t),...]$ to $\mathbb{E}[RHS|LHS]$.  The weights assigned to these rules are the frequentist probabilities of the fuzzy sets, measured during the training phase. 
 
-Regarding the concepts introduced at Chapter \ref{chap:review_probforecasting}, the PWFLRG can be seen as a representation of a discrete empirical probability distribution.  The $RHS$ weights represent the conditional probability $P(A_i\ |\ LHS)$, $\forall A_i \in RHS$ and the $LHS$ weights represents the unconditional \textit{a priori} probabilities of the fuzzy sets. With the midpoints of each fuzzy set and their probabilities is possible then to compute the conditional expectation as a forecast for $F(t+1)$.
+Regarding the concepts introduced in Chapter \ref{chap:review_probforecasting}, the PWFTPG can be seen as a representation of a discrete empirical probability distribution.  The $RHS$ weights represent the conditional probability $P(A_i\ |\ LHS)$, $\forall A_i \in RHS$ and the $LHS$ weights represent the unconditional \textit{a priori} probabilities of the fuzzy sets. With the midpoints of each fuzzy set and their probabilities it is possible then to compute the conditional expectation as a forecast for $F(t+1)$.
 
-In next sections this mechanism is detailed, starting in Section \ref{sec:pwfts_empiricalprob} which discuss the basics of the fuzzy empirical probabilities. In Section \ref{sec:pwfts_training} the training procedure for first order model is presented, and on Section \ref{sec:pwfts_forecasting} the one step ahead method for probabilistic, interval and point forecasting is presented. Section \ref{sec:pwfts_extensions} presents extensions for high-order models and many steps ahead forecasting. On Section \ref{sec:pwfts_experiments} computational experiments are performed to asses the performance of the model and finally, on Section \ref{sec:pwfts_conclusion}, the main features of the proposed method are synthesized.  
+In the next sections this mechanism is detailed, starting in Section \ref{sec:pwfts_empiricalprob} which discusses the basics of the fuzzy empirical probabilities. In Section \ref{sec:pwfts_training} the training procedure for first order model is presented, and in Section \ref{sec:pwfts_forecasting} the one step ahead method for probabilistic, interval and point forecasting is presented. Section \ref{sec:pwfts_extensions} presents extensions for high-order models and many steps ahead forecasting. In Section \ref{sec:pwfts_experiments} computational experiments are performed to assess the performance of the model and finally, in Section \ref{sec:pwfts_conclusion}, the main features of the proposed method are summarized.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Fuzzy Empirical Probabilities}
 \label{sec:pwfts_empiricalprob}
 
-%Given a univariate time series $Y(t) = \{y(0), y(1), ..., y(n)\}$, where $y(i) \in \mathbb{R}\ \forall i \in t$, $t \in [0, n]$ is the time index and the Universe of Discourse is defined by $U = [\min Y(t),\; \max Y(t)]$. Over $U$ is defined a linguistic variable $F$, with $p$ linguistic terms $A_i$ represented by overlapping fuzzy sets represented by their membership functions $\mu_{A_i}:\mathbb{R} \rightarrow [0,1]$.
+The core concept of PWFTS is the fuzzy empirical probability, used to compute the weights of the model, whose intuition is discussed in this section. The initial Zadeh's proposition of fuzzy probability, $P(A) = E[\mu_A]$, proposed in \cite{Zadeh1968}, demands the previous knowledge of the probability distribution over the universe of discourse. Since this distribution for $Y$ is unknown, an empirical distribution must take place. The simplest definition of empirical probability is the relative frequency of a discrete value or of a range of continuous values. Fuzzy Theory provides a different look at traditional Probability Theory because it affects the way the events are counted. 
 
-%A Fuzzy Time Series $F(t)$ is a transformation of $Y(t)$ using the linguistic variable $F$. $F(t) = \{ f(0), f(1),..., f(n) \}$ where $f(i) = \{ \mu_{A_0}(y(i)), ..., \mu_{A_p}(y(i)) \}\ \forall i \in t$. $F(t)$ can also be represented by the linguistic values instead of the membership values, just by defining $f(i) = \{ A_k |  \mu_{A_k}(y(i)) > 0 \}\ \forall k \in [0,p]\ \forall i \in t$.
+On fuzzy sets the notion of event is more complex because the same value can belong to several sets with different degrees of membership, as shown in Figure \ref{fig:pwfts_fuzzyfrequency}. In that case, instead of accounting the integral (i.e. unary) occurrence of the event, their partial occurrence is accounted using the membership value. This method is known by fuzzy frequency, and was firstly  developed in \cite{Luo2000}. A related formulation can be found in \cite{Perfilieva2006}, with the concept of F-Transform, which decomposes the original domain of the time series into fuzzy frequencies over the fuzzy sets. This decomposition can also recreate the time series using the inverse transform. 
 
-The core concept of PWFTS is the fuzzy empirical probability, used to compute the weights of the model, whose intuition is discussed in this section. The initial Zadeh's proposition of fuzzy probability, $P(A) = E[\mu_A]$, proposed in \cite{Zadeh1968}, demands the previous knowledge of the probability distribution over the universe of discourse. Once this distribution for $Y$ is unknown, an empirical distribution must take place. The simplest definition of empirical probability is the relative frequency of a discrete value or of a range of continuous values. Fuzzy Theory provides a different look at traditional Probability Theory because it affects the way the events are counted. On fuzzy sets the notion of event is more complex because the same value can belong to several sets with different degrees of membership, as shown in Figure \ref{fig:pwfts_fuzzyfrequency}. In that case, instead of accounting the integral (i.e. unary) occurrence of the event, their partial occurrence is accounted as the membership value. This method is known by fuzzy frequency, and was firstly  developed in \cite{Luo2000}. A related formulation can be found in \cite{Perfilieva2006}, with the concept of F-Transform, which decomposes the original domain of the time series into fuzzy frequencies over the fuzzy sets. This decomposition can also recreate the time series using the inverse transform. 
-
-Given the sample space $U$ and the fuzzy sets $\ulvar$ over $U$, the partition function $Z_{\ufset}$, $\forall \ufset \in \ulvar$, is the integral of the membership function $\mu_{\ufset}$ over the sample space $U$, such that $Z_{\ufset} = \int_U \mu_{\ufset}(y) dy$ or the discrete approximation $Z_{\ufset} = \sum_{y \in U} \mu_{\ufset}(y)$. With the $Z_{\ufset}$ it is possible to approximate the empirical probability of a fuzzy set $\ufset \in \ulvar$ as the sum of its memberships $\mu_{\ufset}(y)$, $\forall y \in U$ divided by the sum of the partition functions $Z_{\ufset}$ of all fuzzy sets $\ufset \in \ulvar$, as presented in Equation \eqref{eqn:prob_conj_fuzzy}. 
+Given the sample space $U$ and the fuzzy sets $\ulvar$ over $U$, the partition function $Z_{\ufset}$, $\forall \ufset \in \ulvar$, is the integral of the membership function $\mu_{\ufset}$ over the sample space $U$, such that $Z_{\ufset} = \int_U \mu_{\ufset}(y) dy$ or the discrete approximation $Z_{\ufset} = \sum_{y \in U} \mu_{\ufset}(y)$. With $Z_{\ufset}$ it is possible to approximate the empirical probability of a fuzzy set $\ufset \in \ulvar$ as the sum of its memberships $\mu_{\ufset}(y)$, $\forall y \in U$ divided by the sum of the partition functions $Z_{\ufset}$ of all fuzzy sets $\ufset \in \ulvar$, as presented in Equation \eqref{eqn:prob_conj_fuzzy}. 
 
 \begin{equation}
 P(\ufset) = \frac{\sum_{y \in U} \mu_{\ufset}(y)}{\sum_{\ufset \in \ulvar}Z_{\ufset}} 
@@ -82,7 +80,7 @@ The advantage of this approach is the convenience to obtain $P(\ufset)$ from a s
 \section{PWFTS Training procedure}
 \label{sec:pwfts_training}
 
-The training procedure is a seven step method that learn the temporal dynamics of the time series training data $Y$ and represent it on a fuzzy-probabilistic model, namely the Probabilistic Weighted Fuzzy Temporal Rule - PWFTPG. The steps of the method are listed below :
+The training procedure is a seven step method to learn the temporal dynamics of the time series training data $Y$ and represent it on a fuzzy-probabilistic model, namely the Probabilistic Weighted Fuzzy Temporal Pattern Group - PWFTPG. The steps of the method are listed below :
 
 \begin{enumerate}
 \item[Step 1] \textit{Define the universe of discourse}: Define $U$ as the sample space of in-sample training data $Y$, such that $U = [\min(Y) - D_1, \max(Y)+D_2]$, where $[\min(Y), \max(Y)]$ is the range of in-sample data and $D_1$ and $D_2$ are numbers used to extrapolate this range, for instance $D_1 = 0.1\cdot\min(Y)$ and $D_2 = 0.1\cdot\max(Y)$;
@@ -97,12 +95,12 @@ The training procedure is a seven step method that learn the temporal dynamics o
 f(t) = \left[\mu_{A_1}(y(t)),\ \mu_{A_2}(y(t)),\ \ldots,\ \mu_{A_k}(y(t)) \right]
 \end{equation}
 
-\item[Step 5] \textit{Generate the FTP set}: The Fuzzy Temporal Pattern - FTP\footnote{This nomenclature is adopted in replacement of Fuzzy Logical Relationships (FLR) used in \cite{song1993fuzzy}, to avoid misunderstandings with the terms ``logical" and ``relationship" with their classical meanings in fuzzy theory literature.} is a fuzzy rule with format $A_i \rightarrow A_k$ that indicates a temporal succession where the precedent (or the Left Hand Side - LHS) is $A_i \in f(t)$ and the consequent (or the Right Hand Side - RHS) is $A_k \in f(t+1)$, for each possible pair of $A_i \times A_k$ of membership values greater than zero, i.e.,  $\{A_i \rightarrow A_k\}$ $\forall A_i \in f(t)\ |\ \mu_{A_i}(y(t)) > 0$ and $\forall A_k \in f(t+1)\ |\ \mu_{A_k}(y(t+1)) > 0 $. . Therefore, $A_i \rightarrow A_k$ can be read as ``IF $y(t)$ is $A_i$ THEN $y(t+1)$ is $A_k$".
+\item[Step 5] \textit{Generate the FTP set}: The Fuzzy Temporal Pattern - FTP\footnote{This nomenclature is adopted in replacement of Fuzzy Logical Relationships (FLR) used in \cite{song1993fuzzy}, to avoid misunderstandings with the terms ``logical" and ``relationship" with their classical meanings in fuzzy theory literature.} is a fuzzy rule with format $A_i \rightarrow A_k$ that indicates a temporal succession where the precedent (or the Left Hand Side - LHS) is $A_i \in f(t)$ and the consequent (or the Right Hand Side - RHS) is $A_k \in f(t+1)$, for each possible pair of $A_i \times A_k$ of membership values greater than zero, i.e.,  $\{A_i \rightarrow A_k\}$ $\forall A_i \in f(t)\ |\ \mu_{A_i}(y(t)) > 0$ and $\forall A_k \in f(t+1)\ |\ \mu_{A_k}(y(t+1)) > 0 $. . Therefore, $A_i \rightarrow A_k$ can be read as ``IF $y(t)$ is $A_i$ THEN $y(t+1)$ is $A_k$''.
 As each $f(t) \in F$ is a sparse $k$-vector of membership values, there will be many possible fuzzy sets combinations of two sequential vectors $f(t)$ and $f(t+1)$. Then for each sequential pair on $F$ possibly more than one FTP will be generated;
 
 \item[Step 6] \textit{Generate the FTPG set}: A Fuzzy Temporal Pattern Group - FTPG\footnote{In replacement of Fuzzy Logical Relationship Group - FLRG used in \cite{Chen2006}.} represents the set of all FTPs with the same LHS and the union of their RHS, with the format $A_i \rightarrow A_k, A_j,...$, where the LHS is $f(t) = A_i$ and the RHS is $f(t+1) \in \{A_k, A_j,...\}$. Each FTPG can be understood as the set of possibilities which may happen at time $t+1$ (the consequent) when a certain set $A_i$ is identified at time $t$ (the precedent).
 
-\item[Step 7] \textit{Calculate empirical probabilities}: The Probabilistic Weighted FTPG - PWFTPG adds weights on the LHS and the RHS that measure their fuzzy empirical probabilities. Each PWFTPG has the format $\pi_j \cdot A_j \rightarrow  w_{j0} \cdot A_0, ..., w_{jk} \cdot A_k$ for $j = 1,\ldots, k$. The set of all  PWFTPG, shown in \eqref{eqn:ftpg}, form the model $\model$. Its size depends on the number of partitions $k$, and it could be represented in matrix form but the weights $w_{ij}$ form a very sparse matrix, which justifies using optimized data structures for its representation.
+\item[Step 7] \textit{Calculate empirical probabilities}: The Probabilistic Weighted FTPG - PWFTPG adds weights on the LHS and the RHS that measure their fuzzy empirical probabilities. Each PWFTPG has the format $\pi_j \cdot A_j \rightarrow  w_{j0} \cdot A_0, ..., w_{jk} \cdot A_k$ for $j = 1,\ldots, k$. The set of all  PWFTPG, shown in Equation \eqref{eqn:ftpg}, form the model $\model$. Its size depends on the number of partitions $k$, and it could be represented in matrix form but the weights $w_{ij}$ form a very sparse matrix, which justifies using optimized data structures for its representation.
 
 \begin{equation}
 \begin{array}{rcl}
@@ -113,14 +111,14 @@ As each $f(t) \in F$ is a sparse $k$-vector of membership values, there will be 
 \label{eqn:ftpg}
 \end{equation}
 
-Each weight $\pi_i$ is associated with the fuzzy set in the LHS of the rule, and it is the normalized sum of all LHS memberships of all FTPs where the LHS is the fuzzy set $\ufset$, as in \ref{eqn:prob_conj_fuzzy}. $\pi_i$ can be understood as the empirical \textit{a priori} probability of the fuzzy set $\ufset$ independent of time, or $P(\ufset)$, such that the condition of Equation \ref{eqn:apriori_condition} must be satisfied for the PWFTPG set in \ref{eqn:ftpg}.
+Each weight $\pi_j$ is associated with the fuzzy set in the LHS of the rule, and it is the normalized sum of all LHS memberships of all FTPs where the LHS is the fuzzy set $\ufset$, as in Equation \eqref{eqn:prob_conj_fuzzy}. $\pi_j$ can be understood as the empirical \textit{a priori} probability of the fuzzy set $\ufset$ independent of time, or $P(\ufset)$, such that the condition of Equation \eqref{eqn:apriori_condition} must be satisfied for the PWFTPG set in Equation \eqref{eqn:ftpg}.
 
 \begin{equation}
-    \sum_{j \in \ulvar} \pi_i = 1
+    \sum_{j \in \ulvar} \pi_j = 1
     \label{eqn:apriori_condition}
 \end{equation}
 
-Each weight $w_{ji}$ is associated with a fuzzy set $\ufset$ on the RHS of the FTP whose the LHS is $\ufset$, and it is the normalized sum of all RHS memberships of all FTPs where $LHS = \ufset$ and $RHS = A_i$. Therefore, the weight $w_{ji}$ can be understood as the empirical conditional probability of the fuzzy set $A_i$ on time $t+1$ when the fuzzy set $\ufset$ is identified on time $t$, or $P(A_i^{t+1}\ |\ \ufset^t)$, such that the condition of Equation \ref{eqn:aposteriori_condition} must be satisfied for each $\ufset$ in LHS.
+Each weight $w_{ji}$ is associated with a fuzzy set $A_i$ on the RHS of the FTP whose the LHS is $\ufset$, and it is the normalized sum of all RHS memberships of all FTPs where $LHS = \ufset$ and $RHS = A_i$. Therefore, the weight $w_{ji}$ can be understood as the empirical conditional probability of the fuzzy set $A_i$ on time $t+1$ when the fuzzy set $\ufset$ is identified on time $t$, or $P(A_i^{t+1}\ |\ \ufset^t)$, such that the condition of Equation \eqref{eqn:aposteriori_condition} must be satisfied for each $\ufset$ in LHS.
 
 \begin{equation}
     \sum_{i \in \ulvar} w_{ji} = 1 \quad \forall \ufset \in \ulvar
@@ -130,15 +128,32 @@ Each weight $w_{ji}$ is associated with a fuzzy set $\ufset$ on the RHS of the F
 
 \end{enumerate}
 
-The outcome of the Training Procedure is the PWFTPG set and it represents the temporal dynamics of the original data. It is an empirical probability distribution of the linguistic variable $A$ over the time series $Y$ with sample space $U$, where each rule contains the unconditional probability $P(\ufset) = \pi_j$ and conditional probabilities $P(A_i | \ufset) = w_{ji}$, for $A_i,A_j \in \ulvar$.
+The outcome of the Training Procedure is the PWFTPG set, whose simple example can be seen in Figure \ref{fig:pwftpg}, and it represents the temporal dynamics of the original data. It is an empirical probability distribution of the linguistic variable $A$ over the time series $Y$ with sample space $U$, where each rule contains the unconditional probability $P(\ufset) = \pi_j$ and conditional probabilities $P(A_i | \ufset) = w_{ji}$, for $A_i,A_j \in \ulvar$, as illustred in Figure \ref{fig:pwfts_rules_firstorder}.
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
-    \includegraphics{figures/pwfts_rules_firstorder.png}
-    \caption{Representation of first order PWFTPG ruleset}
-    \label{fig:pwfts_rules_firstorder}
+    \begin{tabular}{rcrrr}
+        $0.005\cdot A0$ & $\rightarrow$ & $0.4\cdot A0$, & $0.6\cdot A1$ &   \\
+        $0.05\cdot A1$ & $\rightarrow$ & $0.05\cdot A0$, & $0.6\cdot A1$, & $0.35\cdot A2$  \\
+        $0.11\cdot A2$ & $\rightarrow$ & $0.1\cdot A1$&,  $0.6\cdot A2$, & $0.3\cdot A3$  \\
+        $0.14\cdot A3$ & $\rightarrow$ & $0.15\cdot A2$, & $0.6\cdot A3$, & $0.25\cdot A4$  \\
+        $0.15\cdot A4$ & $\rightarrow$ & $0.2\cdot A3$, & $0.55\cdot A4$, & $0.25\cdot A5$  \\
+        $0.1\cdot A5$ & $\rightarrow$ & $0.2\cdot A4$, & $0.55\cdot A5$, & $0.25\cdot A6$  \\
+        $0.12\cdot A6$ & $\rightarrow$ & $0.2\cdot A5$, & $0.6\cdot A6$, & $0.2\cdot A7$  \\
+        $0.09\cdot A7$ & $\rightarrow$ & $0.25\cdot A6$, & $0.55\cdot A7$, & $0.2\cdot A8$  \\
+        $0.06\cdot A8$ & $\rightarrow$ & $0.25\cdot A7$, & $0.6\cdot A8$, & $0.15\cdot A9$  \\
+        $0.02\cdot A9$ & $\rightarrow$ & $0.6\cdot A8$, & $0.4\cdot A9$ &   \\
+    \end{tabular}
+    \caption{Example of PWFTPG model generated with $k=10$ and a random $Y$ dataset}
+    \label{fig:pwftpg}
 \end{figure}
 
+\begin{figure}[htb]
+    \centering
+    \includegraphics{figures/pwfts_rules_firstorder.png}
+    \caption{Probability distributions representation of a PWFTPG model generated with $k=10$ and a random $Y$ dataset, where $\pi_j$ weights represent the LHS empirical probabilities and $w_{ji}$ weights represent the RHS empirical probabilities.}
+    \label{fig:pwfts_rules_firstorder}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Forecasting Procedure}
@@ -152,9 +167,9 @@ The forecasting procedure is a four step procedure listed in this section, which
 \item[Step 3] \textit{Forecast}: The distribution of $f(t+1)$ is given by the RHS sets of each PWFTPG matched;
 \item[Step 4] \textit{Defuzzyfication}: 
 \begin{enumerate}
-    \item If the forecasting type is Probabilistic, then build the probability distribution $P(y(t+1) | y(t))$, $\forall y(t+1) \in U$ applying Equation \ref{eqn:pwfts_probabilistic} presented in Section \ref{sec:pwfts_probabilistic};
-    \item If the forecasting type is Interval, then build the prediction interval $\intvl(t+1)$ applying Equation \ref{eqn:pwfts_interval} presented in Section \ref{sec:pwfts_interval};
-    \item If the forecasting type is Point, then build the crisp estimate $\estimate$ applying Equation \ref{eqn:pwfts_point} presented in Section \ref{sec:pwfts_point};
+    \item If the forecasting type is Probabilistic, then build the probability distribution $P(y(t+1) | y(t))$, $\forall y(t+1) \in U$ applying Equation \eqref{eqn:pwfts_probabilistic} presented in Section \ref{sec:pwfts_probabilistic};
+    \item If the forecasting type is Interval, then build the prediction interval $\intvl(t+1)$ applying Equation \eqref{eqn:pwfts_interval} presented in Section \ref{sec:pwfts_interval};
+    \item If the forecasting type is Point, then build the crisp estimate $\estimate$ applying Equation \eqref{eqn:pwfts_point} presented in Section \ref{sec:pwfts_point};
 \end{enumerate}
 
 \end{enumerate}
@@ -164,18 +179,18 @@ The forecasting procedure is a four step procedure listed in this section, which
 \subsection{Probabilistic Forecasting Procedure}
 \label{sec:pwfts_probabilistic}
 
-A probability distribution $P( y(t+1) | y(t))$, for all  $y(t+1) \in U$ can be computed using a Mixture Distribution approach to transform each PWFTPG probability into a continuous distribution, as described in Equation \ref{eqn:pwfts_probabilistic}.
+A probability distribution $P( y(t+1) | y(t))$, for all  $y(t+1) \in U$ can be computed using a Mixture Distribution approach to transform each PWFTPG probability into a continuous distribution, as described in Equation \eqref{eqn:pwfts_probabilistic}.
 
 A mixture distribution is defined as $P(y) = \sum \omega_j \cdot \pi_j(y)$ where $\pi_j: U \rightarrow [0,1]$ are specific PDFs and $\omega_j$ is a weight associated to each PDF, such that $\sum \omega_j = 1$. Given an input value $y(t) \in Y$ and the PWFTPG set, the probability distribution for each $y(t+1) \in U$ is given by \eqref{eqn:pwfts_probabilistic}, where $\omega_j$ is replaced by the probability $P(y(t)|A_i)$, the LHS probability given the input value, and the distribution $\pi_j$ is replaced by the probability $P(y(t+1)|A_j,A_i)$, $\forall A_j \in RHS$. 
 
-Looking back to Equation \ref{eqn:prob_fuzzy}, it is clear that $\sum_{\ufset \in  \ulvar} P(y(t)|\ufset) < 1$, once $P(A_i)$ is the probability of the whole fuzzy set and $y(t)$ is just a small slice of it, thus it does not comply with the $\sum \omega_j = 1$ restriction of the mixture distribution. To work around this issue $P(y(t)|\ufset)$ is re-scaled using the Equation \ref{eqn:pwfts_rescaling}.
+Looking back to Equation \eqref{eqn:prob_fuzzy}, it is clear that $\sum_{\ufset \in  \ulvar} P(y(t)|\ufset) < 1$, once $P(A_i)$ is the probability of the whole fuzzy set and $y(t)$ is just a small slice of it, thus it does not comply with the $\sum \omega_j = 1$ restriction of the mixture distribution. To work around this issue $P(y(t)|\ufset)$ is re-scaled using Equation \eqref{eqn:pwfts_rescaling}.
 
 \begin{equation}
 \frac{P(y(t)|\ufset)}{\sum_{\ufset \in \ulvar} P(y(t)|\ufset)}      
 \label{eqn:pwfts_rescaling}
 \end{equation}
 
-Therefore, the final conditional probability $P(y(t+1) | y(t))$,  given the linguistic variable $\ulvar$ and a PWFTPG set $\model$, is defined in Equation \ref{eqn:pwfts_probabilistic}. A sample of the PWFTS probabilistic forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_manystep}.
+Therefore, the final conditional probability $P(y(t+1) | y(t))$,  given the linguistic variable $\ulvar$ and a PWFTPG set $\model$, is defined in Equation \eqref{eqn:pwfts_probabilistic} and illustrated in Figure \ref{fig:pwfts_probabilistic_forecasting}. A sample of the PWFTS probabilistic forecasting for one step ahead can be seen in Figures \ref{fig:pwfts_sample_onestep} and \ref{fig:pwfts_sample_onestep_tiled}.
 
 \begin{equation}
 \begin{array}{cl}
@@ -186,9 +201,9 @@ P(y(t+1) | y(t)) &=  \displaystyle \sum_{\ufset \in  \ulvar}\frac{\displaystyle 
 \label{eqn:pwfts_probabilistic}
 \end{equation}
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
-    \includegraphics[width=\textwidth,height=7cm]{figures/pwfts_probabilistic_forecasting.pdf}
+    \includegraphics[width=\textwidth,height=9cm]{figures/pwfts_probabilistic_forecasting.pdf}
     \caption{Representation of PWFTS probabilistic forecasting procedure, where the length of blue boxes represents the magnitude of $\pi_j$ weights and the height of yellow boxes represents the magnitude of $\omega_{ji}$ weights.}
     \label{fig:pwfts_probabilistic_forecasting}
 \end{figure}
@@ -211,14 +226,14 @@ P(y(t+1) | y(t)) &=  \displaystyle \sum_{\ufset \in  \ulvar}\frac{\displaystyle 
 \subsection{Interval forecasting procedure}
 \label{sec:pwfts_interval}
 
-A forecasting interval $\intvl (t+1)$ can be produced from $P( y(t+1) | y(t))$, once it is possible to build a cumulative density function $F( y(t+1) | y(t))$ and use it to construct the quantile function $Q(\tau): [0,1] \rightarrow U$, as shown in Equation \ref{eqn:quantile_function} where $\tau \in [0,1]$ is the desired quantile. Then, for a certain confidence level $\alpha \in [0,1]$, it is possible to compute an inter quantile interval $\mathbb{I}_f = [\underline{Q(\alpha)}, \overline{Q(1 - \alpha)}]$.
+A forecasting interval $\intvl (t+1)$ can be produced from $P( y(t+1) | y(t))$, given that it is possible to build a cumulative density function $F( y(t+1) | y(t))$ and use it to construct the quantile function $Q(\tau): [0,1] \rightarrow U$, as shown in Equation \eqref{eqn:quantile_function} where $\tau \in [0,1]$ is the desired quantile. Then, for a certain confidence level $\alpha \in [0,1]$, it is possible to compute an inter quantile interval $\mathbb{I}_f = [\underline{Q(\alpha)}, \overline{Q(1 - \alpha)}]$.
 
 \begin{equation}
 Q(\tau) = \min\{x \in U\ |\ F(x | y(t)) = \tau \}
 \label{eqn:quantile_function}
 \end{equation}
 
-However, the above method demands the previous computation of the whole probability density function $P( y(t+1) | y(t))$, which is computationally expensive for larger input samples. A simpler and faster heuristic for generating prediction intervals extend the method $W\ifts$, proposed in Section \ref{sec:wifts}, to exploit the structure of the PWFTPG weights. Each PWFTPG will be represented by an interval $\intvl$ whose bounds are the expectation of the bounds of its RHS fuzzy sets, such that $\underline{\ufset}$ and $\overline{\ufset}$ represent the lower and upper bounds of the fuzzy set $\ufset$, and $\mathbb{E}[ \ufset ]$ is the expectation of the PWFTPG where the LHS is $\ufset$. The forecasting interval  $\intvl(t+1)$ then is the sum of these expectations weighted by the $P(y(t)|\ufset)$ probabilities, as presented in Equation \ref{eqn:pwfts_interval}. A sample of the PWFTS interval forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_manystep}.
+However, the above method demands the previous computation of the whole probability density function $P( y(t+1) | y(t))$, which is computationally expensive for larger input samples. A simpler and faster heuristic for generating prediction intervals extends the method $W\ifts$, proposed in Section \ref{sec:wifts}, to exploit the structure of the PWFTPG weights. Each PWFTPG will be represented by an interval $\intvl$ whose bounds are the expectation of the bounds of its RHS fuzzy sets, such that $\underline{\ufset}$ and $\overline{\ufset}$ represent the lower and upper bounds of the fuzzy set $\ufset$, and $\mathbb{E}[ \ufset ]$ is the expectation of the PWFTPG where the LHS is $\ufset$. The forecasting interval  $\intvl(t+1)$ then is the sum of these expectations weighted by the $P(y(t)|\ufset)$ probabilities, as presented in Equation \eqref{eqn:pwfts_interval}. A sample of the PWFTS interval forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_onestep}.
 
 \begin{equation}
 \begin{array}{rcl}
@@ -241,7 +256,7 @@ However, the above method demands the previous computation of the whole probabil
 \subsection{Point forecasting procedure}
 \label{sec:pwfts_point}
 
-To produce point forecasts $\estimate$ from the existing distribution $P(\cdot|y(t))$ it is only needed to apply the expectation operator, such that $\estimate = \mathbb{E}[P(y(t+1)|y(t))]$. This is also computationally expensive due to the computation of $P(y(t+1)|y(t))$. A simple heuristic for producing point forecasts is to compute the expectation $\mathbb{E}[\ufset]$ of each PWFTPG, as presented in Equation \ref{eqn:pwftpg_expectation}, where $mp_i$ is the midpoint of each fuzzy set $A_i \in RHS$. The expectation $\mathbb{E}[\ufset]$ for each PWFTPG $\ufset$ is constant and can be pre-computed. The final forecast $\estimate$ then is the sum of these expectations weighted by $P( y(t) | \ufset)$ probability, as shown in Equation \ref{eqn:pwfts_point}. A sample of the PWFTS point forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_manystep}.
+To produce point forecasts $\estimate$ from the existing distribution $P(\cdot|y(t))$ it is only needed to apply the expectation operator, such that $\estimate = \mathbb{E}[P(y(t+1)|y(t))]$. This is also computationally expensive due to the computation of $P(y(t+1)|y(t))$. A simple heuristic for producing point forecasts is to compute the expectation $\mathbb{E}[\ufset]$ of each PWFTPG, as presented in Equation \eqref{eqn:pwftpg_expectation}, where $mp_i$ is the midpoint of each fuzzy set $A_i \in RHS$. The expectation $\mathbb{E}[\ufset]$ for each PWFTPG $\ufset$ is constant and can be pre-computed. The final forecast $\estimate$ then is the sum of these expectations weighted by $P( y(t) | \ufset)$ probability, as shown in Equation \eqref{eqn:pwfts_point}. A sample of the PWFTS point forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_onestep}.
 
 \begin{equation}
 \mathbb{E}[ \ufset ] = \displaystyle \sum_{i \in \ufset^{RHS}} w_{ji}\cdot mp_i
@@ -269,7 +284,7 @@ The forecasting procedures listed in Section \ref{sec:pwfts_forecasting} are one
 
 The interval procedure requires a few more modifications. Given the input $\intvl(h)$ the same interval forecasting procedure will be executed with inputs $\underline{\intvl(h)}$ and $\overline{\intvl(h)}$ producing two new intervals $\underline{\intvl(h+1)}$ and $\overline{\intvl(h+1)}$. Then the final forecasting interval will be $\intvl(h+1) = [\min\{\underline{\intvl(h+1)}\}, \max\{\overline{\intvl(h+1)}\}]$. 
 
-Finally, the probabilistic forecasting for $P(y(h+1)|y(h))$ given the input will change to  \ref{eqn:extension_probabilistic}, instead of \ref{eqn:pwfts_probabilistic}. This equation replaces $P(y(h) | \ufset)$ for the previous probability distribution $P(y(h)|y(h-1))$. A sample of the PWFTS many steps ahead forecasting can be seen in Figure \ref{fig:pwfts_sample_manystep}.
+Finally, the probabilistic forecasting for $P(y(h+1)|y(h))$ given the input will change to  Equation \eqref{eqn:extension_probabilistic}, instead of Equation \eqref{eqn:pwfts_probabilistic}. This equation replaces $P(y(h) | \ufset)$ for the previous probability distribution $P(y(h)|y(h-1))$, as illustrated in Figure \ref{fig:pwfts_probabilistic_manysteps}. A sample of the PWFTS many steps ahead forecasting can be seen in Figure \ref{fig:pwfts_sample_manystep}.
 
 %\begin{equation}
 %\medmath{
@@ -282,10 +297,10 @@ P(y(h+1) | y(h))  = \displaystyle \sum_{\ufset \in \ulvar} \frac{ P(y(h)| y(h-1)
 \label{eqn:extension_probabilistic}
 \end{equation}
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/pwfts_probabilistic_manysteps.pdf}
-    \caption{Caption}
+    \caption{Many steps ahead probabilistic forecasting process}
     \label{fig:pwfts_probabilistic_manysteps}
 \end{figure}
  
@@ -309,18 +324,18 @@ P(y(h+1) | y(h))  = \displaystyle \sum_{\ufset \in \ulvar} \frac{ P(y(h)| y(h-1)
 
 The PWFTS method described in Section \ref{sec:pwfts_training} is a first order method, i.e., it just needs $y(t)$ to forecast $\estimate$, while high order models use $\Omega$ time lags, whose indexes are stored on vector $L$. To extend the standard approach to high order  modification in Step 5 of the Training procedure is needed to adapt the FTPs and FTPGs to store $\Omega$ fuzzy sets on their LHS.
 
-Once the fuzzyfied value $f(t)$ has multiple fuzzy sets (with different membership values greater than $alpha$-cut), a set of fuzzyfied values $f(t-L(\Omega)),...,f(t-L(0))$ must be represented with all possible combinations between the fuzzy sets of each lag, such as $f(t-L(\Omega)) \times f(t - L(\Omega-1)) \times \ldots \times f(t-L(0))$, where $\times$ represents the Cartesian Product operator. 
+Once the fuzzyfied value $f(t)$ has multiple fuzzy sets (with different membership values greater than $\alpha$-cut), a set of fuzzyfied values $f(t-L(\Omega)),...,f(t-L(0))$ must be represented with all possible combinations between the fuzzy sets of each lag, such as $f(t-L(\Omega)) \times f(t - L(\Omega-1)) \times \ldots \times f(t-L(0))$, where $\times$ represents the Cartesian Product operator. 
 
-In Step 5 the FTPs will have the format $\ufset^{L(\Omega)}, \ufset^{L(\Omega-1)},\ldots,\ufset^{L(0)} \rightarrow A_i$, which can be read as ``IF $f(t-L(\Omega))$ is $\ufset^{L(\Omega)}$ AND $f(t-L(\Omega-1))$ is $\ufset^{L(\Omega-1)}$ AND $\dots$ AND $f(t-L(0))$ is $\ufset^{L(0)}$ THEN $f(t+1)$ is $A_i$". In Step 6, the high order FTPGs gather all high order FTPs with the same LHS. 
+In Step 5 the FTPs will have the format $\ufset^{L(\Omega)}, \ufset^{L(\Omega-1)},\ldots,\ufset^{L(0)} \rightarrow A_i$, which can be read as ``IF $f(t-L(\Omega))$ is $\ufset^{L(\Omega)}$ AND $f(t-L(\Omega-1))$ is $\ufset^{L(\Omega-1)}$ AND $\dots$ AND $f(t-L(0))$ is $\ufset^{L(0)}$ THEN $f(t+1)$ is $A_i$''. In Step 6, the high order FTPGs gather all high order FTPs with the same LHS. 
 
-In Step 7 the $\pi_j$ weight is replaced by $\pi_{LHS}$ that aggregates the $\mu_{LHS}$ memberships of each FTPG for the samples. Given a sample $y(t-\Omega),\dots,y(t) \in Y$ with $\Omega$ lags, their membership grades with a FTPG is the product T-norm between all memberships of the LHS: 
+In Step 7 the $\pi_j$ weight is replaced by $\pi_{LHS}$ that aggregates the $\mu_{LHS}$ memberships of each FTPG for the samples. Given a sample $y(t-\Omega),\dots,y(t) \in Y$ with $\Omega$ lags, their membership grades with an FTPG is the product T-norm between all memberships of the LHS: 
 
 \begin{equation}
 \displaystyle  \mu_{LHS}(y(t-L(\Omega)),\ldots,y(t-L(0)) = \bigcap_{i = \Omega}^0 \mu_{\ufset}(y(t-L(i)))
 \label{eqn:extension_highorder_mu}
 \end{equation}
 
-In the forecasting procedure, the Step 1 requires a sample with $\Omega$ lags that will generate $\Omega$ fuzzyfied values. In Step 2, all combinations between the fuzzy sets of each fuzzyfied lag will be the LHS of the affected PWFTPGs. In Step 3, in Equations \ref{eqn:pwfts_probabilistic}, \ref{eqn:pwfts_interval} and \ref{eqn:pwfts_point}, the empirical conditional probability $P(y(t)|A_i)$ will be replaced by $P(y(t-m),...,y(t) | LHS)$, the empirical conditional probability of the sample $y(t-m),...,y(t)$ given the LHS of the PWFTPG.
+In the forecasting procedure, the Step 1 requires a sample with $\Omega$ lags that will generate $\Omega$ fuzzyfied values. In Step 2, all combinations between the fuzzy sets of each fuzzyfied lag will be the LHS of the affected PWFTPGs. In Step 3, in Equations \eqref{eqn:pwfts_probabilistic}, \eqref{eqn:pwfts_interval} and \eqref{eqn:pwfts_point}, the empirical conditional probability $P(y(t)|A_i)$ will be replaced by $P(y(t-m),...,y(t) | LHS)$, the empirical conditional probability of the sample $y(t-m),...,y(t)$ given the LHS of the PWFTPG.
 
 \begin{equation}
 \displaystyle P(y(t-L(\Omega))\ldots y(t-L(0) | LHS) = \pi_{LHS} \frac{\mu_{LHS}(y(t-L(\Omega))\ldots,y(t-L(0))}{\sum_{\ufset \in LHS} Z_{\ufset}}
@@ -334,11 +349,11 @@ In the forecasting procedure, the Step 1 requires a sample with $\Omega$ lags th
 \section{Computational Experiments}
 \label{sec:pwfts_experiments}
 
-In this section presents an empirical study of the PWFTS performance using the same datasets, design of experiments and statistical tests employed in Sections \ref{sec:fts_experiments} and \ref{sec:prob_experiments}. PWFTS method can forecast points, intervals, and probability distributions, then the following sections will present all these compared results.
+This section presents an empirical study of the PWFTS performance using the same datasets, design of experiments and statistical tests employed in Sections \ref{sec:fts_experiments} and \ref{sec:prob_experiments}. PWFTS method can forecast points, intervals, and probability distributions, then the following sections will present all these compared results.
 
-To measure the performance of the proposed models were chosen ARIMA, QAR, kNN/KDE, and BSTS as competitor models due to its possibility to perform point, interval and probabilistic forecasting for many steps ahead. The hyperparameters of each method were individually investigated and only the best model is taken account on the validation of the results. The HOFTS and WHOFTS methods were also used to compare the point forecasts, using the best models determined in Section \ref{sec:fts_experiments}. The $\ifts$ and $W\ifts$ methods were also used to compare the interval forecasts, and EnsembleFTS was also used to compare probabilistic forecasts, using the best models determined in Section \ref{sec:prob_experiments}.
+To measure the performance of the proposed models, ARIMA, QAR, kNN/KDE, and BSTS were chosen as competitor models due to its ability to perform point, interval and probabilistic forecasting for many steps ahead. The hyperparameters of each method were individually investigated and only the best model is considered in the validation of the results. The HOFTS and WHOFTS methods were also used to compare the point forecasts, using the best models determined in Section \ref{sec:fts_experiments}. The $\ifts$ and $W\ifts$ methods were also used to compare the interval forecasts, and EnsembleFTS was also used to compare probabilistic forecasts, using the best models determined in Section \ref{sec:prob_experiments}.
 
-In Section \ref{sec:pwfts_hyperparameters}, the accuracy sensitivity regarding to the hyperparameters of the proposed methods are analyzed using a grid search. The result of the experiments are presented in Sections \ref{sec:pwfts_experiments_point} for point forecasting, \ref{sec:pwfts_experiments_interval} for interval forecasting  and  \ref{sec:prob_experiments_probabilistic}, for probabilistic forecasting.
+In Section \ref{sec:pwfts_hyperparameters}, the accuracy sensitivity regarding to the hyperparameters of the proposed methods are analyzed using a grid search. The result of the experiments are presented in Sections \ref{sec:pwfts_experiments_point} for point forecasting, \ref{sec:pwfts_experiments_interval} for interval forecasting  and  \ref{sec:pwfts_experiments_probabilistic}, for probabilistic forecasting.
 
 In order to contribute with the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
 \texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap4}}
@@ -348,11 +363,11 @@ In order to contribute with the replication of all the results in the research, 
 \subsection{Hyperparameter Grid Search}
 \label{sec:pwfts_hyperparameters}
 
-In order to asses the impact of the hyperparameters on PWFTS accuracy, a Search Grid was performed for each benchmark dataset, using the same search spaces contained on Table \ref{tab:ifts_gridsearch} of Section \ref{sec:prob_hyperparameters}. But, different from the previous experiments this grid search was performed for point, interval and probabilistic forecasting, in order to chose the hyperparameter values that best fit all cases.
+In order to assess the impact of the hyperparameters on PWFTS accuracy, a Grid Search was performed for each benchmark dataset, using the same search spaces contained in Table \ref{tab:ifts_gridsearch} of Section \ref{sec:prob_hyperparameters}. But, different from the previous experiments this grid search was performed for point, interval and probabilistic forecasting, in order to chose the hyperparameter values that best fit all cases.
 
-The RMSE accuracy is shown on Figure \ref{fig:pwfts_gridsearch_point}, by order, number of partitions and dataset. The Winkler Score accuracy, where  $\alpha \in \{.05,.25\}$, can be observed on Figure \ref{fig:pwfts_gridsearch_interval} and the CRPS accuracy on Figure \ref{fig:pwfts_gridsearch_probabilistic}.
+The RMSE accuracy is shown in Figure \ref{fig:pwfts_gridsearch_point}, by order, number of partitions and dataset. The Winkler Score accuracy, where  $\alpha \in \{.05,.25\}$, can be observed in Figure \ref{fig:pwfts_gridsearch_interval} and the CRPS accuracy in Figure \ref{fig:pwfts_gridsearch_probabilistic}.
 
-Once several numbers of partitions and order values achieved very closed accuracy values, the Principle of Parsimony (or Occam's Razor) was adopted to chose the set of hyperparameters that leads to smallest number of rules $|\model|$, keeping the same accuracy. The chosen hyperparameters were $k = 45$ and $\Omega = 1$ and a sample of the best models performance can be seen in Figure \ref{fig:pwfts_sample_onestep} (for one step ahead) and \ref{fig:pwfts_sample_manystep} (for many steps ahead).
+Since several numbers of partitions and order values achieved very close accuracy values, the Principle of Parsimony (or Occam's Razor) was adopted to choose the set of hyperparameters that lead to the smallest number of rules $|\model|$, keeping the same accuracy. The chosen hyperparameters were $k = 45$ and $\Omega = 1$ and a sample of the best models performance can be seen in Figures \ref{fig:pwfts_sample_onestep} (for one step ahead) and \ref{fig:pwfts_sample_manystep} (for many steps ahead).
 
 
 \begin{figure}[htb]
@@ -382,13 +397,13 @@ Once several numbers of partitions and order values achieved very closed accurac
 \subsection{Point Forecasting Benchmarks}
 \label{sec:pwfts_experiments_point}
 
-The RMSE results for each method and dataset are presented on Table \ref{tab:pwfts_point_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:prob_interval_ranks} and the test statistic for these results is $Q = 13.903114186851207$, where the p-value is $P(\chi^2_{df} < Q) = 0.030737356514312197$, with $df=7$ degrees of freedom. For this statistic the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is difference between the means of the competitor models.
+The RMSE results for each method and dataset are presented in Table \ref{tab:pwfts_point_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_point_ranks} and the test statistic for these results is $Q = 13.903114186851207$, where the p-value is $P(\chi^2_{df} < Q) = 0.030737356514312197$, with $df=7$ degrees of freedom. For this statistic the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is difference between the means of the competitor models.
 
-The \textit{post-hoc} tests were employed using PWFTS as control methods and their results are presented on Table \ref{tab:pwfts_point_posthoc}, showing that there is no prevalence of PWFTS method over all others. The mean difference detected by the Friedman Test occurred between QAR and BSTS, where QAR prevails over BSTS with p-value of 0.006984, rejecting $H_0$ of \textit{post-hoc} tests. These results showed that PWFTS point forecasting method perform satisfactorily when compared with the standard methods in the literature. 
+The \textit{post-hoc} tests were employed using PWFTS as control methods and their results are presented in Table \ref{tab:pwfts_point_posthoc}, showing that there is no prevalence of PWFTS method over all others. The mean difference detected by the Friedman Test occurred between QAR and BSTS, where QAR prevails over BSTS with p-value of 0.006984, rejecting $H_0$ of \textit{post-hoc} tests. These results showed that PWFTS point forecasting method performs satisfactorily when compared with the standard methods in the literature. 
 
 The statistical tests were employed to one step ahead forecasts. Figure \ref{fig:pwfts_ahead_point} shows, for each method and dataset, the impact of the forecasting horizon on the RMSE accuracy.
 
-\begin{table}[ht]
+\begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
 \centering
     \begin{tabular}{|c|ccccccc|}
@@ -458,9 +473,9 @@ BSTS &  20.000000 \\
 \subsubsection{Residual Analysis}
 \label{sec:pwfts_residual}
 
-The residuals of the models are presented in Figures \ref{fig:pwfts_residual} and the Ljung-Box tests for the 3 first lags are presented in Table \ref{tab:pwfts_residual} , which is shown the good fit of the model. 
+The residuals of the models are presented in Figure \ref{fig:pwfts_residual} and the Ljung-Box tests for the 3 first lags are presented in Table \ref{tab:pwfts_residual} , showing the good fit of the model. 
 
-\begin{figure}[h]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth,height=7cm]{figures/pwfts_residual.png}
     \caption{Residual analysis of PWFTS}
@@ -487,14 +502,14 @@ Lag &  Statistic &       p-Value &  Critical Value &       Result \\
 \subsection{Interval Forecasting Benchmarks}
 \label{sec:pwfts_experiments_interval}
 
-The Winkler Score Mean results for each method and dataset are presented on Table \ref{tab:pwfts_interval_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_interval_ranks} and the test statistic for these results is $Q = 14.812664$, where the p-Value is $P(\chi^2_{df} < Q) = 0.038477$, with $df=7$ degrees of freedom. For this statistic, the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is a difference between the means of the competitor models.
+The Winkler Score Mean results for each method and dataset are presented in Table \ref{tab:pwfts_interval_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_interval_ranks} and the test statistic for these results is $Q = 14.812664$, where the p-Value is $P(\chi^2_{df} < Q) = 0.038477$, with $df=7$ degrees of freedom. For this statistic, the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is a difference between the means of the competitor models.
 
-The \textit{post-hoc} tests were employed using PWFTS as control methods and their results are presented in Table \ref{tab:pwfts_interval_posthoc}, showing the prevalence of PWFTS over BSTS. These results showed that PWFTS interval forecasting methods perform satisfactorily when compared with other standard methods in the literature. 
+The \textit{post-hoc} tests were employed using PWFTS as control method and their results are presented in Table \ref{tab:pwfts_interval_posthoc}, showing the prevalence of PWFTS over BSTS. These results showed that PWFTS interval forecasting methods perform satisfactorily when compared with other standard methods in the literature. 
 
 The statistical tests were employed on the one-step ahead forecasts. Figure \ref{fig:pwfts_ahead_interval} shows, for each dataset, the impact of the forecasting horizon on the Winkler Score accuracy of PWFTS.
 
 
-\begin{table}[h]
+\begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
 \centering
 \begin{tabular}{|c|cccccccc|}
@@ -535,17 +550,17 @@ BSTS &  21.666667 \\
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-\begin{tabular}{llrrrl}
+\begin{tabular}{lrrrl}
 \toprule
-{} &            COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
+COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
 \midrule
-0 &         PWFTS vs BSTS &  2.713546 &  0.006657 &          0.045677 &  H0 Rejected \\
-1 &  PWFTS vs EnsembleFTS &  2.367136 &  0.017926 &          0.061349 &  H0 Accepted \\
-2 &         PWFTS vs IFTS &  1.847521 &  0.064672 &          0.144442 &  H0 Accepted \\
-3 &        PWFTS vs ARIMA &  1.212436 &  0.225346 &          0.360355 &  H0 Accepted \\
-4 &          PWFTS vs kNN &  0.461880 &  0.644167 &          0.764634 &  H0 Accepted \\
-5 &        PWFTS vs WIFTS &  0.288675 &  0.772830 &          0.822550 &  H0 Accepted \\
-6 &          PWFTS vs QAR &  0.115470 &  0.908073 &          0.908073 &  H0 Accepted \\
+PWFTS vs BSTS &  2.713546 &  0.006657 &          0.045677 &  H0 Rejected \\
+PWFTS vs EnsembleFTS &  2.367136 &  0.017926 &          0.061349 &  H0 Accepted \\
+PWFTS vs IFTS &  1.847521 &  0.064672 &          0.144442 &  H0 Accepted \\
+PWFTS vs ARIMA &  1.212436 &  0.225346 &          0.360355 &  H0 Accepted \\
+PWFTS vs kNN &  0.461880 &  0.644167 &          0.764634 &  H0 Accepted \\
+PWFTS vs WIFTS &  0.288675 &  0.772830 &          0.822550 &  H0 Accepted \\
+PWFTS vs QAR &  0.115470 &  0.908073 &          0.908073 &  H0 Accepted \\
 \bottomrule
 \end{tabular}
 }
@@ -565,11 +580,11 @@ BSTS &  21.666667 \\
 \subsection{Probabilistic Forecasting Benchmarks}
 \label{sec:pwfts_experiments_probabilistic}
 
-The CRPS Mean results for each method and dataset are presented in Table \ref{tab:pwfts_probabilistic_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_probabilistic_ranks} and the test statistic for these results is $Q = 10.352711804324706$, where the p-Value is $P(\chi ^2_{df} < Q) = 0.06583635032195168$, with $df=5$ degrees of freedom. For this statistic the $H_0$ is accepted at the $\alpha = .05$ confidence level, indicating that there is no significant difference between the means of the competitor models. This result discards the need to employ \textit{post-hoc} tests and show that there is no prevalence of one method over others, showing also that PWFTS probabilistic forecasting method performed satisfactorily when compared with the standard methods in the literature. 
+The CRPS Mean results for each method and dataset are presented in Table \ref{tab:pwfts_probabilistic_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_probabilistic_ranks} and the test statistic for these results is $Q = 10.352711804324706$, where the p-Value is $P(\chi ^2_{df} < Q) = 0.06583635032195168$, with $df=5$ degrees of freedom. For this statistic the $H_0$ is accepted at the $\alpha = .05$ confidence level, indicating that there is no significant difference between the means of the competitor models. This result discards the need to employ \textit{post-hoc} tests and shows that there is no prevalence of one method over others, showing also that PWFTS probabilistic forecasting method performed satisfactorily when compared with the standard methods in the literature. 
 
 The statistical tests were employed on the one-step ahead forecasts. Figure \ref{fig:pwfts_ahead_probabilistic} shows, for each dataset, the impact of the forecasting horizon on the CRPS accuracy of PWFTS method.
 
-\begin{table}[h]
+\begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
 \centering
 \begin{tabular}{|c|cccccc|}
@@ -599,8 +614,7 @@ QAR &   5.666667 \\
 ARIMA &   8.666667 \\
 kNN &  11.333333 \\
 EnsembleFTS &  11.666667 \\
-BSTS &  16.333333 \\
-\bottomrule
+BSTS &  16.333333 \\ \hline
 \end{tabular}
     \caption{Friedman aligned ranks for probabilistic forecasts }
     \label{tab:pwfts_probabilistic_ranks}
@@ -618,11 +632,11 @@ BSTS &  16.333333 \\
 \section{Conclusion}
 \label{sec:pwfts_conclusion}
 
-This chapter proposed a new univariate and time invariant FTS method - the Probabilistic Weighted FTS (PWFTS), a weighted rule-based FTS method which represents their temporal patterns with an empirical probability - based on the proposed concept of fuzzy frequency. The PWFTS rule model - the Probabilistic Weighted Fuzzy Temporal Pattern Groups (PWFTPG) - describes fuzzy and stochastic behavior of time series and combines them to produce forecasts. 
+This chapter proposed a new univariate and time invariant FTS method -- the Probabilistic Weighted FTS (PWFTS) -- a weighted rule-based FTS method which represents their temporal patterns with an empirical probability,  based on the proposed concept of fuzzy frequency. The PWFTS rule model, the Probabilistic Weighted Fuzzy Temporal Pattern Groups (PWFTPG), describes fuzzy and stochastic behavior of time series and combines them to produce forecasts. 
 
-Once was already proposed interval and probabilistic methods, none of them integrate all these capabilities. The strength of PWFTS is its flexibility and performance. This model is used to produce probability densities, prediction intervals and point forecasting, with high order models and multiple-step ahead forecasting.  
+Among the methods already proposed for interval and probabilistic forecasting, none of them integrate all these capabilities. The strength of PWFTS lies is its flexibility and performance. This model is used to produce probability densities, prediction intervals and point forecasting, with high order models and multiple-step ahead forecasting.  
 
-Computational experiments were performed to evaluate the accuracy of the proposed model which showed equivalent or better performance than standard methods on literature. Its computational cost is low when compared with BSTS and EnsembleFTS approaches and its interval accuracy is better than WIFTS and IFTS.
+Computational experiments were performed to evaluate the accuracy of the proposed model which showed equivalent or better performance than standard methods in the literature. Its computational cost is low when compared with BSTS and EnsembleFTS approaches and its interval accuracy is better than WIFTS and IFTS.
 
 The proposed PWFTS method extends FTS methods to deal with interval and probabilistic forecasting applications, which is the major contribution of this research. Moreover, PWFTS improves on former FTS methods in the literature by considering the concept of fuzzy frequency and empirical probabilities in the generation of the rule knowledge base. The proposed method improves previous FTS methods by aggregating probabilistic and interval forecasting capabilities into a single model, being useful for a wide range of applications and user needs.
 
