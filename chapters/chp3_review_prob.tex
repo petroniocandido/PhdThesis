@@ -48,7 +48,7 @@ The simplest evolution of point forecasts are the interval forecasts, that repre
 
 Confidence intervals deal with fixed (but unknown) estimates. Prediction intervals instead, as proposed by \cite{Chatfield1993}, are an ``estimate of an (unknown) future value that can be regarded as a random variable at the time the forecast is made. This involves a different sort of probability statement to a confidence interval as discussed''. Traditional approaches for this kind of forecasting include the parametric methods as studied in  \cite{Chatfield1993}. These methods use strong statistical assumptions about the data that can make it less useful where data is not conforming.
 
-The confidence level $\alpha \in (0,1)$ is then a way to determine a symmetric inter-quantile interval $[\alpha, 1-\alpha]$ for some forecasted value of interest. If a cumulative probability distribution $F:U \rightarrow [0,1]$ finds the probability $F(x) =  P(X \leq x)$, the quantile function $Q:(0,1) \rightarrow U$ performs the opposite process: $Q(\tau) = \min_x\{ x \in U \ |\ \tau < F(x) \}$ where $\tau \in (0,1)$ is a quantile.
+The confidence level $\alpha \in (0,1)$ is then a way to determine a symmetric inter-quantile interval $[\alpha/2, 1-\alpha/2]$ for some forecasted value of interest. If a cumulative probability distribution $F:U \rightarrow [0,1]$ finds the probability $F(x) =  P(X \leq x)$, the quantile function $Q:(0,1) \rightarrow U$ performs the opposite process: $Q(\tau) = \min_x\{ x \in U \ |\ \tau < F(x) \}$ where $\tau \in (0,1)$ is a quantile.
 
 \index{Mean-variance prediction intervals}\index{Error variance exponential smoothing}
 
