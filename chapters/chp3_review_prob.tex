@@ -13,7 +13,9 @@ Also \cite{Makridakis2010} poses that ``statistical regularity does not equal pr
 
 In this context the probabilistic forecasting approaches emerged, defined by \cite{Gneiting2014b} as ``the form of a predictive probability distribution over future quantities or events of interest''. This definition enclose two main forecasting types: intervals and probability distributions. Their importance appears as we analyze the impact of the intrinsic uncertainty on the point forecasts, and how this uncertainty grows as the forecasting horizon increases. 
 
-In the following section a short review of uncertainties in forecasting models is presented, starting with the limitations of point forecasts in Section \ref{sec:prob_point}, and its accuracy measures. In Section \ref{sec:prob_interval}, the most known interval forecasting methods and its evaluation measures are presented. In Section \ref{sec:ifts} new FTS methods are proposed to produce prediction intervals representing the fuzzy uncertainty. In Section \ref{sec:prob_distribution} the major approaches for probabilistic forecasting and its accuracy measures are discussed. In Section \ref{sec:ensemblefts} a new FTS method is proposed to produce interval and probabilistic forecastings. In Section \ref{sec:prob_experiments}, computational experiments are performed to assess the accuracy and computational performance of the proposed methods and finally, in Section \ref{sec:prob_conclusion}, the conclusions are given. 
+The main contributions of this chapter are the proposals of three methods: the Interval Fuzzy Time Series ($\ifts$),  Weighted Interval Fuzzy Time Series ($W\ifts$) and the EnsembleFTS. 
+
+In the following section a short review of uncertainties in forecasting models is presented, starting with the limitations of point forecasts in Section \ref{sec:prob_point}, and its accuracy measures. In Section \ref{sec:prob_interval}, the most known interval forecasting methods and its evaluation measures are presented. In Section \ref{sec:ifts} new FTS methods are proposed to produce prediction intervals representing the fuzzy uncertainty. In Section \ref{sec:prob_distribution} the major approaches for probabilistic forecasting and its accuracy measures are discussed. In Section \ref{sec:ensemblefts} a new FTS method is proposed to produce interval and probabilistic forecasting. In Section \ref{sec:prob_experiments}, computational experiments are performed to assess the accuracy and computational performance of the proposed methods and finally, in Section \ref{sec:prob_conclusion}, the conclusions are given. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -21,14 +23,14 @@ In the following section a short review of uncertainties in forecasting models i
 \section{The Point Forecast Limitations}
 \label{sec:prob_point}
 
-\index{Deterministic Forecast}\index{Point Forecasts}
+\index{Deterministic Forecast}\index{Point forecasting}
 \index{Conditional Expectation}\index{Conditional Variance}
 
 Point forecasts, are usually defined by the conditional expectation $\mathbb{E}[y(t+1)|y(t),y(t-1),...]$ which in turn minimizes a cost function that represents the accuracy error, as the mean squared error in Equation~\eqref{eqn:rmse}. In statistics textbooks, for instance \cite{Kay2006}, this conditional expectation is  known to be the best linear and non-linear estimator for $y(t+1)$ given the lagged values $y(t),y(t-1),...$. But for the layman this optimality may be misunderstood as the absence of error and not the normality of error terms $\epsilon$, defined as the white noise $\epsilon \sim \mathcal{N}(0,1)$. These deterministic forecasts, according to \cite{Krzysztofowicz2001}, create an ``illusion of certainty in a user's mind''. 
 
 It is expected that the conditional variance $Var[y(t+1)|y(t),y(t-1),...]$ be presented with the conditional expectation to represent the uncertainty around this result, but this is not really usual as it needs to be. Even this common statistical approach is not enough to capture all uncertainty of an estimate and \cite{Makridakis2009} point out that error variance may not be known, constant or finite.
 
-\index{Many Steps Ahead Forecasts}
+\index{Many steps ahead forecast}
 When dealing with the many steps ahead forecasts, where $H \in \mathbb{N}^+$ is the forecasting horizon, it is necessary to consider the propagation of errors. \cite{Leutbecher2008} address this problem in the context of weather forecasting, where the major source of uncertainty is inaccuracy on initial parameters estimation. Also \cite{Smith2001} states that ``the question of prediction then turns to how to best quantify the dynamics of uncertainty'' of propagating errors.
 
 Many steps ahead forecasts can be calculated in several ways, for instance by fitting a specific model for each $h = 1\ldots H$ step, as $\mathbb{E}[y(t+h)|y(t),y(t-1),\ldots]$, or iterating the model. If the time series is stationary, long runs ($h \rightarrow \infty$) of the conditional mean will fatally fall on unconditional mean.
@@ -44,19 +46,19 @@ Many steps ahead forecasts can be calculated in several ways, for instance by fi
 \index{Confidence Interval}\index{Prediction Interval}
 The simplest evolution of point forecasts are the interval forecasts, that represent and incorporate uncertainty \cite{Hansen2006}. At first sight interval forecasts may be confused with confidence intervals because they share the same structure, but they are slightly different things. Both are defined with respect to an unknown value $y(t+1)$ as an interval $\interval$  with $\alpha$ confidence level to contain the real value of $y(t+1)$. The probability of $\intvl$ to contain $y(t+1)$ is given by $P(\underline{l} \leq y(t+1) \leq \overline{u}) = 1 - \alpha$.
 
-\index{Prediction Intervals}
-
 Confidence intervals deal with fixed (but unknown) estimates. Prediction intervals instead, as proposed by \cite{Chatfield1993}, are an ``estimate of an (unknown) future value that can be regarded as a random variable at the time the forecast is made. This involves a different sort of probability statement to a confidence interval as discussed''. Traditional approaches for this kind of forecasting include the parametric methods as studied in  \cite{Chatfield1993}. These methods use strong statistical assumptions about the data that can make it less useful where data is not conforming.
 
+\index{$\alpha$}\index{Confidence level}
 The confidence level $\alpha \in (0,1)$ is then a way to determine a symmetric inter-quantile interval $[\alpha/2, 1-\alpha/2]$ for some forecasted value of interest. If a cumulative probability distribution $F:U \rightarrow [0,1]$ finds the probability $F(x) =  P(X \leq x)$, the quantile function $Q:(0,1) \rightarrow U$ performs the opposite process: $Q(\tau) = \min_x\{ x \in U \ |\ \tau < F(x) \}$ where $\tau \in (0,1)$ is a quantile.
 
 \index{Mean-variance prediction intervals}\index{Error variance exponential smoothing}
 
 \cite{Chatfield2001} proposed a simple method for creating $\alpha$-level prediction intervals for generic forecasting models, the called mean-variance model. From the point forecast $\mu = \mathbb{E}[Y_{t+1}|Y_t,Y_{t-1},...]$ with the variance of the residuals $\sigma_\epsilon = \sqrt{VAR[\epsilon]}$ by assuming that these residuals as $\epsilon \sim \mathcal{N}(0,1)$. The prediction interval is calculated by $I = [\mu - z_{\alpha/2}\sigma_\epsilon\ ,\ \mu + z_{\alpha/2}\sigma_\epsilon]$ and $z_{\alpha/2} = \Phi((1- \alpha)/2)$ is the standard normal distribution function. In Figure \ref{fig:arima} an example of ARIMA(2,0,0) process is shown, where the prediction intervals were calculated with the previous model, for $\alpha \in \{0.05,0.25\}$. 
 
+\index{Many steps ahead forecast}
 For $H$-steps ahead, the variance $\sigma_\epsilon^h$ can be estimated from the 1-step ahead variance $\sigma_\epsilon^1$ through exponential smoothing by $\sigma_\epsilon^h = (1 + h\beta)\sigma_\epsilon^1$, for some smoothing value $\beta \in (0,1)$. Despite its simplicity, the main drawback of this method is the parametric and homoskedastic assumption over the residuals distribution. In Figure \ref{fig:arima} an example of ARMA(2,0,0) process is represented, where the prediction intervals for 7 steps ahead were calculated with the exponential smoothing, for $\alpha \in \{0.05,0.25\}$ and $\beta = 0.5$. But \cite{Chatfield2001} warns that mean-variance model is a generic approximation and does not replace prediction interval models specifically developed from the statistical methods and their error distribution assumptions. 
 
-\index{Quantile Auto Regression}\index{QAR}\index{Pinball Loss Function}
+\index{Quantile Auto Regression}\index{QAR}\index{Pinball Loss Function}\index{Interquantile interval}\index{$\tau$}\index{Quantile function}
 
 The main probabilistic approach for interval forecasting is the Quantile Auto Regression - QAR proposed by \cite{Koenker2006} based on the Quantile Regression \cite{Koenker2001}. The QAR estimates a conditional quantile function in Equation \eqref{eqn:qar}, where $\hat{y(t)}$ is the estimated quantile value, $\tau$ is the quantile level, $\theta$ are the fitted coefficients for the $y(i)$ lagged values and $\rho_\tau(u)$ is the Pinball Loss Function, defined on Equation \eqref{eqn:pinball}, where $\mathbf{1}(x) = \{ 1$ if $x \geq 0$ or $0$ if $x < 0\}$. Quantile Regression approaches have been used at many application fields, for instance energy load forecasting [\cite{Liu2015}, \cite{Hong2016}, \cite{Hong2016a}] and wind forecasting \cite{Pinson2006}.
 
@@ -106,7 +108,7 @@ The Pinball Loss Function $\rho_\tau(u)$ is a general measurement to quantile ap
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Accuracy Measures for Interval Forecasts}
 \label{sec:prob_interval_measures}
-\index{Accuracy Measures}\index{Interval Forecasting Accuracy Measures}
+\index{Accuracy Measures}
 
 In a wide sense the point forecasting accuracy measures can be used to assess the interval forecasts. This is possible by using the midpoint of the prediction interval, if the interval is based on $\alpha$-levels or symmetric quantiles. But, by far, this is not the ideal way to measure the interval accuracy, once several aspects of prediction intervals are neglected by single point measures.
 
@@ -171,17 +173,17 @@ WS(\alpha, y(t), \intvl(t)) = \left\{ \begin{array}{ccl}
 
 All revised interval forecasting methods are based on non-FTS methods and this is a gap in the FTS literature. In the next section a method for quantifying the bounds of fuzzy uncertainty is proposed.
 
-\index{Interval Fuzzy Time Series}\index{$[\mathbb{I}]$FTS}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Interval Fuzzy Time Series  - $\ifts$}
+\section{The Interval Fuzzy Time Series  - $\ifts$}\index{Interval Fuzzy Time Series}\index{$\ifts$}
 \label{sec:ifts}
+
+This section proposes the Interval Fuzzy Time Series ($\ifts$), a simple, fast and effective method to deal with fuzzy empirical uncertainty, combining the flexibility of the FTS models with the properties of Interval Forecasts without the need to resort to parametric methods or optimization techniques as in quantile estimation methods.
 
 It was already discussed in Section \ref{sec:fts_partitions} the impact of the number of partitions $k$ on the accuracy of a FTS model. Also, in Section \ref{sec:fts_defuzzyfication} it can be seen that in the deffuzification process only the midpoint of each fuzzy set is taken into account. This leads to the following question: what is the impact of the fuzzy set uncertainty (due to the overlapped bounds of the fuzzy set) on the final forecasting uncertainty? Since  the fuzzy sets represent the empirical uncertainty of $Y$, how this uncertainty is propagated to the point forecasts?
 
-The objective of this section is to propose a simple, fast and effective method to deal with fuzzy empirical uncertainty, combining the flexibility of the FTS models with the properties of Interval Forecasts without the need to resort to parametric methods or optimization techniques as in quantile estimation methods. The main advantage of this feature is to keep the model fast and scalable, for instance when the method is used in a high volume data or on a fast stream with concept drifts, which demands the model to be frequently updated. The scalability of FTS models will be discussed with more details in Chapter \ref{chap:scalability}.
+ The main advantage of the proposed method is to keep the model fast and scalable, for instance when the method is used in a high volume data or on a fast stream with concept drifts, which demands the model to be frequently updated. The scalability of FTS models will be discussed with more details in Chapter \ref{chap:scalability}.
 
 The Interval Fuzzy Time Series Model ($\ifts$) aims to produce a prediction interval that represents the empirical uncertainty caused by the number of partitions $k$ and the fuzzy sets bounds, but without any probabilistic meaning. The method $\ifts$ is a time invariant, rule based and high-order method that just  introduces a new deffuzyfication type on forecasting procedure, without modifying the training method and, because of this, it can be applied to every conventional FTS method.  
 
@@ -192,16 +194,16 @@ In the following section the forecasting method of $\ifts$ will be presented, it
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Forecasting Procedure} 
+\subsection{Forecasting Procedure} \index{Forecasting Procedure} 
 \label{sec:ifts_forecasting_procedure}
 
 \begin{enumerate}
 \item [Step 1] \textit{Fuzzyfication}: Compute the membership grade $\mu_{ti}$ for each $y(t) \in Y$ where $t \in L$ and each fuzzy set $A_i \in \Tilde{A}$, such that $\mu_{ti} = \mu_{A_i}(y(t))$. 
 \item [Step 2] \textit{Rule matching}: Select the $K$ rules where all fuzzy sets $A_i$ on the LHS have $\mu_{ti} > \alpha$; The rule fuzzy membership grade is shown below, using the minimum function as T-norm.
 \begin{equation}
-    \mu_j = \bigcap_{t\in L\; i \in \Tilde{A}} \mu_{ti}
+    \mu_j = \min_{t\in L\; i \in \Tilde{A}} \mu_{ti}
 \end{equation}
-
+\index{T-norm}\index{Triangular norm}
 \item [Step 3] \textit{Interval Defuzzyfication}:
 \begin{enumerate}
 \item \textit{Rule intervals}: Each chosen rule $j$ will generate an interval $\mathbb{I}^j = [\underline{\mathbb{I}^j_{min}}, \overline{\mathbb{I}^j_{max}}]$ where $\mathbb{I}^j_{min}$ is the minimum lower bound of all RHS fuzzy sets of the rule $j$ and $\mathbb{I}^j_{max}$ is the maximum upper bound of RHS fuzzy sets of rule $j$;
@@ -220,6 +222,7 @@ In the following section the forecasting method of $\ifts$ will be presented, it
 \label{eqn:ifts}
 \end{equation}
 \end{enumerate}
+\index{Many steps ahead forecast}
 \item[Step 5] \textit{Many steps ahead forecast}:If the forecasting horizon is $H > 1$, define $\intvl_H = \{\intvl(t+1)\}$ as the set of intervals and repeat the steps below for each $h=2..H$, otherwise return  $\intvl(t+1)$.
 \begin{enumerate}
     \item[a)]  Given $\intvl(t+h-1)= [\underline{l},\overline{u}]$, call recursively the forecasting method, such that $\intvl_l = forecast(\underline{l})$ and $\intvl_u = forecast(\overline{u})$. The interval $\intvl(t+h)$ is given by:
@@ -242,7 +245,7 @@ The generated interval $\intvl(t+1)$ is bounded by a composition of the fuzzy se
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Weighted $\ifts$}
+\subsection{Weighted $\ifts$}\index{$W\ifts$}\index{Weighted $\ifts$}
 \label{sec:wifts}
 
 A weighted $\ifts$ extension uses the same model building procedure  of WHOFTS method, presented in Section \ref{sec:fts_whofts} and aims to construct the weighted FLRG rule base $\model$. The prediction intervals are based on the weighted interval of the $RHS$ fuzzy sets on each FLRG weighted by their fuzzy membership in relation to input value.
@@ -288,6 +291,8 @@ The probability distribution forecasts cover the complete range of the $U$ and c
 
 Probability distribution forecasts can be represented also as the empirical cumulative probability distribution function $F(x) = n^{-1}\sum_{i\in Y(t)} \mathbf{1}(i < x)$ where $\mathbf{1}(c) = \{1$ if $c = True;\ 0,$ otherwise $\}$. Using $\alpha$-level prediction intervals, described in Section \ref{sec:prob_interval}, for $\alpha \in [0.05, ..., 0.5]$, it is easy to construct the empirical distribution $F$ by iteration over the bounds of intervals. This approach was used to produce the distributions in Figure \ref{fig:arima}, from 7-steps ahead mean-variance prediction intervals over an ARIMA(2,0,0) model. The same approach can be used to construct probabilistic forecastings using QAR method, as shown in Figure \ref{fig:qar}.
 
+\index{Gaussian Process Regression}\index{GPR}
+
 The Gaussian Process Regression (GPR), as discussed in \cite{Rasmussen2006} and \cite{Roberts2013}, is an instance based parametric approach which interpolates the instances $y(t) \in Y$ and also produces an extrapolation for $y(t+1)$ in the form of a Gaussian Distribution. A Gaussian Process $\mathcal{GP}(m,\kappa)$ is defined by a mean function $m(Y)$ and covariance kernel $\kappa(y(i),y(j))$ which produce the covariance matrix $\Sigma$, such that $y(t+1) \sim \mathcal{N}(m(Y),\Sigma)$. The mean function $m(Y)$ is defined as the unconditional expectation of $Y$, such that $m(Y) = \mathbb{E}[Y]$. The covariance matrix $\Sigma$ assigns the similarity $\sigma_{ij} \in \Sigma$ between all pairs of instances of the time series, and it is defined by the covariance function $\sigma_{ij} = \kappa(y(i),y(j))$ for all $i,j = 1..T$. The covariance function is defined as $\kappa: U,U \rightarrow \mathbb{R}^+$ and measures the similarity between the two instances. 
 
 The covariance function $\kappa$ is the most important parameter of $\mathcal{GP}$ model, and it is responsible to measure how the instances relate with themselves and with time. $\kappa$ is usually defined by a set of parameters or hyperparameters $\theta$, and because this $\kappa$ is also often written as $\kappa(y(i),y(j)|\theta)$ to make the dependence on $\theta$ explicit. 
@@ -323,6 +328,8 @@ However, the great strength of the Bayesian Methods is its ability to represent 
 
 The Monte Carlo (MC) methods, initially proposed in \cite{Metropolis1949}, are techniques to solve complex  integration problems using random sampling. They aim to generate a set of samples $x_1,\ldots,x_n$ from a target distribution $\pi(x)$ in order to estimate some hard-to-compute feature $\phi(x)$ using the expected value $\mathbb{E}[\phi(x)] = n^{-1}\sum_i^n \phi(x_i)$ which converges to the unobserved real value of $\phi$. Given the estimated value as $\overline{\phi} = \mathbb{E}[\phi(x)]$, and its variance as $\phi_\sigma = Var[\phi(x)]$, some statistical concepts support the convergence of the MC methods. The Law of Large Numbers (LLN) asserts that, for a large enough number of samples $n$, the difference between the estimated value $\overline{\phi}$ and the true value $\phi$ decays to zero, or $P(\lim_{n\to\infty} |\overline{\phi} - \phi| = 0) = 1$ . The Central Limit Theorem (CLT) states that, for a large enough number of samples $n$, the $\overline{\phi}$ is normally distributed as $\overline{\phi} \sim \mathcal{N}(\phi,\phi_\sigma/n)$.
 
+\index{Markov Chain Monte Carlo}\index{MCMC}
+
 Markov Chain Monte Carlo (MCMC) methods improve the basic MC approach aiming to, instead of sampling $\pi(x)$ directly, sample from a Markov Chain with a transition matrix $K$, where $K_{i,j} = P(x_t = i|x_{t-1} = j)$, such that the next sample $x_t$ be conditionally dependent on the previous $x_{t-1}$. The Markov Chain $K$ needs to approximate the real $\pi(x)$ distribution, but estimating $K$ is very often an intractable problem. An approximation is provided by the Metropolis-Hastings algorithm generalized in \cite{Hastings1970}, which provide a simple and efficient way to simulate $K$ and generate samples. 
 
 Estimating $P(\Theta|Y)$ using Bayesian methods is an optimization task which employs MCMC in order to sample from $P(Y|\Theta)P(\Theta)$ distribution, while refining the parameters of $P(\Theta)$. The method demands the choice of an appropriate a priori distribution $P(\Theta)$ that will rule the search space of each parameter $\theta \in \Theta$. The likelihood $P(Y|\Theta)$ estimates the fit of each parameter $\theta \in \Theta$ when generating samples of $y(t)\in Y$. This likelihood is itself another challenge once the samples $y(t)\in Y$ may be identically distributed but are not independent, there is a temporal dependence between $y(t)$ and it's past lags $y(t-1),...$ that must be respected. This problem demands the use of advanced MCMC methods as Sequential Monte Carlo, Sequential Importance Sampling and Particle Filters, deeply discussed in \cite{Smith2013}.
@@ -336,7 +343,7 @@ Once $\Theta$ values were estimated and represented by probability distributions
 
 A small sample of the BSTS method is shown in Figure \ref{fig:bsts}, for 7 steps ahead interval and probabilistic forecasting. If in one hand the Bayesian Structural Time Series are well succeeded in representing the intrinsic and extrinsic uncertainties, on the other hand it is complex to implement and computationally expensive to run, making it not applicable for a variety of scenarios where the time performance is mandatory.
 
-\index{Forecast Combination}\index{Ensemble Forecasting}\index{Ensemble Learning}
+\index{Forecast Combination}\index{Ensemble Forecasting}\index{Ensemble Learning}\index{Ensemble Models}
 
 There are other approaches to embody the  uncertainties of model parameters. Monte Carlo methods itself evoke the idea of forecasting combination and Ensemble Methods, as posed in \cite{Smith2001}, ``In practice, ensemble forecasting is a Monte Carlo approach to estimating the probability density function (PDF) of future model states given uncertain initial conditions''. Forecast combination is not a new concept, see \citep{Clemen1989}, and start from the idea to mix different sources to improve forecasting. This is sightly close to the concept of Ensemble Methods defined by \cite{Gneiting2008} as ``an ensemble prediction system consists of multiple runs of numerical weather prediction models, which differ in the initial conditions''. Also \cite{Leutbecher2008} states that ``The ultimate goal of ensemble forecasting is to predict quantitatively the probability density of the state of the atmosphere at a future time''. 
 
@@ -350,7 +357,7 @@ This concept is exploited in \cite{Mohammed2015} and \cite{Mohammed2016},  which
 
 The advantage of \cite{Mohammed2015} approach is the flexibility and ease of implementation, since the individual models can be replaced (or added) for any other point forecaster, for instance, any FTS method. As more models are added to the ensemble, better will be the probabilistic distributions but also become more computationally expensive. 
 
-\index{Kernel Density Estimation}\index{Kernel Dressing}
+\index{Kernel Density Estimation}\index{KDE}
 
 Other distributions generating techniques for ensemble forecasts exist as Kernel Density Estimation \citep{Hong2016a} and Kernel Dressing [ \citep{Pinson2009} and \citep{Brocker2008}] and can be easily combined with instance-based methods as k-nearest neighbors. Both approaches smooth the discrete values in a continuous function that approximates the empirical distribution of data, as exposed in Equation \eqref{eqn:kde}, where $Y$ is the set of individual forecasts, $K$ is the kernel function and $h$ is a smoothing parameter also known as bandwidth.:
 
@@ -381,8 +388,7 @@ The several methods discussed in this section are spread in the literature. In t
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Accuracy Measures for Probabilistic Forecasts}
 \label{sec:prob_probabilistic_measure}
-\index{Accuracy Measures}\index{Probabilistic Forecast Accuracy Measures}
-\index{Accuracy Measures for Probabilistic Forecasts}
+\index{Accuracy Measures}
 
 As the probabilistic forecast provides the landscape of uncertainty for the whole $U$, it is also possible to use the accuracy measures presented in Sections \ref{sec:point_measures} and \ref{sec:prob_interval_measures} to assess its accuracy. A probability distribution can be reduced to a point using its expected value $\mathbb{E}$ or it's median $m = F(.5)$. In both cases, the point forecasting accuracy values can be used to assess its accuracy.
 
@@ -437,11 +443,14 @@ These theoretical works form the basis of the Fuzzy Stochastic Fuzzy Time Series
 \section{The Ensemble FTS Method}
 \label{sec:ensemblefts}\index{EnsembleFTS}
 
-The $\ifts$ represented the forecasting uncertainty using the mean of the bounds of the fuzzy sets, or the empirical uncertainty, without any probabilistic sense. However, the FTS methods use of several ways to represent the time series uncertainties, as the number of partitions $k$, order $\Omega$, lag indexes $L$, rule weights. There are uncertainties surrounding these values due to the ontological uncertainty of the data, uncertainties that will be reduced -- but not removed -- after the hyperparameter optimization  proposed in Chapter \ref{chap:scalability}.
+This section proposes the EnsembleFTS, a method able to perform probabilistic forecasts based on ensemble forecasts with Kernel Density Estimation.
 
+The $\ifts$ method, presented in Section \ref{sec:ifts}, represent the forecasting uncertainty using the mean of the bounds of the fuzzy sets, or the empirical uncertainty, without any probabilistic sense. However, the FTS methods use of several ways to represent the time series uncertainties, as the number of partitions $k$, order $\Omega$, lag indexes $L$, rule weights. There are uncertainties surrounding these values due to the ontological uncertainty of the data, uncertainties that will be reduced -- but not removed -- after the hyperparameter optimization  proposed in Chapter \ref{chap:scalability}.
+
+\index{$\model$}\index{Hyperparameter}
 A way to encompass these uncertainties is to generate a meta model $\model$, composed with several FTS models $m \in \model$, such that each one of these individual models is trained with different values of FTS hyperparameters, which aim to represent the hyperparameter uncertainty and its effects. The aggregation of the individual forecasts $\estimate_m$ produced by each $m \in \model$ can represent the overall probabilistic uncertainty $P$ over the possible values of $y(t+1) \in U$ using kernel density estimation seen in Section \ref{sec:prob_distribution}.
 
-Several approaches can be adopted to represent the uncertainty of the hyperparameter, from varying the number of partitions and order, passing through varying the partitioning methods, until varying the FTS method itself. However, the present approach adopts a conventional rule-based high order FTS method with a Grid partitioning method, varying only the number of partitions $k$ and order $\Omega$.
+Several approaches can be adopted to represent the uncertainty of the hyperparameter, from varying the number of partitions and order, passing through varying the partitioning methods, until varying the FTS method itself. However, the present approach adopts a conventional rule-based high order FTS method with a Grid partitioning method, varying only the number of partitions $k$ and order $\Omega$.\index{Hyperparameter}
 
 On EnsembleFTS the hyperparameters $k$ and $\Omega$ are intervals and not scalar values. During the training procedure, explained in Section \ref{sec:ensemblefts_training} an FTS model will be trained for each combination of individual values in the Cartesian Product of $k$ and $\Omega$. In the forecasting procedure detailed in Section \ref{sec:ensemblefts_forecasting}, the input sample is presented for all internal models and their outputs are aggregated using a KDE, producing a probability distribution $P:U \rightarrow [0,1]$. Besides $k$ and $\Omega$ ranges, the kernel function $K$ and its bandwidth parameter $h$ are also parameters of the model.
 
@@ -449,7 +458,7 @@ On EnsembleFTS the hyperparameters $k$ and $\Omega$ are intervals and not scalar
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Training Procedure}
-\label{sec:ensemblefts_training}\index{Ensemble FTS Training Procedure}\index{Training Procedure}
+\label{sec:ensemblefts_training}\index{Training Procedure}
 
 The aim of the training procedure is to build an ensemble $\model$ with $k\times\Omega$ individual models $m_i$, given a crisp training set $Y$. The overall training procedure is shown in Figure \ref{fig:ensemblefts_training} and it is composed of the following steps:
 
@@ -466,12 +475,13 @@ The aim of the training procedure is to build an ensemble $\model$ with $k\times
 \item[Step 4] \textit{$\omega$-order model}: With $F_\kappa$, use the high order weighted rule knowledge model to infer  $\omega$-order fuzzy rules and compose the model $m_{\kappa,\omega}$;
 \item[Step 5)] \textit{Ensemble}: Append the model $m_{\kappa,\omega}$ on $\model$;
 \end{enumerate}
+\index{Ensemble Models}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Forecasting Procedure}
-\label{sec:ensemblefts_forecasting}\index{Ensemble FTS Forecasting Procedure}\index{Forecasting Procedure}
+\label{sec:ensemblefts_forecasting}\index{Forecasting Procedure}
 
 With the ensemble $\model$ built as in previous section, and given an input test sample $y(t)$, it is desired to forecast a full probability distribution $P(y(t+1)|y(t))$. The overall process is described in Figure \ref{fig:ensemblefts_forecasting} and is composed of: a) the forecasting of individual models; b) forecast selection and c) distribution smoothing with the KDE. The complete procedure is detailed below:
 
@@ -491,7 +501,9 @@ With the ensemble $\model$ built as in previous section, and given an input test
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item[Step 3] \textit{Kernel density estimation}: The set of crisp forecasts $\hat{y}(t+1)$ is used with a kernel density estimator $K$ to estimate the probability distribution $P_{t+1}: U \rightarrow [0,1]$. Two parameters are necessary on this step: the type of kernel and the bandwidth $h$. Both parameters are domain specific and need to be empirically evaluated for each application.
+\index{Kernel Density Estimation}\index{KDE}
 
+\index{Many steps ahead forecast}
 \item[Step 4] \textit{Many steps ahead forecast}:If the forecasting horizon is $H > 1$, define $P_H = \{P_{t+1}\}$ as the set of intervals and repeat the steps below for each $h=2..H$, otherwise return  $P_{t+1}$.
 \begin{enumerate}
     \item[a)]  Find the quantiles $Q = \{.1, .2, .3., .4, .5, .6, .7, .8, .9\}$ of the last $\max(\Omega)$ forecasted sets $\hat{y}(t-\omega)$, $\forall \omega \in \Omega$, such that $\hat{y}_Q(t-\omega) = \{ Q_\tau(\hat{y}(t-\omega) | \tau \in Q)$ where $Q$ is the Quantile Function;
@@ -521,7 +533,7 @@ The probabilistic forecast $P(y(t+1)|y(t))$ aims to represent $\estimate \in U$ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Computational Experiments}
+\section{Computational Experiments}\index{Computational Experiments}
 \label{sec:prob_experiments}
 
 In this section an empirical study of the performance of the proposed methods is presented using three economic time series. Initially, the datasets, design of experiments and statistical tests employed are discussed. In Section \ref{sec:prob_hyperparameters}, the accuracy sensitivity regarding to the hyperparameters of the proposed methods are analyzed using a grid search. In Section \ref{sec:prob_experiments_interval} the results of the interval forecasting  experiments are presented and discussed and then, in Section \ref{sec:prob_experiments_probabilistic}, the probabilistic forecasting experiments are analyzed.
@@ -529,16 +541,18 @@ In this section an empirical study of the performance of the proposed methods is
 To measure the performance of the proposed models, ARIMA, QAR, kNN/KDE and, BSTS were chosen as competitor models due to its possibility to perform interval and probabilistic forecasting for many steps ahead. The hyperparameters of each method were individually investigated and only the best model is considered in the validation of the results.
 
 For these experiments three well known financial time series data (the TAIEX, S\&P 500 and NASDAQ data sets) were selected, each of them with 5000 instances, whose descriptions and properties can be found at Appendix \ref{apd:monovariate_datasets}. A rolling window cross-validation methodology \cite{Tashman2000} was applied, using a working set of 1000 instances, 800 for training (80\%) and 200 for testing (20\%) and a sliding increment of 200 instances, totaling 23 experiments, and all measurements were performed out of sample.
+\index{TAIEX}\index{S\&P 500}\index{NASDAQ}
 
 Once the model fine tuning was performed for each method and the experiments were executed for each dataset, statistical tests were employed in order to compare the performance of the models. The hypothesis testing procedures adopted best practices discussed in \cite{Garcia2010,Derrac2011,Trawinski2012}. The Friedman Aligned Ranks test \cite{friedmanalignedrankstest} non parametric procedure was adopted to test the equality of the means, where the null hypothesis $H_0$ stands for the equality of all means and the inability to distinguish between the methods and the alternative hypothesis $H_1$ stands for the difference of the means and the distinguishability among the models. The paired \textit{post hoc} procedure adopted was the Finner test \cite{finnertest}, in a one-versus-all design where the proposed methods are taken as control methods. In Finner test  the null hypothesis $H_0$ stands for the equality between the control and the test methods and the alternative hypothesis $H_1$ stands for the significant difference between the control and test methods. All the tests adopted the significance level $\alpha = .05$ and were performed on STAC framework \cite{stac}, and all FTS methods were tested with the pyFTS library\footnote{\url{https://pyfts.github.io/pyFTS/}. Access in 01/07/2018} \cite{pyFTS}. 
 
 In order to contribute to the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
-\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap3}}
+\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chapter3}}
+\index{Reproducibility}\index{Source codes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Hyperparameter Grid Search}
+\subsection{Hyperparameter Grid Search}\index{Hyperparameter Grid Search}\index{Hyperparameter Optimization}\index{Hyperparameter}
 \label{sec:prob_hyperparameters}
 
 In order to assess the impact of the $\ifts$ and W$\ifts$ methods hyperparameters on the accuracy, a Search Grid was performed for each benchmark dataset, using the search spaces contained in Table \ref{tab:ifts_gridsearch}. The Winkler Score accuracy metric, where  $\alpha \in \{.05,.25\}$, for each method, order, dataset and partitions can be observed in Figures \ref{fig:ifts_gridsearch} and \ref{fig:wifts_gridsearch}. It is notable that $\ifts$ has more sensitivity to the number of partitions than W$\ifts$. This occurs because the length of the partitions is the mechanism used by $\ifts$ method to adjust the importance of each fuzzy set. Otherwise, W$\ifts$ uses the rule weights to balance the importance of each fuzzy set on deffuzyfication, diminishing the impact of the partition length.   
@@ -569,8 +583,6 @@ Given that several numbers of partitions and order values achieved very close ac
     \caption{WIFTS Winkler Scores for $\alpha \in \{.05, .25\}$ by dataset, order and partitions}
     \label{fig:wifts_gridsearch}
 \end{figure}
-
-
 
 The EnsembleFTS method has a different hyperparameter set than $\ifts$ and W$\ifts$ methods. As a meta-model, an internal FTS model should be chosen, in addition to the $k$ range and the $\Omega$ range. To reduce the complexity of this search space a set of four models were predefined and detailed in Table \ref{tab:ensemblefts_gridsearch}. The accuracy of EnsembleFTS was analyzed using both interval and probabilistic perspectives, the first one using the Winkler Score interval accuracy metric, for  $\alpha \in \{.05, .25\}$, and second one using CRPS probabilistic metric. The Winkler Score for each method and dataset is shown in Figures \ref{fig:ensemblefts_winklerscore}, where can be observed that the Model 4 is the most stable model. The CRPS results are shown in Figure  \ref{fig:ensemblefts_crps}, where it can be observed that Model 4 again is the most stable model. The immediate conclusion is that the higher diversity of models help KDE to build a more precise probability distribution, with improved sharpness and resolution.  A sample of the Model 4 performance can be seen in Figures \ref{fig:ensemblefts_sample_onestep} and \ref{fig:ensemblefts_sample_manystep}, with $\alpha \in \{.05, .25\}$ prediction intervals and probabilistic forecasting for 7 steps ahead.  
 
@@ -604,7 +616,7 @@ The EnsembleFTS method has a different hyperparameter set than $\ifts$ and W$\if
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Interval Forecasting Benchmarks}
+\subsection{Interval Forecasting Benchmarks}\index{Interval Forecasting Benchmarks}
 \label{sec:prob_experiments_interval}
 
 The Winkler Score Mean results for each method and dataset are presented in Table \ref{tab:prob_interval_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:prob_interval_ranks} and the test statistic for these results is $Q = 12.891861761426975$, where the p-Value is $P(\chi^2_{df} < Q) = 0.04478569463323567$, with $df=5$ degrees of freedom. For this statistic the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is difference between the means of the competitor models.
@@ -636,7 +648,7 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
     \centering
     \begin{tabular}{|c|c|}
 \hline
-       METHOD &       RANK \\
+       \textbf{Rank} &       \textbf{Rank} \\
 \hline
           QAR &   5.333333 \\
         WIFTS &   5.666667 \\
@@ -654,17 +666,17 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-    \begin{tabular}{llrrrl}
-\toprule
-{} &           COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
-\midrule
-0 &          IFTS vs QAR &  1.644879 &  0.099995 &          0.468540 &  H0 Accepted \\
-1 &        IFTS vs WIFTS &  1.579084 &  0.114317 &          0.468540 &  H0 Accepted \\
-2 &          IFTS vs kNN &  1.381699 &  0.167064 &          0.468540 &  H0 Accepted \\
-3 &         IFTS vs BSTS &  1.052723 &  0.292468 &          0.468540 &  H0 Accepted \\
-4 &        IFTS vs ARIMA &  0.723747 &  0.469221 &          0.532377 &  H0 Accepted \\
-5 &  IFTS vs EnsembleFTS &  0.592157 &  0.553746 &          0.553746 &  H0 Accepted \\
-\bottomrule
+    \begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} &   \textbf{z-Value} &   \textbf{p-Value} &  \textbf{Adjusted p-Value} &       \textbf{Result} \\
+\hline
+IFTS vs QAR &  1.644879 &  0.099995 &          0.468540 &  H0 Accepted \\
+IFTS vs WIFTS &  1.579084 &  0.114317 &          0.468540 &  H0 Accepted \\
+IFTS vs kNN &  1.381699 &  0.167064 &          0.468540 &  H0 Accepted \\
+IFTS vs BSTS &  1.052723 &  0.292468 &          0.468540 &  H0 Accepted \\
+IFTS vs ARIMA &  0.723747 &  0.469221 &          0.532377 &  H0 Accepted \\
+IFTS vs EnsembleFTS &  0.592157 &  0.553746 &          0.553746 &  H0 Accepted \\
+\hline
 \end{tabular}
 }
     \caption{Post-hoc tests using IFTS as control method}
@@ -674,17 +686,17 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-    \begin{tabular}{llrrrl}
-\toprule
-{} &            COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
-\midrule
-0 &         WIFTS vs BSTS &  2.631807 &  0.008493 &          0.049889 &  H0 Rejected \\
-1 &  WIFTS vs EnsembleFTS &  2.171241 &  0.029913 &          0.087081 &  H0 Accepted \\
-2 &         WIFTS vs IFTS &  1.579084 &  0.114317 &          0.215565 &  H0 Accepted \\
-3 &        WIFTS vs ARIMA &  0.855337 &  0.392364 &          0.526342 &  H0 Accepted \\
-4 &          WIFTS vs kNN &  0.197386 &  0.843526 &          0.892023 &  H0 Accepted \\
-5 &          WIFTS vs QAR &  0.065795 &  0.947541 &          0.947541 &  H0 Accepted \\
-\bottomrule
+    \begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} &   \textbf{z-Value} &   \textbf{p-Value} &  \textbf{Adjusted p-Value} &       \textbf{Result} \\
+\hline
+WIFTS vs BSTS &  2.631807 &  0.008493 &          0.049889 &  H0 Rejected \\
+WIFTS vs EnsembleFTS &  2.171241 &  0.029913 &          0.087081 &  H0 Accepted \\
+WIFTS vs IFTS &  1.579084 &  0.114317 &          0.215565 &  H0 Accepted \\
+WIFTS vs ARIMA &  0.855337 &  0.392364 &          0.526342 &  H0 Accepted \\
+WIFTS vs kNN &  0.197386 &  0.843526 &          0.892023 &  H0 Accepted \\
+WIFTS vs QAR &  0.065795 &  0.947541 &          0.947541 &  H0 Accepted \\
+\hline
 \end{tabular}
 }
     \caption{Post-hoc tests using WIFTS as control method}
@@ -694,17 +706,17 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-    \begin{tabular}{llrrrl}
-\toprule
-{} &            COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
-\midrule
-0 &    EnsembleFTS vs QAR &  2.237036 &  0.025284 &          0.142432 &  H0 Accepted \\
-1 &  EnsembleFTS vs WIFTS &  2.171241 &  0.029913 &          0.142432 &  H0 Accepted \\
-2 &    EnsembleFTS vs kNN &  1.973855 &  0.048398 &          0.142432 &  H0 Accepted \\
-3 &  EnsembleFTS vs ARIMA &  1.315903 &  0.188206 &          0.268577 &  H0 Accepted \\
-4 &   EnsembleFTS vs IFTS &  0.592157 &  0.553746 &          0.620249 &  H0 Accepted \\
-5 &   EnsembleFTS vs BSTS &  0.460566 &  0.645110 &          0.645110 &  H0 Accepted \\
-\bottomrule
+    \begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} &   \textbf{z-Value} &   \textbf{p-Value} &  \textbf{Adjusted p-Value} &       \textbf{Result} \\
+\hline
+EnsembleFTS vs QAR &  2.237036 &  0.025284 &          0.142432 &  H0 Accepted \\
+EnsembleFTS vs WIFTS &  2.171241 &  0.029913 &          0.142432 &  H0 Accepted \\
+EnsembleFTS vs kNN &  1.973855 &  0.048398 &          0.142432 &  H0 Accepted \\
+EnsembleFTS vs ARIMA &  1.315903 &  0.188206 &          0.268577 &  H0 Accepted \\
+EnsembleFTS vs IFTS &  0.592157 &  0.553746 &          0.620249 &  H0 Accepted \\
+EnsembleFTS vs BSTS &  0.460566 &  0.645110 &          0.645110 &  H0 Accepted \\
+\hline
 \end{tabular}
 }
     \caption{Post-hoc tests using Ensemble FTS as control method}
@@ -721,7 +733,7 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Probabilistic Forecasting Benchmarks}
+\subsection{Probabilistic Forecasting Benchmarks}\index{Probabilistic Forecasting Benchmarks}
 \label{sec:prob_experiments_probabilistic}
 
 The CRPS Mean results for each method and dataset are presented in Table \ref{tab:prob_crps_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:prob_crps_ranks} and the test statistic for these results is $Q = 7.264833574529668$, where the p-Value is $P(\chi ^2_{df} < Q) = 0.12253751253946543$, with $df=4$ degrees of freedom. For this statistic the $H_0$ is accepted at the $\alpha = .05$ confidence level, indicating that there is no difference between the means of the competitor models. This result discards the need to employ \textit{post-hoc} tests and shows that there is no prevalence of one method over others. The EnsembleFTS probabilistic forecasting method performed satisfactorily when compared with the standard methods in the literature. 
@@ -747,16 +759,16 @@ The statistical tests were employed on the one step ahead forecasts. Figure \ref
 
 \begin{table}[htb]
     \centering
-    \begin{tabular}{llr}
-\toprule
-METHOD &       RANK \\
-\midrule
+    \begin{tabular}{|c|c|}
+\hline
+\textbf{Method} &  \textbf{Rank} \\
+\hline
 QAR &   3.000000 \\
 ARIMA &   6.666667 \\
 kNN &   8.333333 \\
 EnsembleFTS &   8.666667 \\
 BSTS &  13.333333 \\
-\bottomrule
+\hline
 \end{tabular}
     \caption{Friedman Test aligned ranks}
     \label{tab:prob_crps_ranks}
@@ -786,7 +798,7 @@ To exploit this gap it was proposed the Interval FTS - $\ifts$, the Weighted Int
 
 If $\ifts$ and $W\ifts$ methods deal only with the fuzzy uncertainty, the Ensemble FTS method tries to represent the partitioning and ordering uncertainty to produce probabilistic forecasts. The performed computational experiments showed that the accuracy of the intervals and probability distributions provided by the proposed methods do not differ from the standard methods of the literature, showing its reliability.
 
-\subsection{Methods limitations}
+\subsection{Methods limitations}\index{Limitations of proposed methods}
 
 The main strength of these methods is their flexibility. These approaches can be used to extend all FTS methods to interval and probabilistic forecasting easily. However, some drawbacks still persist.  $\ifts$ and $W\ifts$ provide intervals, but not probability distributions, and its intervals do not carry a probabilistic uncertainty. Moreover, it is not parsimonious and is computationally expensive when compared to single FTS methods. An integrated method for point, interval and probabilistic forecasting is yet demanded. 
 

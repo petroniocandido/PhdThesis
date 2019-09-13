@@ -22,6 +22,8 @@ There are still some gaps in FTS methods (\cite{Sadaei2013} and \cite{Georgescu2
 
 The most important categories of FTS methods are related with their the time behavior. The time invariant models are the ones used when the Universe of Discourse and data behavior  does not change with time, as in stationary time series. Non stationary time series, in its turn, require time variant models as proposed in \cite{Song1994} and \cite{Wong2010}. This research is focused on time invariant models and hereinafter all models discussed belongs to it. However, Time Variant models are not discarded for future investigations.
 
+The main contributions of this chapter are the proposals of two consensus methods, which aggregate the major developments of the FTS literature for high order rule based and weighted rule based methods: the High Order Fuzzy Time Series (HOFTS) and the Weighted High Order Fuzzy Time Series (WHOFTS). These methods are intended for point forecasting, for one to many steps ahead.
+
 This chapter also focus only on monovariate and non Big Data time series. The multivariate and Big Data methods will be discussed in the following chapters. In the next section the main processes of the FTS are introduced and discussed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,6 +35,7 @@ This chapter also focus only on monovariate and non Big Data time series. The mu
 \index{Universe of Discourse}\index{UoD}\index{Fuzzy Time Series}\index{FTS}
 
 The definition of Fuzzy Time Series, from \cite{song1993fuzzy}, starts with a univariate time series $Y \in \mathbb{R}^1$, for $t = 0,1,...,T$, where the Universe of Discourse $U$ is delimited by the known bounds of $Y$, such that $U = [\min(Y),\max(Y)]$. Upon $U$, $k$ fuzzy sets $\ufset$, for $j = 1..k$, are defined and each one with its own membership function $\mu_{\ufset}$. $F$ is called a Fuzzy Time Series over $Y$ if $f(t) = \mu_{\ufset}(y(t))$ is the collection of fuzzyfied values of $Y$ for $j = 1..k$ and $t = 0,1,...,T$. The group of fuzzy sets $\ufset$, for $j = 1..k$, can also be understood as a Linguistic Variable $\ulvar$, and each fuzzy set $\ufset \in \ulvar$ is a linguistic value of the linguistic variable. 
+\index{Linguistic Variable}
 
 \begin{figure}[htb]
     \centering
@@ -92,6 +95,8 @@ The main hyperparameters which affect these processes are listed in Table \ref{t
     \label{tab:fts_hyperparameters}
 \end{table}
 
+\index{Hyperparameter}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,7 +110,7 @@ This process aims to split the Universe of Discourse $U$ and to create the lingu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Universe of Discourse $U$}
-\label{sec:fts_uod} \index{Universe of Discourse}
+\label{sec:fts_uod} \index{Universe of Discourse}\index{$U$}\index{UoD}
 
 The natural definition of the Universe of Discourse is $U = [\min(Y),\max(Y)]$, but it is common that the upper and lower bounds be exceeded by a confidence margin. Then, it can be established as $U = [\underline{l}, \overline{u}]$, with the lower bound as $\underline{l} = \min(Y) + l_d$, where $l_d = \min(Y)\cdot 0.2$ (exceeding the original lower bound by 20\%) and the upper bound as $\overline{u} = \max(Y) + u_d$, where $u_d = \max(Y)\cdot 0.2$ (exceeding the original upper bound by 20\%). 
 
@@ -114,7 +119,7 @@ Even considering just time invariant methods in this work and a stationary time 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Membership function $\mu$}
+\subsection{Membership function $\mu$}\index{Membership function}\index{$\mu$}\index{Fuzzy sets}
 \label{sec:fts_membership}
 
 Once $U$ has been defined, three hyperparameters will determine the creation of $\ulvar$: the number of partitions $k$, the membership function $\mu$ and the partitioning scheme. The membership function $\mu: U \rightarrow [0,1]$ defines how much a crisp value belongs to a fuzzy set, in terms of the membership grade $[0,1]$. Some options of fuzzy membership functions are shown in Table \ref{tab:fts_membership}, and simple partitioning using these functions are shown in Figure \ref{fig:membership}. The real impact of the membership function on accuracy is low, it will be demonstrated empirically later on this work, but the chosen of the correct $\mu$ can help in the readability and explainability of the model.
@@ -163,10 +168,10 @@ $\mu(x,m,d) = \exp \left(-\frac{(x-d)^2}{2m^2}\right)$ \\ \hline
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{The number of partitions $k$}
+\subsection{The number of partitions $k$}\index{Number of partitions}\index{$k$}
 \label{sec:fts_partitions}
 
-\index{overfit}\index{underfit}\index{hyperparameter optimization}\index{model accuracy}\index{model performance}
+\index{overfit}\index{underfit}\index{Hyperparameter Optimization}\index{model accuracy}\index{model performance}
 The selection of the hyperparameter $k$ impact directly on the model accuracy and parsimony, as discussed in \cite{Duru2012}. The number of partitions impact on the model parsimony directly and, for instance, given a rule model the maximum number of rules is the cartesian product between the fuzzy sets $\ufset \in \ulvar$ for each order $\Omega$. 
 
 There is a non-linear relationship between $k$ and the model accuracy, a trade off between specific accuracy (bias) and overall generalization (variance). A small value of $k$ will generate too few fuzzy sets to represent $Y$ correctly, making the model $\model$ underfit by producing a gross generalization with simplistic patterns. A high value of $k$ will generate too much fuzzy sets, exceeding the needed to represent $Y$ and makeing the model $\model$ overfit by reproducing excessive specificities and small noisy fluctuations. The optimal number of $k$ must be optimized for each problem, balancing the accuracy and the model parsimony, since this last value affects the computational performance as the number of parameters grows.
@@ -178,12 +183,12 @@ A study of the linguistic characterization of time series can be found in \cite{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{The partitioning method - $\Pi$}\index{UoD Partitioning}\index{Partitioning Schemes}
+\subsection{The partitioning method - $\Pi$}\index{UoD Partitioning}\index{Partitioning Method}\index{$\Pi$}\index{Fuzzy sets}
 \label{sec:fts_partitioningmethod}
 
 The partitioning method will determine, for each fuzzy set,  their length, midpoints and bounds and also have impact on accuracy. The simplest partitioning scheme -- the division of the data range in $k$ equal length intervals -- is called Grid Partitioning and was proposed in \cite{song1993fuzzy}. \index{Grid Partitioning} In the Grid Partitioning, $U$ is divided in $k+2$ even intervals $u_1, u_2, ..., u_k$ whose midpoints are $c_1, c_2, ..., c_k$. Then with these $k$ intervals $k$ overlapped fuzzy sets $A_1,A_2,...,A_k$ are defined using triangular membership functions whose parameters are $c_{j-1},c_j,c_{j+1}$ for each $j = 2..k-1$. 
 
-Some works use simple heuristics to define $k$ or even the lengths of the fuzzy sets. \cite{huarng2001effective}\index{Huarng Partitioning}\index{Heuristic Partitioning} use a grid partitioning approach, but it proposes an empirical method to find the ideal number of partition lengths according to the magnitude of $U$, in a work that was the first to deeply discuss the impact of the partitioning on FTS forecast accuracy. Several other works used this or define other simple heuristic for $U$ partitioning, see for instance \cite{Chang1997, huarng2005type, Rubio2016, Cheng2018}.
+Some works used simple heuristics to define $k$ or even the lengths of the fuzzy sets. \cite{huarng2001effective}\index{Huarng Partitioning}\index{Heuristic Partitioning} use a grid partitioning approach, but it proposes an empirical method to find the ideal number of partition lengths according to the magnitude of $U$, in a work that was the first to deeply discuss the impact of the partitioning on FTS forecast accuracy. Several other works used this or define other simple heuristic for $U$ partitioning, see for instance \cite{Chang1997, huarng2005type, Rubio2016, Cheng2018}.
 
 $U$ partitionings where the fuzzy sets have unequal lengths are also present in the literature. \cite{Cheng2006a} employ a fixed value of $k$ but the entropy of data that defines the best midpoints for the fuzzy sets, which also use trapezoidal membership functions. This method is known by Entropy Partitioning and is also employed in \cite{Cheng2008} and \cite{Chen2014}.\index{Entropy Partitioning} The statistical approaches yet count with \cite{Ismail2015}, which determine the length of the fuzzy sets proposing a method based on data quantiles, and \cite{Yang2017} which use a Chi-Square distribution do identify the fuzzy sets number and lengths.
 
@@ -208,11 +213,12 @@ Once the linguistic variable $\ulvar$ is created, the fuzzyfication process can 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Fuzzyfication Process}
 \label{sec:fts_fuzzyfication}
-\index{Fuzzyfication Method}
+\index{Fuzzyfication Method}\index{Fuzzy sets}
 
 This process aims to transform the crisp numerical time series $Y$ into a linguistic time series $F$, also known as fuzzy time series. There are few, but important, variations of the fuzzyfication method.
 
 The initial FTS methods, for instance \cite{song1993fuzzy}, \cite{chen1996forecasting} and \cite{yu2005weighted}, only considered one fuzzy set in fuzzyfication process, for instance $y(t) \in Y$, the one with the greatest membership grade. More specifically:
+\index{Maximum membership fuzzyfication}
 
 \begin{equation}
 f(t) = \ufset\; |\; \mu_{\ufset}(y(t)) = \max\{ \mu_{A_1}(y(t)), \ldots, \mu_{A_k}(y(t)) \}    
@@ -229,7 +235,7 @@ f(t) = [\mu_{A_1}(y(t)), \ldots, \mu_{A_k}(y(t)) ]
 \label{eqn:fuzzyfication_holistic}
 \end{equation}
 
-\index{Alpha cut}\index{$\alpha$-cut}
+\index{Alpha cut}\index{$\alpha$-cut}\index{Holistic fuzzyfication}
 The holistic fuzzyfication can help to the learning overfit, because even very small membership grades, which can be considered insignificant for that fuzzy set, are considered. An intermediate approach can be achieved by using the $\alpha$-cut hyper-parameter. The $\alpha$-cut represents the minimal value of the membership grade that will be accepted in fuzzyfication, while membership values below the $\alpha$-cut will not be considered. 
 
 \begin{equation}
@@ -257,7 +263,7 @@ By far, most of FTS methods make use of simple heuristics to learn the temporal 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Order $\Omega$, Lags $L$ and Seasonality}
-\label{sec:fts_order}
+\label{sec:fts_order}\index{High Order Models}\index{Lags}\index{Seasonal Models}\index{$\Omega$}\index{$L$}
 
 First it is needed to consider the hyperparameters order $\Omega$ and the lag indexes $L$. These parameters also impact directly on the model accuracy and parsimony. The number of lags $\Omega$ indicate how much past information is available to the model $\model$ to recognize the possible temporal patterns and make a forecast. Very short-term memory or even memory-less processes will require just the last time lag, consequently produce a first order model ($\Omega = 1$). Processes with longer memories will require more lags and produce higher-order models ($\Omega>1$). 
 
@@ -276,7 +282,7 @@ The hyperparameters $\Omega$ and $L$ are used across several learning algorithms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Matrix Models}
+\subsection{Matrix Models}\index{Matrix Models}
 \label{sec:fts_matrix}
 
 The original work of \cite{song1993fuzzy} used a Fuzzy Relationship Matrix to represent the temporal dynamics of the fuzzy time series $F$. In this method, each sequential pair $f(t-1),f(t) \in F$ is grouped in \textit{Fuzzy Logical Relationships} - FLR\footnote{It should be noted that the nomenclature of FLR may be misunderstood. The word \textit{relationship}, in the fuzzy sets research field, has a different meaning than that used by \citeauthor{song1993fuzzy}. Fuzzy relationships are operations between fuzzy sets, e. g. projection and cylindrical extension, well discussed in \cite{Klir1995}. The intention of the authors was to nominate a temporal pattern between two fuzzy sets, a temporal succession relationship, not a logical fuzzy relationship.  However this nomenclature is spread in the FTS literature and will be kept on this text.}. The FLR are fuzzy rules that describe a temporal pattern $f(t-1) \rightarrow f(t)$, or $A_i \rightarrow A_j$ where the Left Hand Side - $LHS$ of the rule (or the precedent)  $A_i$ is the fuzzyfied historical value at time $t-1$ and the Right Hand Side - $RHS$ of the rule (or the consequent) $A_j$ the fuzzyfied value at time $t$. The $A_i \rightarrow A_j$ rule can be read as ``IF $f(t-1)$ is $A_i$ THEN $f(t)$ is $A_j$''. The $F$ dataset will generate $T-1$ FLRs, as the fuzzyfication process of Song uses the maximum membership method.
@@ -292,10 +298,11 @@ Several other studies use this heuristic to extract Fuzzy Relational Matrices, f
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Rule Models}
+\subsection{Rule Models}\index{Rule Models}
 \label{sec:fts_rules}
 
-A great improvement was given by \cite{chen1996forecasting} who proposes a  simplification of Song and Chissom's method by creating the Fuzzy Logical Rule Groups (FLRG), making the forecasting process cheaper by avoiding the use of matrix manipulations. The FLRG represent the knowledge base (rule base) of the model and are human readable and easy to interpret. \index{Rule Model}\index{Fuzzy Logical Relationship Group}\index{FLRG}
+A great improvement was given by \cite{chen1996forecasting} who proposes a  simplification of Song and Chissom's method by creating the Fuzzy Logical Rule Groups (FLRG), making the forecasting process cheaper by avoiding the use of matrix manipulations. The FLRG represent the knowledge base (rule base) of the model and are human readable and easy to interpret.
+\index{Fuzzy Logical Relationship Group}\index{FLRG}
 
 Create the Fuzzy Logical Relationship Group - FLRG with the form $LHS \rightarrow RHS$, where all FLR's with the same $LHS$ are grouped and the $RHS$ is the set of possible fuzzy sets that can follow the $LHS$ set. The $LHS \rightarrow RHS$ pattern can be read as ``IF $F(t-1) = LHS$ THEN $\exists A_j\ \forall A_j \in RHS\ |\ F(t) = A_j$'' . An example of rule set is demonstrated on~\eqref{equ:chen_flrg}, given $k=6$. 
 
@@ -321,7 +328,7 @@ Several other works use this heuristic to extract rule models, for instance \cit
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Weighted Rule Models}
+\subsection{Weighted Rule Models}\index{Weighted Rule Models}
 \label{sec:fts_weighted}
 
 The generation of FLRG from the fuzzyfied data in  FTS model has, at least, two drawbacks: the losing of rule's recurrence and their chronological order. Thus at the forecasting process a very recurrent pattern of data has the same importance of a unique occurrence pattern. Moreover, newer and older patterns also have the same weight in the forecast. 
@@ -332,7 +339,7 @@ The generation of FLRG from the fuzzyfied data in  FTS model has, at least, two 
 To fix these drawbacks \cite{yu2005weighted} proposed the \textit{Weighted Fuzzy Time Series} (WFTS) model by including weights on FLRG's. These weights are monotonically increasing and have a smoothing effect, giving more importance to the most recent data in forecasting process. The \textit{Weighted Fuzzy Logical Relationship Group} - WFLRG has the same structure as the FLRG but weights $w_j$ are associated with each fuzzy set $A_j \in RHS$. 
 
 \index{Improve Weighted Fuzzy Time Series}\index{IWFTS}
-\index{Exponentially Weighted Fuzzy Time Series}\index{IWFTS}
+\index{Exponentially Weighted Fuzzy Time Series}\index{EWFTS}
 
 The works of \cite{ismail2011enrollment} and \cite{efendi2013improved} have presented the \textit{Improved Weighted Fuzzy Time Series} (IWFTS) model and changed the way in which the weights are assigned to the RHS rules on Yu's model. The main difference is that the weights are calculated by the recurrence of each rule, discarding the chronological order. The \textit{Exponentially Weighted Fuzzy Time Series} (EWFTS) method, proposed by \cite{sadaei2014short} and \cite{Talarposhti2016a}, replaces the linear weight growth of WFTS model by an exponential growth. 
 
@@ -361,7 +368,7 @@ TWFTS & $\frac{f_1}{\sum_{i = 1}^n f_i}\ ,\ \frac{f_2}{\sum_{i = 1}^n f_i}\ ,\ .
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Neural Networks Models}
+\subsection{Neural Networks Models}\index{Neural Networks Models}
 \label{sec:fts_neural}
 
 Neural Networks are black-box methods known to be the state-of-the-art in several pattern recognition domains. Its ability to deal with high dimensional and complex domains makes it attractive for many FTS models, specially the ones that deal with many variables and time simultaneously, as the case of \cite{Egrioglu2009}.
@@ -390,7 +397,7 @@ The optimization of $\Omega$ and $L$ are the focus of \cite{Enayatifar2013}, whi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Hybrid Approaches}
+\subsection{Hybrid Approaches}\index{Hybrid Fuzzy Time Series}
 \label{sec:fts_hybrid}
 
 Autoregressive and polynomial models were adopted in \cite{Chang1997, Tseng1999, Askari2015, Talarposhti2016a}. These methods used classic optimization approaches to fit regression coefficients mixed with fuzzy terms.
@@ -447,7 +454,7 @@ The output of the deffuzyfication is the crisp number $\estimate$, which can be 
 \index{Data transformations}\index{Transformations}
 \index{Pre-processing}\index{Post-processing}
 
-\index{Data transformation}\index{Differentiation data transformation}\index{Adaptive expectation transformation}
+\index{Differentiation data transformation}\index{Adaptive Expectation}
 
 Data transformations have several functions, such as changing the original $U$ of $Y$, removing noise, de-trending, de-seasonalizing, normalizing or standardizing data, etc. Some of these operations transform multivariate data in monovariate (as the Fuzzy Information Granules - FIG) and others decompose a monovariate time series in several sub-signals (as the Empirical Mode Decomposition - EMD), transformations that will be studied in Chapter \ref{chap:multivariate}.
 
@@ -464,10 +471,13 @@ There are transformations only for post-processing as the Adpative Expectation, 
 \section{A Conventional High Order Fuzzy Time Series Method - HOFTS}
 \label{sec:fts_hofts}
 
+This section proposes two new methods, the High Order Fuzzy Time Series (HOFTS) and the Weighted High Order Fuzzy Time Series (WHOFTS). These methods are a consensus  of the conventional FTS methods, aggregating the most common properties of the rule based methods. The aim of these proposals is to facilitate the measurement of FTS features and accuracy by, instead of using several FTS methods with little improvements among them, use one method that embodies the state of the art in the FTS literature. 
+
 The main focus of this research is the rule-based Fuzzy Time Series, descendants of \cite{chen1996forecasting} method, that  largely dominate the field, as can be seen in Table \ref{tab:fts_methods}. Beyond its first-order original work, many extensions were proposed that modified several aspects of the method, changing the order, partitioning method, fuzzyfication, defuzzyfication, introducing transformations, etc. 
 
-This section proposes a consensus conventional FTS method, that aggregates the most common properties of the rule based methods in the literature. This method embodied all explored hyperparameters but their definition involves more complex optimization methods, which will be explored in Chapter \ref{chap:scalability}. Indeed some default values are defined for hyperpameters, as shown in Table \ref{tab:hofts_hyperparam}, but they can be overridden by the user. However, the two most impacting hyperparameters still must be determined by the user: $k$ and $\Omega$.
+The proposed methods embodied all explored hyperparameters but the definition of their best values involves more complex optimization methods, which will be explored in Chapter \ref{chap:scalability}. Indeed some default values are defined for hyperpameters, as shown in Table \ref{tab:hofts_hyperparam}, but they can be overridden by the user. However, the two most impacting hyperparameters still must be determined by the user: $k$ and $\Omega$.
 
+\index{Hyperparameter}
 \begin{table}[htb] 
     \centering
     \begin{tabular}{|c|c|} \hline
@@ -483,15 +493,18 @@ This section proposes a consensus conventional FTS method, that aggregates the m
     \label{tab:hofts_hyperparam}
 \end{table}
 
+\index{$\model$}
 In Section \ref{sec:fts_training_procedure} the training procedure follows the same steps shown in Figure~\ref{fig:fts_training} to produce a rule based knowledge model $\model$ with the linguistic variable $\ulvar$. These parameters are used by the forecasting procedure presented in Section \ref{sec:fts_forecasting_procedure}, which follow the same steps presented in Figure \ref{fig:fts_forecasting}, to produce point forecastings $\estimate$. An extension is presented in Section \ref{sec:fts_whofts}, where the training and forecasting procedures are modified to incorporate weights on rules that aims to improve the performance by giving more importance to the more frequent fuzzy sets. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Training Procedure}
+\subsection{Training Procedure}\index{Training Procedure}
 \label{sec:fts_training_procedure}
 
 The methods below take as input a training sample $Y$, the number of partitions $k$, the number of lags $\Omega$ (and the other default values presented in Table \ref{tab:hofts_hyperparam}) and outputs the model $\model$.
+\index{$\model$}
+
 
 \begin{enumerate}
 \item[Step 1] \textit{Partitioning}:
@@ -503,10 +516,11 @@ The methods below take as input a training sample $Y$, the number of partitions 
 \item \textit{Define the linguistic variable $\Tilde{A}$}: For each interval $U_i$ create an overlapping fuzzy set $A_i$, with the membership function $\mu_{A_i}$. The midpoint of the fuzzy set $A_i$ is going to be $c_i$, the lower bound $l_i = c_{i-1}$ and the upper bound $u_i = c_{i+1}$ $\forall$ $i >0$ and $i < k$, and $l_0 = \min U$, $l_k = \max U$. Each fuzzy set $A_i \in \Tilde{A}$ is a linguistic term of the linguistic variable $\Tilde{A}$;
 \end{enumerate}
 
-\item[Step 2] \textit{Fuzzyfication}: 
+\item[Step 2] \textit{Fuzzyfication}: \index{Fuzzyfication}
 
 Transform the original numeric time series $Y$ into a fuzzy time series $F$, where each data point $f(t) \in F$ is an $1\times k$ array with the fuzzyfied values of $y(t) \in Y$ with respect to the linguistic terms $A_i \in \Tilde{A}$, where the fuzzy membership is greater than the predefined $\alpha$-cut, i.e., $f(t) = \{A_i\; |\; \mu_{A_i}(y(t)) \geq \alpha\;\forall A_i \in \Tilde{A}\}$;
 
+\index{Induction}\index{Rule induction}
 \item[Step 3] \textit{Rule Induction}: 
 \begin{enumerate}
 \item \textit{Generate the high order temporal patterns}: The fuzzy temporal patterns have format $A_{i0},...,A_{i\Omega} \rightarrow A_j$, where the precedent (or Left Hand Side) is $f(t - L(\Omega)) = A_{i0}$, $f(t - L(\Omega-1)) = A_{i1}$, ..., $f(t - L(0)) = A_{i\Omega}$, and the consequent (or RHS) is $f(t+1) = A_j$.
@@ -518,19 +532,21 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Forecasting Procedure} 
+\subsection{Forecasting Procedure} \index{Forecasting Procedure} 
 \label{sec:fts_forecasting_procedure}
 
 The method below take as input a test sample $Y$, the model $\model$ and the forecasting horizon $H$ (whose default value is 1) to output a crisp point forecasts $\hat{y}_H$.
 
 \begin{enumerate}
-\item [Step 1] \textit{Fuzzyfication}: Compute the membership grade $\mu_{ti}$ for each $y(t) \in Y$ where $t \in L$ and each fuzzy set $A_i \in \Tilde{A}$, such that $\mu_{ti} = \mu_{A_i}(y(t))$. 
-\item [Step 2] \textit{Rule matching}: Select the $K$ rules where all fuzzy sets $A_i$ on the LHS have $\mu_{ti} > \alpha$; The rule fuzzy membership grade is shown below, using the minimum function as T-norm.
-\begin{equation}
-    \mu_j = \bigcap_{t\in L\; i \in \Tilde{A}} \mu_{ti}
-\end{equation}
+\item [Step 1] \textit{Fuzzyfication}: Compute the membership grade $\mu_{ti}$ for each $y(t) \in Y$ where $t \in L$ and each fuzzy set $A_i \in \Tilde{A}$, such that $\mu_{ti} = \mu_{A_i}(y(t))$.
 
-\item [Step 3] \textit{Defuzzyfication}:
+\index{Rule matching}
+\item [Step 2] \textit{Rule matching}: Select the $K$ rules where all fuzzy sets $A_i$ on the LHS have $\mu_{ti} > \alpha$; The rule fuzzy membership grade is shown below, using the minimum function as T-norm\footnote{The T-norm, or triangular norm, is a generalization of the intersection/conjunction operator}.
+\begin{equation}
+    \mu_j = \min_{t\in L\; i \in \Tilde{A}} \mu_{ti}
+\end{equation}
+\index{T-norm}\index{Triangular norm}
+\item [Step 3] \textit{Defuzzyfication}: \index{Deffuzyfication}
 \begin{enumerate}
 \item [a)] \textit{Rule mean points}: For each selected rule $j$, compute the mean point $mp_j$ as below, where $c_{i}$ is the $c$ parameter of the $\mu$ function from fuzzy set $A_i$:
 \begin{equation}
@@ -553,7 +569,7 @@ mp_j = |RHS|^{-1}\sum_{i \in RHS} c_i
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{The Weighted Extension - WHOFTS}
+\subsection{The Weighted Extension - WHOFTS}\index{Weighted High Order Fuzzy Time Series}\index{WHOFTS}
 \label{sec:fts_whofts}
 
 As pointed in Section \ref{sec:fts_weighted}, a common drawback of rule-based models is that all fuzzy sets in the RHS of the rules have the same importance. To fix this it is common to add weights to the RHS fuzzy sets which indicate its relevance on deffuzyfication phase. To extend the HOFTS method to a weighted version it is needed to change the Step 3.b of the training procedure presented in Section \ref{sec:fts_training_procedure} to the below:
@@ -580,22 +596,23 @@ In the next sections these methods will be evaluated in relation to their main p
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Computational Experiments}
+\section{Computational Experiments}\index{Computational Experiments}
 \label{sec:fts_experiments}
 
-In this section experiments were performed  in order to evaluate the impact of the two main hyperparameters - $\Omega$ and $k$ - over the methods HOFTS and WHOFTS. As these methods generalize a wide spectrum of proposed methods in the literature, specially the rule based ones which are focus of this work, the computational experiments illustrate the general performance of FTS methods.
+In this section experiments were performed  in order to evaluate the impact of the two main hyperparameters - $\Omega$ and $k$ - over the proposed methods (HOFTS and WHOFTS). As these methods generalize a wide spectrum of proposed methods in the literature, specially the rule based ones which are focus of this work, the computational experiments illustrate the general performance of FTS methods. Comparisons with other forecasting approaches are avoided in this section, since these results are explored in Chapters \ref{chap:review_probforecasting} and \ref{chap:pwfts}.
 
 First, in Section \ref{sec:point_measures} common point forecasting measures and statistical tests are discussed. In Section \ref{sec:fts_gridsearch} the results of a Grid Search optimization of the hyperparamters are presented and in Section \ref{sec:fts_residual} a residual analysis of the best models is employed.
 
 In order to contribute with the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
-\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap2}}
+\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chapter2}}
+\index{Reproducibility}\index{Source codes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Evaluation Measures for Point Forecasts}
 \label{sec:point_measures}
-\index{Accuracy Measures}\index{Point Forecast Accuracy Measures}
+\index{Accuracy Measures}
 
 \index{Symmetrical Mean Average Percent Error}\index{Root Mean Squared Error}
 
@@ -619,13 +636,14 @@ U = \sqrt{\frac{\sum_{t=1}^{T-1} \left( \frac{\hat{y}(t+1)-y(t-1)}{y(t)} \right)
   
 It is also practice to perform a residual analysis in order to check the white-noise  assumption, such that $\epsilon \sim \mathcal{N}(0,1)$. Some statistical tests were proposed in the literature to assert this condition, as the  Box - Pierce Test, proposed by \cite{Box1970}, and its improved version, the Ljung - Box Test, found in \cite{Ljung1978}.
 
+\index{Ljung-Box Test}\index{Residual Analysis}
 The Ljung-Box Test checks, for each lag of the autocorrelation function of the residuals, the hypotheses $H_0$ - the residuals are i.i.d (independent and identically distributed) and $H_1$ - the residuals are not i.i.d. To reject $H_0$, the test statistic $Q$ must satisfy the condition $Q > \chi^2_{1-\alpha,df}$ where $\alpha$ is the confidence level and $df$ is the number of the lag. 
 
 The next section discusses the results for one or $H$-steps ahead that try to quantify the uncertainties of point forecasts.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Hyperparameter Grid Search}
+\subsection{Hyperparameter Grid Search}\index{Hyperparameter Grid Search}\index{Hyperparameter Optimization}\index{Hyperparameter}
 \label{sec:fts_gridsearch}
 
 To assess the impact of the order and the number of partitions on HOFTS and WHOFTS methods a Grid Search was employed, using the search spaces presented in Table \ref{tab:hofts_gridsearch}. The results can be seen in Figure \ref{fig:hofts_gridsearch} which details the sensitivity of the methods to the hyperparameters. A sample of these responses can also be seen in Figures \ref{fig:fts_order} and \ref{fig:fts_partitions}. The non-stationary behavior of benchmark datasets make them predictable accurately just for very short terms, and in the previous figures the considered forecasting horizon is $H=1$.
@@ -671,7 +689,7 @@ When considering the combinations of number of partitions and orders, the result
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Residual Analysis}
+\subsection{Residual Analysis}\index{Residual Analysis}
 \label{sec:fts_residual}
 
 The residuals of the models are presented in Figures \ref{fig:hofts_residual} and \ref{fig:whofts_residual} and the Ljung-Box tests for the 3 first lags are presented in Tables \ref{tab:hofts_residuals} and \ref{tab:whofts_residuals}, which show the good fit of model. However, high correlated residuals were detected in some non-stationary sub samples of the datasets, what was also expected since the models are time-invariant. Best performance is expected for time-variant models, capable to adjust its behavior due to changes in data.
@@ -718,7 +736,7 @@ Lag &   Statistic &  p-Value &  Critical Value &       Result \\ \hline
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion} \index{Literature review conclusion}
+\section{Conclusion} 
 
 This chapter provided a brief overview related to the Fuzzy Time Series models. A literature review and some state-of-the-art works related to FTS were presented and summarized in Table \ref{tab:fts_methods}.
 
