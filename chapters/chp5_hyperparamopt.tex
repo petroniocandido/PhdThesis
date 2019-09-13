@@ -21,15 +21,17 @@ This chapter aims to propose scalable alternatives to perform  training FTS meth
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Computational Clusters}
+\section{Computational Clusters}\index{Computational Clusters}
 
 According to \cite{Baker1999}, ``A cluster is a type of parallel or distributed processing system, which consists of a collection of interconnected stand-alone computers working together as a single, integrated computing resource''. Clusters are used for providing high availability, load-balancing, distributed storage, high processing power, among other purposes.
 
 The Distributed Storage Clusters (DSC) systems are employed to keep distributed database systems or distributed file systems, exploiting local storage resources to allow the storage of data volumes that can be handled by a single machine, while providing transparent access to the whole dataset. Diversely, the High Processing Clusters (HPC) systems are employed to solve complex or expensive computational tasks which can be decomposed and parallelized by sub-datasets (Single Instruction / Multiple Data), sub-tasks (Multiple Instruction / Single Data) or both (Multiple Instruction / Multiple Data). A good example of HPC cluster is the classical Beowulf Cluster\footnote{The Beowulf Project - \url{http://www.beowulf.org}. Access in 15/05/2019} architecture, which makes use of message passing middleware like MPI and PVM. In these frameworks the instructions and data are spread across the cluster and, after the local processing on each cluster node finishes, the results are gathered in some master or control node. 
 
+\index{Map/Reduce paradigm}
 With the advent of Big Data, the demand of distributed file systems capable to store large datasets was joined with the demand for simple programming interfaces for processing distributed data. The Map/Reduce, proposed in \cite{Dean2008}, became a popular distribution paradigm due to its high adoption in Big Data literature. In such paradigm the computational cluster contains a master node, which centralizes the management of the tasks, and several slave nodes responsible for working tasks. The distributed execution is divided into two main phases, the map (scattering) and reduce (gathering). The Map phase splits the original dataset into smaller subsets and distributes them to the slave nodes. Each individual slave node will perform the same predefined set of computations on data and send the results back to the master node. The Reduce phase collects the results from the slave nodes and performs final aggregations of results.
 
 The popularity of the Map/Reduce paradigm to tackle Big Data problems imersed after the first open source infrastructure frameworks became available, for instance Apache Hadoop\footnote{Apache Hadoop Project - \url{https://hadoop.apache.org/}. Access in 15/05/2019}. More recently some infrastructure was developed to allow in-memory processing, turning the processing yet more efficient, as for instance the Spark framework\footnote{Apache Spark - \url{https://spark.apache.org/}. Access in 15/05/2019}. In the next sections, the distribution strategies for the sequential FTS methods are discussed using HPC middleware and Map/Reduce paradigm.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,21 +42,24 @@ The popularity of the Map/Reduce paradigm to tackle Big Data problems imersed af
 Depending on the data size and the capabilities of the available infrastructure, different approaches must be considered for FTS method scalability, specially when dealing with hyperparameter optimization.
 
 Small-sized time series (up to 10,000 instances) can be handled easily by a single machine and the costs of distribution (network and middleware overhead) do not pay off. This is the approach presented in all previous chapters.
+\index{Small-sized time series}
 
 For middle sized data (from 10,000 to 500,000 instances) the optimization process is more likely task-intensive, the evaluation dataset $Y$ can be split in smaller train/test data windows that can be handled by a single machine, and just the accuracy results need to be gathered and agregated. This is the approach presented in Section \ref{sec:distributed_testing}.
 
 However, for highly sized data (above 500,000 instances), even the train/test data windows are costly to be trained by a single machine. In this case the training and testing methods need to be distributed themselves. This is the approach presented in Section \ref{sec:distributed_models}.
-
+\index{Big Time Series}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Distributed Testing With Sequential Models}
+\subsection{Distributed Testing With Sequential Models}\index{Distributed Testing With Sequential Models}
 \label{sec:distributed_testing}
 
 The distributed testing with sequential models aims to speed up iterative optimization processes that require unnumbered evaluations of the objective function with different small to medium datasets. Each evaluation requires a sample of the entire dataset with which an FTS model $\model$ will be trained and evaluated using an accuracy metric $\epsilon$.
 
 This is particularly the case of the hyperparameter optimization where, given a set of hyperparameters $\Theta$ and a time series dataset $Y$, for each combination of hyperparameters values $\theta \in \Theta$ being evaluated, it must perform a rolling window cross validation on the time series dataset. The distributed rolling window cross validation, shown in Figure \ref{fig:distributed_testing}, splits the whole dataset $Y$ in $W$ smaller and overlapping data windows $i=1..W$ and each data window is divided in train and test subsets. Then, for each data window $i$, a new model $\model_i$ will be trained and evaluated, generating the local accuracy metric $\epsilon_i$. The average of the accuracy metric is calculated as $\epsilon = W^{-1} \sum_{i=1}^W \epsilon_i$.
+\index{Rolling window cross validation}
+\index{Distributed rolling window cross validation}
 
 \begin{figure}[htb]
     \centering
@@ -81,11 +86,13 @@ However, for big time series it is not enough. Depending on $|Y|$ and the capabi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Distributed Models}
+\subsection{Distributed Models}\index{Distributed Models}
 \label{sec:distributed_models}
 
-For big time series the choosing of $W_L$ and $W_I$ values that do not lead to sub-sampling or cluster overhead, may fatally lead to a value of $W_L$ greater than the available machine memory. In this case even the windows must be split in smaller ones and the methodology of training and testing the models must change. Several stages of the training processes defined in Sections \ref{sec:fts_training_procedure} and  \ref{sec:pwfts_training} can be executed in parallel or distributed, on a Single Instruction/Multiple Data (SIMD) approach, since the data splits preserve the inherent time ordering. This characteristic allows the procedure's distribution to enhance their scalability and enable it to handle big time series.
+This section proposes an approach for distributed execution (training and forecasting) of FTS methods using Map/Reduce paradigm.
 
+For big time series the choosing of $W_L$ and $W_I$ values that do not lead to sub-sampling or cluster overhead, may fatally lead to a value of $W_L$ greater than the available machine memory. In this case even the windows must be split in smaller ones and the methodology of training and testing the models must change. Several stages of the training processes defined in Sections \ref{sec:fts_training_procedure} and  \ref{sec:pwfts_training} can be executed in parallel or distributed, on a Single Instruction/Multiple Data (SIMD) approach, since the data splits preserve the inherent time ordering. This characteristic allows the procedure's distribution to enhance their scalability and enable it to handle big time series.
+\index{$\model$}
 This new approach changes the training method to first run the sequential procedure on individual cluster nodes with a slice of the original data window, creating a sub-model $\model_i$. Then the locally trained models are transmitted back to a master node where all local models are merged in a unique global model $\model$, as illustrated in Figure \ref{fig:distributed_models}. In the next sections the distributed training and forecasting methods are presented.
 
 \begin{figure}[htb]
@@ -98,7 +105,7 @@ This new approach changes the training method to first run the sequential proced
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Distributed training Procedure}
+\subsubsection{Distributed training Procedure}\index{Distributed training}
 \label{sec:distributed_training}
 
 The adaption of the sequential procedure defined in Section \ref{sec:fts_training_procedure} to the distributed one requires just few interventions. Stage 1 deeply depends on finding the universe of discourse $U$. The general procedure splits the dataset over the working nodes where the $U_i$ universes of discourse are computed. In the final step a general linguistic variable $\ulvar$, is computed by merging the locals $U_i$ as $U = \bigcup U_i$ where $\bigcup$ is the merge step.
@@ -141,7 +148,7 @@ On the other hand, the design of FTS allows the complete execution of stages 2 a
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Distributed forecasting procedure}
+\subsubsection{Distributed forecasting procedure}\index{Distributed forecasting}
 \label{sec:distributed_forecasting}
 
 The computational cost of the forecasting procedure is low when compared with the training procedure. The forecasting procedure bottlenecks are the fuzzyfication and rule matching steps, and both of them can be optimized using spatial indexes, for instance KD-trees \citep{Muja2014}, which are more efficient when executed locally. Also, as on every distributed procedure, the communication overhead makes this procedure inefficient for data with low volume.
@@ -168,14 +175,16 @@ The proposed distributed methods speed up, or even make possible, to tackle high
 
 This section aims to propose the Distributed Evolutionary Hyperparameter Optimization - DEHO for FTS methods. The DEHO approach combines the FTS distributed training and forecasting methods with evolutionary optimization algorithms, specifically Genetic Algorithms, in order to optimize FTS models in terms of accuracy and parsimony for big time series.
 
+\index{Hyperparameter}\index{Hyperparameter Optimization}
 Given a set of hyperparameters $\Theta$ and an accuracy function $f: \Theta \rightarrow \mathbb{R}^+$, the hyperparameter optimization task aims to discover the values of each hyperparameter $\theta \in \Theta$ such that $\hat{\theta} = \arg\min_\theta f(\Theta)$. The hyperparameter optimization is a computational expensive task and, on a Big Data context, its cost may be prohibitive. The general FTS training procedure does not incorporate any kind of optimization, leaving to the user the task of empirically searching for the best hyperparameters. In the meantime, these parameters have great impact on final model performance and their optimization is highly recommended. At this point, it is necessary to take advantage of the speed up provided by the distributed method in Section \ref{sec:distributed} and to employ an efficient optimization method. 
 
 It is necessary to advise that the partitioning method $\Pi$ was taken out of the optimization, and was kept constant as the Grid Partitioning. The reason is that, besides the Grid Partitioning, the other heuristic and metaheuristic $\Pi$ methods can not be trained with separated data and after merged without compromising its original features. This special aspect must be the subject of future investigations in order to enhance the DEHO method.
 
+\index{Accuracy}\index{Parsimony}
 Two conflicting goals are sought during the hyperparameter optimization, the accuracy and the parsimony (the structural complexity as usually measured by the number of parameters of the model). In fuzzy time series models, to increase model's accuracy  it is common to increase the number of fuzzy sets $k$ and/or the order $\Omega$ of the model, which automatically increases the number of fuzzy rules $|\model|$. As the number of rules grows, the computational complexity of the model also increases and the FTS approach becomes less interesting when compared with other standard approaches, such as ARIMA or QAR. The challenge is to find a balance between these two objectives, keeping the model small, fast and accurate.
 
 The FTS hyperparameter optimization problem is formulated below, where the objective function $f_1$ \eqref{eqn:hyperopt_f1} controls the accuracy (represented by the weighted sum of the mean error $\bar{\epsilon}$ \eqref{eqn:hyperopt_error_avg} and the standard deviation of the error $\sigma_\epsilon$ \eqref{eqn:hyperopt_error_std}) of the model and the objective function $f_2$ \eqref{eqn:hyperopt_f2} controls for parsimony (represented by the weighted sum of the model length $|\mathcal{M}|$ \eqref{eqn:hyperopt_num_rules} and the sum of the lags $|L|$ \eqref{eqn:hyperopt_lags_sum}). Some additional restrictions are imposed on the order $\Omega$ \eqref{eqn:hyperopt_order}, number of partitions $k$ \eqref{eqn:hyperopt_num_partitions}, $\alpha$-cut \eqref{eqn:hyperopt_alpha_cut}, and the lags indexes $L$ \eqref{eqn:hyperopt_lag_inc}. 
-
+\index{Hyperparameter optimization}
 \textbf{Optimize}:
 \begin{align}
 minimize \quad  f_1  = & \quad 0.6\bar{\epsilon} + 0.4\sigma_\epsilon \label{eqn:hyperopt_f1}\\
@@ -205,8 +214,10 @@ k &\geq 3  \label{eqn:hyperopt_num_partitions}\\
 1 \leq L(0) & < ... < L(\Omega)  \label{eqn:hyperopt_lag_inc}
 \end{align}
 
+\index{Genetic Algorithms}
 Genetic Algorithms (GA) are population-based metaheurisc approaches for solving the optimization problems based on a genetic refinement metaphor. Vanilla GA algorithms are intended for mono-objetive optimization, but with few adaptions it is possible to handle multi-objetive problems as well. In this work the adaptions were made on selection operator, which implements the Double Tournament strategy in order to comprise both objectives on balancing the population.
 
+\index{Hyperparameter}
 The set of hyperparameters $\Theta$ is presented in Table \ref{tab:fts_hyperparameters}, except the partitioning method $\Pi$, such that $\Theta = \{\mu,k,\alpha,\Omega,L\}$. Each individual of the population is represented by a vector - the genotype - with the values of each hyperparameter $\theta \in \Theta$. This vector contains both real, categorical and array values, according to hyperparameter type. The GA iterates over steps listed below until the stop criteria is achieved:
 
 \begin{enumerate}
@@ -245,7 +256,7 @@ This Genetic Algorithm requires the choice of the  parameters presented in Table
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Computational Experiments}
+\section{Computational Experiments}\index{Computational Experiments}
 \label{sec:scalability_experiments}
 
 This section presents an exploratory study of distributed models performance and the DEHO method. The computational experiments employed a large sized environmental time series, the SONDA dataset with 2,000,000 instances, and a medium sized time series, the Malaysia dataset, with 17,000 instances. Both datasets are detailed in Appendix \ref{apd:multivariate_datasets}, where its main characteristics are presented.
@@ -253,16 +264,36 @@ This section presents an exploratory study of distributed models performance and
 In Section \ref{sec:scalability_speedup} the speed ups provided by the distributed training and forecasting are presented by several cluster configurations. In \ref{sec:scalability_convergence} the distributed methods are employed in DEHO method, and the convergence of the method is analyzed.
 
 In order to contribute with the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
-\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap5}}
+\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chapter5}}
+\index{Reproducibility}\index{Source codes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Speed Up Of Distributed Methods}
+\subsection{Speed Up Of Distributed Methods}\index{Speed Up Of Distributed Methods}
 \label{sec:scalability_speedup}
 
-In order to assess the impact of including more processing nodes on training and forecasting processing times of distributed methods, different cluster configurations were evaluated .
+In order to assess the impact of including more processing nodes on training and forecasting processing times of distributed methods, were evaluated different combinations of cluster configurations based on cluster nodes present in Table \ref{tab:cluster}.
 
-The performance of the sequential and distributed methods, on above cited clusters configurations, was measured in terms of execution time (in seconds) and the speed up from the sequential time, such that $S_p = \frac{T_1}{T_p}$, where $S_p$ is the speed up for $p$ nodes, $T_1$ is the time of the sequential execution and $T_p$ is the time of the distributed execution with $p$ nodes. 
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|c|c|c|} \hline
+         \textbf{Node} & \begin{tabular}{c}
+              \textbf{Number of}  \\
+              \textbf{CPU's} 
+         \end{tabular}   
+         & \begin{tabular}{c}
+              \textbf{CPU Clock}  \\
+              \textbf{(GHz)} 
+         \end{tabular} \\ \hline
+         1 & 1 & 2.6 \\ 
+         2 & 4 & 1.8 \\ 
+         3 & 2 & 2.2 \\ \hline
+    \end{tabular}
+    \caption{Available testing nodes of the computational cluster}
+    \label{tab:cluster}
+\end{table}
+
+The performance of the sequential and distributed methods, presented on Table \ref{tab:speed_up}, was measured in terms of execution time (in seconds) and the speed up from the sequential time, such that $S_p = \frac{T_1}{T_p}$, where $S_p$ is the speed up for $p$ nodes, $T_1$ is the time of the sequential execution and $T_p$ is the time of the distributed execution with $p$ nodes. 
 
 The experiments show improvements on performance for each added node on the large sized dataset, but this improvement is smaller in the medium sized dataset.  The trade-off between the distribution overhead and the benefit of the distributed computations stops to be profitable above the third node on the cluster for medium sized datasets. Above 3 nodes the network overhead for the length of data makes the distributed algorithm not interesting. However, it can be seen that an average speed up of 2x was achieved on the training procedure for large time series, showing that the performance tends to increase on more robust computational clusters.  
 
@@ -323,7 +354,7 @@ The experiments show improvements on performance for each added node on the larg
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Convergence of DEHO approach}
+\subsection{Convergence of DEHO approach}\index{Convergence of DEHO approach}
 \label{sec:scalability_convergence}
 
 The DEHO method was employed using a computational cluster with 7 CPU's and the parameters contained in Table \ref{tab:hyperopt_parameters} using PWFTS as FTS method. The experiment performed 5 executions of DEHO for each dataset and the averaged results are presented in Table \ref{tab:hyperopt_results}. A sample of the convergence process of DEHO can be seen in Figure \ref{fig:deho_convergence}, for  SONDA Wind Speed dataset. 
@@ -411,7 +442,7 @@ This chapter proposed two distributed approaches for FTS model scalability, one 
 
 These approaches were employed on Distributed Evolutionary Hyperparameter Optimization (DEHO). DEHO method is an adapted genetic algorithm that minimizes two cost functions, the accuracy function $f_1$ and the parsimony function $f_2$. An exploratory study was performed in order to measure the feasibility of the proposed distributed models and showed the speed-up provided for big time series. The convergence of DEHO method also was analyzed, showing its effectiveness.
 
-\subsection{Method limitations}
+\subsection{Method limitations}\index{Limitations of proposed methods}
 
 The distributed training method is indicated only for big time series. Using the method for small data might slow down the training time due to the network and model merging overheads. DEHO method took into account only time invariant, rule based, monovariate and high-order methods, not being applicable for time variant, multivariate and first order FTS methods.  
 

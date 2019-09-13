@@ -67,6 +67,14 @@
   \titlepage
 \end{frame}
 
+\note[itemize]{
+\item Good afternoon guys, it is a pleasure be here today. Thank you for attending this presentation.
+\item In particular I would like to thank the board of referees and also would ask you my apologies for the inconveniences that happened 
+\item My apologies for my voice, I just had a flu past week and my voice did not recovered yet.
+\item Well, Let's start!
+\item Today I will present the developments of my research titled "..." highlighting the most important achievements
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Schedule}
@@ -86,36 +94,45 @@ How to represent the forecasting uncertainty in point forecasts?
 \begin{itemize}
 \item Uncertainties:
 \begin{itemize}
-\item Extrinsic / Empirical;
 \item Intrinsic / Ontological;
+\item Extrinsic / Empirical;
 \end{itemize}
+\item Interval and Probabilistic Forecasting
 \end{itemize}
 \end{frame}
 
 \note[itemize]{
-\item Time Series Forecasting is one of the most necessary activities
-\item Forecasting is spread over many knowledge fields, engineering, economy, etc.
-\item Despite its importance, not so many people take in consideration the uncertainty inherent to the forecasting 
-\item Intrinsic is proper to the stochastic processes, its non-determinism, etc.
-\item Extrinsic uncertainty originates outside the process, is caused by instrumentation, measurement, data storage, etc
+\item Time Series Forecasting is one of the most important activities of the human kind
+\item Forecasting is spread over several knowledge fields, engineering, economy, etc.
+\item However, despite its importance, not so many people take in consideration the uncertainty inherent to the forecasting 
+\item There are several kinds of uncertainties, but we will focus in the tow most important
+\item Intrinsic is proper to the stochastic processes, its non-determinism, randomness, etc.
+\item In the other hand, the Extrinsic uncertainty originates outside the process, is caused by instrumentation, measurement, data storage, etc
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Introduction - Uncertainty}
 \linespread{2}
-Why it is important to know the uncertainty?
+Why it is important to represent the uncertainty?
 \begin{itemize}
+\item Decision Making
 \item Risk Management
+\item Transparency
 \item Robustness
 \item Reliability
-\item Reliance
 \end{itemize}
 \end{frame}
+
+\note[itemize]{
+\item To know the uncertainty of the forecasts is essential for Risk Management
+\item 
+\item It is essential to create applications with
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Introduction - Uncertainty}
 \linespread{2}
-Applications
+Modern Applications of Probabilistic Forecasting
 \begin{itemize}
 \item Dynamic and Robust Optimization
 \item Intelligent Management
@@ -125,14 +142,16 @@ Applications
 \end{frame}
 
 \note[itemize]{
-\item 
+\item These are some examples of modern applications of probabilistic 
+\item all these applications needs of forecasting tools and also to know the uncertainty of these forecasts to improve the decision making, turning it more clever, more secure, robust
+\item the key idea is: insted of to react to the uncertainty, be prepared for it
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Introduction}
 \linespread{2}
-Application Demands:
+Some Application Demands:
 \begin{itemize}
     \item Big Data scalability;
     \item Computational performance;
@@ -143,6 +162,7 @@ Application Demands:
 
 \note[itemize]{
 \item One of the key points of the Big Data is velocity, therefore low cost computational methods are desired
+\item European Union
 \item New regulatory barriers are being imposed, especially on European Union [hics guidelines for trustworthy AI. Technical report, European Commissionon High-Level Expert Group on Artificial Intelligence (AI HLEG), 2019]
 }
 
@@ -167,39 +187,29 @@ Why Fuzzy Time Series?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Objectives}
-\linespread{2}
+\begin{frame}{Main Objectives}
+\linespread{1.5}
 \begin{enumerate}
-\item[1] Identify the strengths and weaknesses of the main FTS approaches presented in literature;
-\item[2] Identify extension opportunities on known probabilistic forecasting methods;
+\item[1] Review FTS methods and probabilistic forecasting and identify extension opportunities on known  methods;
+\item[2] Propose interval and probabilistic forecasting approaches based on the Fuzzy Time Series methods;
+\item[3] Improve the scalability of the proposed FTS methods in order to enable it to deal with big time series
+\item[4] Propose a method for Hyperparameter Optimization - DEHO;
+\item[5] Extend the proposed methods to enable multivariate time series;
 \end{enumerate}
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Objectives}
-\linespread{2}
-\begin{enumerate}
-\item[3] Propose probabilistic forecasting approaches based on the Fuzzy Time Series methods, in particular the Probabilistic Weighted Fuzzy Time Series - PWFTS;
-\item[4] Improve the scalability of the proposed FTS methods in order to enable it to deal with big time series by proposing a distributed processing design;
-\end{enumerate}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Objectives}
-\linespread{2}
-\begin{enumerate}
-\item[5] Propose a method to improve the accuracy and parsimony of the FTS methods, the Distributed Evolutionary Hyperparameter Optimization - DEHO;
-\item[6] Extend the PWFTS method to enable multivariate time series using Fuzzy Information Granules;
-\end{enumerate}
-\end{frame}
+\note[itemize]{
+\item The objectives sought during this research
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Fuzzy Time Series}
+
+\note[itemize]{
+\item We start by defining what are the Fuzzy Time Series 
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Definitions and notations}
@@ -213,12 +223,16 @@ Why Fuzzy Time Series?
         $U$ & the Universe of Discourse of $Y$ \\ \hline
         $\ulvar$ & the linguistic variable, the group of fuzzy sets created for $Y$ \\ \hline
         $\ufset \in \ulvar$ & the individual fuzzy sets in $\lvar$ \\ \hline
+        $F$ & the fuzzyfied time series \\ \hline
+        $f(t) \in F$ & an individual instance of $F$ \\ \hline
     \end{tabular}
 \end{table}
 \end{frame}
 
 \note[itemize]{
 \item This symbols are used hereinafter to define some common time series and FTS concepts
+\item CAPITAL letters usually refer to sets 
+\item LOWER letters usually refer to instances
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,6 +260,72 @@ Why Fuzzy Time Series?
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{HOFTS and WHOFTS Model Parameters}
+\scriptsize
+\begin{center}
+$LHS \rightarrow RHS$
+
+IF $F(t)$ is $A_i$ THEN $F(t+1)$ WILL BE $A_j$ OR $A_k$ ...    
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Example FLRG set ($k=6$, $\Omega=1$)}
+$$
+\begin{array}{rcl}
+A_1  & \rightarrow &  A_1 \\
+A_2  & \rightarrow &  A_2,\  A_3 \\
+A_3  & \rightarrow &  A_3,\  A_4 \\
+A_4  & \rightarrow &  A_3,\  A_4,\\
+& & \  A_5 \\
+A_5  & \rightarrow &  A_6 \\
+A_6  & \rightarrow &  A_5,\  A_6 \\
+\end{array}
+$$
+\end{block}
+\begin{block}{HOFTS Defuzzyfication}
+$$
+\begin{array}{rcl}
+    mp_j & = & \displaystyle |RHS|^{-1}\sum_{i \in RHS} w_i \cdot c_i  \\
+     \\
+     \hat{y}(t+1) & = & \displaystyle \frac{\sum_{j \in K} \mu_j\cdot mp_j}{\sum_{j \in K} \mu_j}
+\end{array}
+$$
+\end{block}
+\column{0.5\textwidth}
+\begin{block}{Example Weighted FLRG Set ($k=6$, $\Omega=1$)}
+$$
+\begin{array}{rcl}
+A_1  & \rightarrow &  (1.0)\; A_1 \\
+A_2  & \rightarrow &  (0.667)\; A_2,\  (0.333)\; A_3 \\
+A_3  & \rightarrow &  (0.75)\; A_3,\  (0.25)\; A_4 \\
+A_4  & \rightarrow &  (0.167)\; A_3,\  (0.667)\; A_4,\\
+& & \  (0.167)\; A_5 \\
+A_5  & \rightarrow &  (1.0)\; A_6 \\
+A_6  & \rightarrow &  (0.333)\; A_5,\  (0.667)\; A_6 \\
+\end{array}
+$$
+\end{block}
+\begin{block}{WHOFTS Defuzzyfication}
+$$
+\begin{array}{rcl}
+     mp_j & = & \sum_{i \in RHS} w_i \cdot c_i  \\
+     \\
+     \displaystyle \hat{y}(t+1) & = &  \displaystyle \frac{\sum_{j \in K} \mu_j \cdot mp_j}{\sum_{j \in K} \mu_j}
+\end{array}
+$$
+\end{block}
+\end{columns}
+\end{frame}
+
+\note[itemize]{
+\item The rule-based knowledge representation is easy to read and explain
+\item Each rule is composed by a precedent (LHS), and the consequent (RHS) and can be interpreted as...
+\item These figures show the difference between HOFTS and WHOFTS rules and their defuzzyfication processes.
+\item Each weight is the normalized frequency of each fuzzy set in the consequent
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Fuzzy Time Series - Forecasting Procedure}
 \includegraphics[width=\textwidth,height=8cm]{figures/fts_forecasting.pdf}
@@ -259,6 +339,7 @@ Why Fuzzy Time Series?
 \end{frame}
 
 \note[itemize]{
+\item CUSTOMIZABLE
 \item In this figure we can see a little sample of the FTS flexibility
 \item There is a wide variety of components for FTS 
 \item The most important parameters are the Time Behavior, Order and partitioning scheme
@@ -291,7 +372,10 @@ Why Fuzzy Time Series?
 \end{frame}
 
 \note[itemize]{
-\item We imposed some constraints in the FTS components to close the research scope and make it more robust
+\linespread{2}
+\item With such variety of components we had to impose limits in our research scope, or the research would be endless
+\item This table show some imposed constraints in the FTS components that make the research scope more strict
+\item Instead of reference several methods, each one with few improvements we propose the consensus methods to simplify the method comparations
 \item The consensus methods were proposed as an aggregation of the most important contributions for the FTS in the last years 
 }
 
@@ -320,69 +404,6 @@ Why Fuzzy Time Series?
 \item 
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{HOFTS and WHOFTS Model Parameters}
-\scriptsize
-\begin{center}
-$LHS \rightarrow RHS$
-
-IF $F(t)$ is $A_i$ THEN $F(t+1)$ WILL BE $A_j$ OR $A_k$ ...    
-\end{center}
-
-\begin{columns}
-\column{0.5\textwidth}
-\begin{block}{Example FLRG set ($k=6$, $\Omega=1$)}
-$$
-\begin{array}{rcl}
-A_1  & \rightarrow &  A_1 \\
-A_2  & \rightarrow &  A_2,\  A_3 \\
-A_3  & \rightarrow &  A_3,\  A_4 \\
-A_4  & \rightarrow &  A_3,\  A_4,\\
-& & \  A_5 \\
-A_5  & \rightarrow &  A_6 \\
-A_6  & \rightarrow &  A_5,\  A_6 \\
-\end{array}
-$$
-\end{block}
-\begin{block}{HOFTS Defuzzyfication}
-$$
-\begin{array}{rcl}
-     \hat{y}(t+1) & = & \frac{\sum_{j \in K} \mu_j\cdot c_j}{\sum_{j \in K} \mu_j}
-\end{array}
-$$
-\end{block}
-\column{0.5\textwidth}
-\begin{block}{Example Weighted FLRG Set ($k=6$, $\Omega=1$)}
-$$
-\begin{array}{rcl}
-A_1  & \rightarrow &  (1.0)\; A_1 \\
-A_2  & \rightarrow &  (0.667)\; A_2,\  (0.333)\; A_3 \\
-A_3  & \rightarrow &  (0.75)\; A_3,\  (0.25)\; A_4 \\
-A_4  & \rightarrow &  (0.167)\; A_3,\  (0.667)\; A_4,\\
-& & \  (0.167)\; A_5 \\
-A_5  & \rightarrow &  (1.0)\; A_6 \\
-A_6  & \rightarrow &  (0.333)\; A_5,\  (0.667)\; A_6 \\
-\end{array}
-$$
-\end{block}
-\begin{block}{WHOFTS Defuzzyfication}
-$$
-\begin{array}{rcl}
-     mp_j & = & \sum_{i \in RHS} w_i \cdot c_i  \\
-     \\
-     \hat{y}(t+1) & = & \frac{\sum_{j \in K} \mu_j \cdot mp_j}{\sum_{j \in K} \mu_j}
-\end{array}
-$$
-\end{block}
-\end{columns}
-\end{frame}
-
-\note[itemize]{
-\item The rule-based knowledge representation is easy to read and explain
-\item Each rule is composed by a precedent (LHS), and the consequent (RHS) and can be interpreted as...
-\item These figures show the difference between HOFTS and WHOFTS rules and their defuzzyfication processes.
-\item Each weight is the normalized frequency of each fuzzy set in the consequent
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -438,28 +459,34 @@ $$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Interval Forecasting}
-\linespread{2}
+\linespread{1.5}
 \begin{itemize}
+\item Inter-quantile Interval
+$$
+\begin{array}{rcl}
+         \intvl & = & [\underline{Q(\alpha/2)}, \overline{Q(1-\alpha/2)}]  \\
+        Q(\tau) & = & \arg\min_x\{ x \in U \ |\ \tau < F(x) \} \\
+        \tau & \in & (0,1)
+    \end{array}
+$$
 \item Quantile Auto-Regression - QAR(p)
 \begin{itemize}
 \item \cite{Koenker2006}, \cite{Takeuchi2006}, \cite{Hansen2006}
 \end{itemize}
 \end{itemize}
-\begin{equation}
+$$
     \begin{array}{rcl}
-         \intvl & = & [\underline{Q(\alpha/2)}, \overline{Q(1-\alpha/2)}]  \\
-         & & \\
-        Q(\tau) & = & \arg\min_x\{ x \in U \ |\ \tau < F(x) \} \\
-        \tau & \in & (0,1) \\
         Q_{y(t)}(\tau | y(t-1),\ldots) & = & \min_\theta \sum_{i=1}^n \rho_\tau (y(t) - y(i)\theta \\
         \rho_\tau(u) & = & u(\tau - \mathbf{1}(u < 0)) 
     \end{array}
-\end{equation}
+$$
 \end{frame}
 
 \note[itemize]{
+\item The interquantile interval can be defined with a confidence level $\alpha$
 \item The quantile function uses the cumulative distribution function to find the value that best represent the quantile
 \item When CDF is not available it is necessary to minimize the Pinball Loss Function to find the quantile
+\item QAR is an autoregressive model that fits parameters that infer the best value for a given quantile $\tau$
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -488,10 +515,7 @@ $$
 \begin{frame}{Evaluating Interval Forecasts}
 \linespread{2}
 \begin{itemize}
-\item Coverage
-\item Sharpness
-\item Resolution
-\item Pinball Score
+\item Coverage, Sharpness, Resolution, Pinball Score
 \item Winkler Score
 $$
 WS(\alpha, y(t), \intvl(t)) = \left\{ \begin{array}{ccl}
@@ -506,6 +530,7 @@ $$
 \note[itemize]{
 \item Intervals can be evaluated using several perspectives, as its hit rate (cov), average range (shp), range variation (res) or proximity to an especific quantile (ps)
 \item Winkler Score try to condensate all these measures
+\item In the equation is possible to see all these components
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -536,8 +561,9 @@ $$
 \item Each interval is composed by the RHS fuzzy set bounds
 $$
 \begin{array}{lcr}
-\mathbb{I}^i_{min} & = & \min( A_1, ..., A_k ) \\
-\mathbb{I}^i_{max} & = & \max( A_1, ..., A_k ) \\ 
+\mathbb{I}^i_{min} & = & \min( \underline{A_1}, ..., \underline{A_k} ) \\
+& & \\
+\mathbb{I}^i_{max} & = & \max( \overline{A_1}, ..., \overline{A_k} ) \\ 
 & & A_1, ..., A_k \in RHS 
 \end{array}
 $$
@@ -713,7 +739,7 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item 
+\item Generalizes the Mean Average Error for probabilistic forecasts
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -742,7 +768,9 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item This diagram shows the traning ....  
+\item This diagram shows the traning of the EnsembleFTS
+\item The main parameters are the range of Orders and partitions
+\item For each combination of orders and partitions an FTS model will be trained and stored in the ensemble
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -752,7 +780,10 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item This diagram shows the traning ....  
+\item This diagram shows the forecasting process
+\item The input sample is passed to each ensemble model generating the set of crisp forecasts
+\item The selection remove extreme values, considering just an alpha interquantile interval
+\item Then the values are smoothed in a probability distribution using a KDE
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -762,7 +793,8 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item 
+\item This is a sample for one step ahead probabilistic forecasting
+\item The intervals are generated from the PDF using alpha levels
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -771,25 +803,46 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item 
+\item This is a sample for many steps ahead probabilistic forecasting
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Limitations of the proposed methods}
 \linespread{2}
-\begin{itemize}
-\item $\ifts$
-\begin{itemize}
-\item Intervals do not have a confidence level neither probabilistic meaning
-\item Do not perform probabilistic forecasting
-\end{itemize}
-\item Ensemble FTS
-\begin{itemize}
-\item High computational cost
-\item Low readability 
-\end{itemize}
-\end{itemize}
+\begin{table}[]
+\begin{tabular}{|c|p{4.5cm}|p{4.5cm}|} \hline
+     & \begin{center}
+         $\ifts$
+     \end{center}& \begin{center}
+         EnsembleFTS
+     \end{center} \\ \hline
+Pros &  \begin{tabular}{p{4cm}}
+             $\bullet$ Fuzzy Uncertainty \\
+             $\bullet$ Flexibility
+        \end{tabular}    
+        &
+        \begin{tabular}{p{4cm}}
+             $\bullet$ Interval Forecasting \\
+             $\bullet$ Probabilistic Forecasting
+        \end{tabular}
+        \\ \hline
+Cons &  \begin{tabular}{p{4cm}}
+             $\bullet$ No confidence level \\
+             $\bullet$ No probabilistic forecasting
+        \end{tabular}    
+        &
+        \begin{tabular}{p{4cm}}
+             $\bullet$ High computational cost \\
+             $\bullet$ Not parsimonious
+        \end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
 \end{frame}
+
+\note[itemize]{
+\item The computational experiments showed that IFTS and EnsembleFTS has the same forecasting skills than the standard Mean/Variance, QAR and BSTS methods
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -894,6 +947,8 @@ $$
 
 \note[itemize]{
 \item In this figure we can see a sample of a PWFTS model, with 10 fuzzy sets
+\item In the left side are the precedent fuzzy sets with their unconditional probabilities
+\item In the right side are the consequent fuzzy sets with their conditional probabilities
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -902,7 +957,7 @@ $$
 \end{frame}
 
 \note[itemize]{
-\item In this figure we can see a sample of a PWFTS model, with 10 fuzzy sets
+\item This figure show a graphic representation of the previous PWFTS model
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -912,10 +967,10 @@ How to transform the PWFTS model in a probabilistic forecast?
 \begin{itemize}
     \item Each rule is a conditional probability distribution
     \item Each input crisp value "activates" one or more rules, with a different degree (its membership value)
-    \item we have to smooth the probability distributions of each rule given:
+    \item Smooth the probability distributions of each rule given:
     \begin{itemize}
-        \item Its membership value
-        \item Its unconditional proability (\textit{a priori})
+        \item Membership value
+        \item Unconditional proability (\textit{a priori})
     \end{itemize}
 \end{itemize}
 \end{frame}
@@ -938,6 +993,13 @@ $$
 $$
 \end{frame}
 
+\note[itemize]{
+    \item Smoothing distribution, is the same of mixing distributions
+    \item The mixture distributions is a way to mix several distributions with the same sampling universe
+    \item each probability distribution has a weight
+    \item The total probability of a point is the weighted sum of its probability on each distribution
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Probabilistic Forecasting Procedure}
 \linespread{2}
@@ -951,6 +1013,11 @@ $$P(y(t+1)|y(t),\ulvar) = \sum_{\ufset \in \ulvar} P(y(t+1)|y(t),\ufset)\cdot P(
 \note[itemize]{
     \item Derivation of Law of Total Probability 
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{PWFTS Rule Sample}
+\includegraphics[width=\textwidth]{figures/pwfts_rules_firstorder.png}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -985,11 +1052,19 @@ P(y(t+1) | y(t)) &=  \displaystyle \sum_{\ufset \in  \ulvar}\frac{\displaystyle 
 \includegraphics[width=\textwidth,height=6cm]{figures/pwfts_sample_onestep.png}
 \end{frame}
 
+\note[itemize]{
+    \item This is a sample of the one step ahead performance of PWFTS
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{PWFTS Forecasting Sample}
 \includegraphics[width=\textwidth]{figures/pwfts_sample_onestep_tiled.png}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{PWFTS Rule Sample}
+\includegraphics[width=\textwidth]{figures/pwfts_rules_firstorder.png}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Interval Forecasting Procedure}
@@ -1077,6 +1152,11 @@ P(y(h+1) | y(h))     & = &  \displaystyle \sum_{\ufset \in \ulvar} \frac{ P(y(h)
 $$
 \end{frame}
 
+\note[itemize]{
+    \item 
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Many Steps Ahead Forecasting}
 \includegraphics[width=\textwidth,height=6cm]{figures/pwfts_probabilistic_manysteps.pdf}
 \end{frame}
@@ -1142,10 +1222,10 @@ BSTS &  20.000000 \\
 \end{table}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Point Forecasting}
-\includegraphics[width=\textwidth]{figures/pwfts_ahead_point.png}
-\end{frame}
+\note[itemize]{
+    \item The point forecasting experiments showed that PWFTS improves HOFTS and WHOFTS
+    \item PWFTS performs as good as ARIMA and QAR
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Interval Forecasting}
@@ -1259,24 +1339,51 @@ BSTS &  16.333333 \\ \hline
 \section{Scalability}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Distributed Models}
+\begin{frame}{Distributed Testing}
 \includegraphics[width=\textwidth]{figures/distributed_testing.pdf}
 \end{frame}
+
+\note[itemize]{
+    \item This figure shows the common experimentation set up for time series
+    \item it is collend rolling window, or sliding window cross validation
+    \item time series are divided in smaller and overlapping data sets called windows
+    \item each window is divided again in train/test subsets and a model is trainined and teste with this data
+    \item later the results are gathered and aggregated
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Distributed Models}
 \includegraphics[width=\textwidth]{figures/distributed_models.pdf}
 \end{frame}
 
+\note[itemize]{
+    \item Sometimes the time series is so big that even dat windows dot not fit in the memory of a single machine
+    \item Decrease the size of the window can produce non-significant results
+    \item the solution is to distribute the training procedure over several machines
+    \item then merge the individual models into a single unique model
+    \item this is possible because of the rule based knowledge model and its white box design
+    \item this is also one of the key features of the rule-based models
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Distributed Models}
 \includegraphics[width=\textwidth]{figures/distributed_models_training.pdf}
 \end{frame}
 
+\note[itemize]{
+    \item This diagram show how the processes are implemented using the Map/Reduce paradigm using, for instancem, Hadoop or Spark frameworks and implemented on cheap commodity hardware
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Distributed Models - Speed Up by Number of CPU's}
 \includegraphics[width=\textwidth]{figures/speed_up.png}
 \end{frame}
+
+\note[itemize]{
+    \item Using the distributed training on a not big time series is not profitable due to network overhead
+    \item we should use it only on big time series
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1284,7 +1391,7 @@ BSTS &  16.333333 \\ \hline
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Distributed Evolutionary Hyperparameter Optimization}
+\begin{frame}{Hyperparameter Optimization}
 \linespread{2}
 $$\hat{\theta} = \arg\min_\theta f(\Theta)$$
 \begin{itemize}
@@ -1297,6 +1404,13 @@ $$\hat{\theta} = \arg\min_\theta f(\Theta)$$
     \end{itemize}
 \end{itemize}
 \end{frame}
+
+\note[itemize]{
+    \item The hyperparameter optimization problem is to find the valus of each hyperparameter, given a set of hyperparameters, that minimize the loss function
+    \item In our case, the loss function is composed by two metrics
+    \item Accuracy is related with the error of the model
+    \item Parsimony is related with the number of parameters of the model
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Distributed Evolutionary Hyperparameter Optimization}
@@ -1339,9 +1453,15 @@ $$
 \begin{itemize}
     \item Hyperparameter: $\Theta = \{\mu,k,\alpha,\Omega,L\}$
     \item Genotype: the values of each hyperparameter $\theta \in \Theta$
+    \item Fenotype/Evaluation: distributed training/testing with sliding window cross validation
     \item Selection: Double Tournament strategy 
 \end{itemize}
 \end{frame}
+
+\note[itemize]{
+    \item Vanilla GA are used for monovariate problems
+    \item Our implementation uses the Double Tournament to balance the two objectives
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Distributed Evolutionary Hyperparameter Optimization}
@@ -1407,6 +1527,11 @@ $$
 \includegraphics[width=\textwidth,height=6cm]{figures/deho_convergence.png}
 \end{frame}
 
+\note[itemize]{
+    \item DEHO converges fast
+    \item The design of the algorithm favor the accuracy over the parsimony but in general the both are well balanced
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{DEHO}
 
@@ -1439,6 +1564,10 @@ $$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multivariate Models}
 
+\note[itemize]{
+    \item Finally, our last contribution
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Definitions and notations}
 \begin{table}[]
@@ -1459,16 +1588,10 @@ $$
 \end{table}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{$\FIG$-FTS}
-\linespread{2}
-\begin{itemize}
-    \item Wrapper model which enables a monovariate model (PWFTS) to tackle multivariate time series
-    \item $\FIG$-FTS replaces the Partitioning and Fuzzyfication stages of PWFTS
-    \item Each $\vari \in \var$ has its own $\mlvar$, and its own $k_i$,$\mu_i$, $\alpha_i$
-\end{itemize}
-\end{frame}
-
+\note[itemize]{
+    \item Untill here we just deal with univariate time series
+    \item Extend the PWFTS to multivariate time series is a challenging task
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{$\FIG$-FTS}
@@ -1480,6 +1603,23 @@ $$
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{$\FIG$-FTS}
+\linespread{2}
+\begin{itemize}
+    \item Each $\vari \in \var$ has its own $\mlvar$, and its own $k_i$,$\mu_i$, $\alpha_i$
+    \item Wrapper model which enables a monovariate model (PWFTS) to tackle multivariate time series
+    \item $\FIG$-FTS replaces the Partitioning and Fuzzyfication stages of PWFTS
+\end{itemize}
+\end{frame}
+
+\note[itemize]{
+    \item We propose a model that minimally changes the Original PWFTS while enables it to tackle multivariate time series
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Fuzzy Information Granules - FIG}
 \begin{itemize}
     \item Each FIG $\figi$ is a multivariate fuzzy set
@@ -1489,6 +1629,13 @@ $$
     \item $\FIG$ is the global linguistic variable, such that $\figi \in \FIG$
 \end{itemize}
 \end{frame}
+
+\note[itemize]{
+    \item FIG's may be created using clustering or just by combining the fuzzy sets of different variables
+    \item The combination of fuzzy set is the approach chosen in this research
+    \item Why we chose this approach: because it is fast, easy, scalable, easy to distribute
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{$\FIG$-FTS}
@@ -1517,6 +1664,7 @@ $$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Main Contributions}
+\linespread{2}
 \begin{itemize}
     \item First interval forecasting approaches for FTS: $\ifts$, $W\ifts$, Ensemble FTS, PWFTS, $\FIG$-FTS;
     \item First probabilistic forecasting approaches for FTS methods:  Ensemble FTS, PWFTS and $\FIG$-FTS; 
@@ -1530,6 +1678,7 @@ $$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Main Contributions}
+\linespread{2}
 \begin{itemize}
     \item Scalability approaches based in distributed computing;
     \item Distributed Evolutionary Hyperparameter Optimization (DEHO);
@@ -1537,8 +1686,13 @@ $$
 \end{itemize}
 \end{frame}
 
+\note[itemize]{
+\item Once PWFTS was proposed we improve its feature sets with scalability, hyperparam opt and multivariate forecasting 
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Limitations}
+\linespread{2}
 \begin{itemize}
     \item Trend and non-stationarity issues;
     \item Outlier detection;
@@ -1580,11 +1734,6 @@ $$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Publications}
 \begin{itemize}
-    \item Computational Libraries
-    \begin{itemize}
-    \item Silva, P. C. L, et al. pyFTS: Fuzzy Time Series for Python. Source Code: \url{http://pyfts.github.io/pyFTS} DOI: 10.5281/zenodo.597359.
-    \end{itemize}
-    
     \item Short Courses and Talks
     \begin{itemize}
     \item SILVA, Petrônio C. L.; GUIMARÃES, Frederico G. Séries Temporais Nebulosas (STN). In 14º Simpósio Brasileiro de Automação Inteligente - SBAI'19, Ouro Preto, 2019.
@@ -1596,7 +1745,50 @@ $$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Publications}
+\begin{itemize}
+    \item Computational Libraries
+    \begin{itemize}
+    \item Silva, P. C. L, et al. pyFTS: Fuzzy Time Series for Python. Source Code: \url{http://pyfts.github.io/pyFTS} DOI: 10.5281/zenodo.597359.
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[width=\textwidth]{figures/pyfts_logo.png}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Publications}
+\begin{itemize}
+    \item Computational Libraries
+    \begin{itemize}
+    \item Silva, P. C. L, et al. pyFTS: Fuzzy Time Series for Python. Source Code: \url{http://pyfts.github.io/pyFTS} DOI: 10.5281/zenodo.597359.
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[width=\textwidth]{figures/pyfts_logo.png}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Publications}
+\begin{columns}
+\column{0.5\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{figures/pyfts_last07days.png}
+\column{0.5\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{figures/pyfts_last90days.png}
+\end{columns}
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Future Research Directions}
+\linespread{2}
 \begin{itemize}
     \item Time Variant Models
     \item Hyperparameter optimization for $\FIG$-FTS

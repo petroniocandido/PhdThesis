@@ -1,5 +1,5 @@
 
-\chapter{Multivariate Models}
+\chapter{Multivariate Models}\index{Multivariate Models}
 \label{chap:multivariate}
 
 Despite the existing approaches in the literature, dealing with multivariate and spatio-temporal time series was always a challenging task for FTS methods, specially because of the complexity growth of the rules as the dimension increases. An important gap in the literature is the absence of multiple input and multiple output (MIMO) methods - the majority of FTS literature consists of basically univariate forecasting methods.  
@@ -13,7 +13,7 @@ This chapter presents a short review of multivariate FTS methods and Fuzzy Infor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Multivariate FTS Methods}
+\section{Multivariate FTS Methods}\index{Multivariate FTS Methods}
 \label{sec:fts_multivariate}
 
 Multivariate time series are sets of sequential vectors of the form $Y \in \mathbb{R}^n$ where $n = |\var|$ and $\var$ is the set of attributes of $Y$. Each vector $y(t) \in Y$ contains all attributes $\vari \in \var$ and there is a temporal dependence between these data points such that their temporal ordering -- given by the time index $t \in T$ -- must be respected. 
@@ -22,7 +22,7 @@ In the FTS literature it is common to employ clusterization methods to reduce mu
 
 \cite{Chen2011} introduced the concept of \textit{Fuzzy Variation Groups} - FVG for bivariate FTS, where each FVG groups the FLRG's of each variable by their co-occurrence. \cite{Askari2015} proposes the \textit{High-Order Multi-Variable FTS} - HMV-FTS algorithm based on FCM clustering to generate the multi-variable FLRG's. \cite{Jilani2008} proposed the \textit{Multivariate Stochastic FTS} - MSFTS based on the exponential smoothing between the diverse variables.
 
-\subsection{Fuzzy Information Granules}
+\subsection{Fuzzy Information Granules}\index{Fuzzy Information Granules}
 
 The concept of Fuzzy Information Granules (FIG) was first proposed in \cite{Zadeh1996} as a way to define entities that represent subsets (or granules) of a wider domain. There are some works in the FTS literature where this concept is mixed with the partition of the Universe of Discourse, as discussed in \cite{Lu2014, Chen2015}, but there are several ways to define FIG in the literature. 
 
@@ -37,7 +37,7 @@ There are some notable drawbacks in the previous methods, namely: a) the absence
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Conventional Multivariate Fuzzy Time Series method}
-\label{sec:mvfts}
+\label{sec:mvfts}\index{Conventional Multivariate Fuzzy Time Series method}\index{MVFTS}
 
 Just as it was done in Chapter \ref{chap:review_fts}, this section proposes a consensus model for rule based multivariate FTS that extends the model of \cite{chen1996forecasting} to the multivariate case. The Conventional Multivariate Fuzzy Time Series (MVFTS) method was designed to allow several models to be trained individually with subsets of a greater dataset and later to be merged into a single model, feature that enhances the performance of model creation by enabling its distribution.
 
@@ -63,7 +63,7 @@ The forecasting procedure, explained in subsection \ref{sec:mvfts_forecasting_pr
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Training Procedure}
+\subsection{Training Procedure}\index{Training Procedure}
 \label{sec:mvfts_training_procedure}
 
 \begin{figure}
@@ -97,7 +97,7 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Forecasting Procedure} 
+\subsection{Forecasting Procedure} \index{Forecasting Procedure}
 \label{sec:mvfts_forecasting_procedure}
 
 \begin{figure}
@@ -110,8 +110,9 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 \item [Step 1] \textit{Fuzzyfication}: Compute the membership grade $\mu_{ji}$ for $y(t-1) \in Y$ such that $\mu_{ji} = \mu_{\mfset}(y(t-1))$, for each $\mfset \in \mlvar$, for each $\vari \in \var$ ;
 \item [Step 2] \textit{Rule matching}: Select the $K$ rules where all fuzzy sets $\mfset$ on the LHS, for each $\vari \in \var$, have $\mu_{ji} > \alpha_i$; The rule fuzzy membership grade is shown below, using the minimum function as T-norm.
 \begin{equation}
-    \mu_q = \bigcap_{j \in \mlvar\; ; \; i \in \var} \mu_{ji}
+    \mu_q = \min_{j \in \mlvar\; ; \; i \in \var} \mu_{ji}
 \end{equation}
+\index{T-norm}\index{Triangular norm}
 \item [Step 3] \textit{Rule mean points}: For each selected rule $q$, compute the mean point $mp_q$ of the target variable $*\var$ as below, where $c_j$ is the $c$ parameter of the $\mu$ function from fuzzy set $\tfset$:
 \begin{equation}
 mp_q = \sum_{j \in *\mlvar} c_j
@@ -124,7 +125,7 @@ mp_q = \sum_{j \in *\mlvar} c_j
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Interval forecasting for MVFTS}
+\subsection{Interval forecasting for MVFTS}\index{Interval forecasting}
 \label{sec:mvfts_interval}
 
 The MVFTS model can be used for interval forecasting following the same approach of $\ifts$ method. For this it is needed to change the Steps 3 and 4 of the forecasting procedure presented in Section \ref{sec:mvfts_forecasting_procedure}, as presented below:
@@ -147,7 +148,7 @@ The MVFTS model can be used for interval forecasting following the same approach
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Weighted Multivariate FTS - WMVFTS}
-\label{sec:wmvfts}
+\label{sec:wmvfts}\index{Weighted Multivariate FTS}\index{WMVFTS}
 
 A simple extension of MVFTS to embody weights in its rules can be achieved by changing Stage 3.b of the training procedure presented in Section \ref{sec:mvfts_training_procedure}, where the new step is:
 
@@ -220,7 +221,7 @@ The global parameter $\kappa$ is related with the spatial index search on $\FIG$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Training Procedure}
+\subsection{Training Procedure}\index{Training Procedure}
 \label{sec:fig_training_procedure}
 
 \begin{figure}
@@ -263,7 +264,7 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Forecasting Procedure} 
+\subsection{Forecasting Procedure} \index{Forecasting Procedure}
 \label{sec:fig_forecasting_procedure}
 
 \begin{figure}
@@ -278,7 +279,7 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 
 \item [Step 2] \textit{Rule matching}: The fuzzyfied input sample is transfered to PWFTS that search for the applicable rules. For each PWFTPG rule $j$ found, its fuzzy membership is given by:
 \begin{equation}
-    \mu_j = \bigcap_{t\in L\; i \in \FIG} \mu_{\fig_{it}}
+    \mu_j = \min_{t\in L\; i \in \FIG} \mu_{\fig_{it}}
 \end{equation}
 
 \item [Step 3] \textit{Defuzzyfication}: 
@@ -297,7 +298,7 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 \item [Step 5] \textit{Forecasting horizon}: Given the number $m$ of steps ahead to forecast  (the forecast horizon), repeat the Steps 1 to 4 $m$ times, appending the output $\hat{y}$ of the previous Step 4 at the end of the $y(t)$ input for the next Step 1.
 \end{enumerate}
 
-\subsection{Method discussion}
+\subsection{Method discussion}\index{Method discussion}
 \label{sec:fig_discussion}
 
 The main insight of the $\mathcal{FIG}$-FTS is that the linguistic variables $\mlvar$ work as feature extraction layers and each fuzzy information granule $\fig$ is a small cluster prototype of these features, simplifying the representation of temporal patterns and aiding pattern identification and rule induction. Each $\fig$ also helps the multivariate defuzzyfication process, working as a final output layer for the model.
@@ -310,7 +311,7 @@ In the next section the empirical results of the proposed method are presented, 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Computational Experiments}
+\section{Computational Experiments}\index{Computational Experiments}
 \label{sec:multivariate_experiments}
 
 This section presents an exploratory study of multivariate FTS methods and $\mathcal{FIG}$-FTS. The computational experiments employed two multivariate time series, the SONDA dataset with 2,000,000 instances and the Malaysia dataset, with 17,000 instances. Both datasets are detailed in Appendix \ref{apd:multivariate_datasets}, where its main characteristics are presented.
@@ -322,11 +323,12 @@ In order to optimize the forecasting accuracy an specific configuration of varia
 In subsections \ref{sec:variables_sonda} and \ref{sec:variables_malaysia} the details about the variables of the multivariate methods are presented. In subsection \ref{sec:multivariate_results} the results of the experiments are presented for point, interval and probabilistic forecasting, and samples of methods performances are provided.
 
 In order to contribute with the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
-\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap6}}
+\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chapter6}}
+\index{Reproducibility}\index{Source codes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{SONDA models settings}
+\subsection{SONDA models settings}\index{SONDA}
 \label{sec:variables_sonda}
 
 The SONDA dataset is composed by 3 variables \texttt{DateTime} (timestap of each instance), \texttt{glo\_avg} (solar radiation) and \texttt{ws\_10m} (wind speed). The details of this dataset and its variables are presented in Appendix \ref{apd:multivariate_datasets}. 
@@ -374,7 +376,7 @@ The Wind Speed variable is independent to Solar Radiation variable and then this
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Malaysia models settings}
+\subsection{Malaysia models settings}\index{Malaysia Dataset}
 \label{sec:variables_malaysia}
 
 The Malaysia dataset is composed by 3 variables \texttt{DateTime} (timestap of each instance), \texttt{temperature} and \texttt{load} (electric load). The details of this dataset are presented in Appendix \ref{apd:multivariate_datasets}.
@@ -509,6 +511,6 @@ In order to extend the PWFTS method to multivariate time series, the method Fuzz
 
 With $\FIG$-FTS, the PWFTS extends its foreasting capabilities to multivariate data, being the first multivariate FTS method to forecast points, intervals and probability distributions. 
 
-\subsection{Method limitations}
+\subsection{Method limitations}\index{Limitations of proposed methods}
 
 $\FIG$-FTS produces non-parsimonious methods that can be computationally expensive. In order to optimize the models, both in terms of accuracy and parsimony, it is advisable to fine tunning the hyperparameters of each variable, as well as to optimize the choose of the best variables of the model.

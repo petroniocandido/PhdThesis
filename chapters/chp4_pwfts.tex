@@ -38,7 +38,7 @@ Regarding the concepts introduced in Chapter \ref{chap:review_probforecasting}, 
 In the next sections this mechanism is detailed, starting in Section \ref{sec:pwfts_empiricalprob} which discusses the basics of the fuzzy empirical probabilities. In Section \ref{sec:pwfts_training} the training procedure for first order model is presented, and in Section \ref{sec:pwfts_forecasting} the one step ahead method for probabilistic, interval and point forecasting is presented. Section \ref{sec:pwfts_extensions} presents extensions for high-order models and many steps ahead forecasting. In Section \ref{sec:pwfts_experiments} computational experiments are performed to assess the performance of the model and finally, in Section \ref{sec:pwfts_conclusion}, the main features of the proposed method are summarized.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Fuzzy Empirical Probabilities}
+\section{Fuzzy Empirical Probabilities}\index{Fuzzy Empirical Probabilities}\index{Empirical Probabilities}
 \label{sec:pwfts_empiricalprob}
 
 The core concept of PWFTS is the fuzzy empirical probability, used to compute the weights of the model, whose intuition is discussed in this section. The initial Zadeh's proposition of fuzzy probability, $P(A) = E[\mu_A]$, proposed in \cite{Zadeh1968}, demands the previous knowledge of the probability distribution over the universe of discourse. Since this distribution for $Y$ is unknown, an empirical distribution must take place. The simplest definition of empirical probability is the relative frequency of a discrete value or of a range of continuous values. Fuzzy Theory provides a different look at traditional Probability Theory because it affects the way the events are counted. 
@@ -77,7 +77,7 @@ The advantage of this approach is the convenience to obtain $P(\ufset)$ from a s
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{PWFTS Training procedure}
+\section{PWFTS Training procedure}\index{Training Procedure}
 \label{sec:pwfts_training}
 
 The training procedure is a seven step method to learn the temporal dynamics of the time series training data $Y$ and represent it on a fuzzy-probabilistic model, namely the Probabilistic Weighted Fuzzy Temporal Pattern Group - PWFTPG. The steps of the method are listed below :
@@ -156,7 +156,7 @@ The outcome of the Training Procedure is the PWFTPG set, whose simple example ca
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Forecasting Procedure}
+\section{Forecasting Procedure}\index{Forecasting Procedure}
 \label{sec:pwfts_forecasting}
 
 The forecasting procedure is a four step procedure listed in this section, which takes as input the forecasting type, a sample $y(t) \in U$ and uses the PWFTPG model $\mathcal{M}$ learned in the previous section to generate the output, which depends on the type of forecasting  (probabilistic, interval or point forecasting).  The complete forecasting procedure is presented below:
@@ -176,7 +176,7 @@ The forecasting procedure is a four step procedure listed in this section, which
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Probabilistic Forecasting Procedure}
+\subsection{Probabilistic Forecasting Procedure}\index{Probabilistic Forecasting}
 \label{sec:pwfts_probabilistic}
 
 A probability distribution $P( y(t+1) | y(t))$, for all  $y(t+1) \in U$ can be computed using a Mixture Distribution approach to transform each PWFTPG probability into a continuous distribution, as described in Equation \eqref{eqn:pwfts_probabilistic}.
@@ -223,7 +223,7 @@ P(y(t+1) | y(t)) &=  \displaystyle \sum_{\ufset \in  \ulvar}\frac{\displaystyle 
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Interval forecasting procedure}
+\subsection{Interval forecasting procedure}\index{Interval forecasting}
 \label{sec:pwfts_interval}
 
 A forecasting interval $\intvl (t+1)$ can be produced from $P( y(t+1) | y(t))$, given that it is possible to build a cumulative density function $F( y(t+1) | y(t))$ and use it to construct the quantile function $Q(\tau): [0,1] \rightarrow U$, as shown in Equation \eqref{eqn:quantile_function} where $\tau \in [0,1]$ is the desired quantile. Then, for a certain confidence level $\alpha \in [0,1]$, it is possible to compute an inter quantile interval $\mathbb{I}_f = [\underline{Q(\alpha)}, \overline{Q(1 - \alpha)}]$.
@@ -253,7 +253,7 @@ However, the above method demands the previous computation of the whole probabil
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Point forecasting procedure}
+\subsection{Point forecasting procedure}\index{Point forecasting}
 \label{sec:pwfts_point}
 
 To produce point forecasts $\estimate$ from the existing distribution $P(\cdot|y(t))$ it is only needed to apply the expectation operator, such that $\estimate = \mathbb{E}[P(y(t+1)|y(t))]$. This is also computationally expensive due to the computation of $P(y(t+1)|y(t))$. A simple heuristic for producing point forecasts is to compute the expectation $\mathbb{E}[\ufset]$ of each PWFTPG, as presented in Equation \eqref{eqn:pwftpg_expectation}, where $mp_i$ is the midpoint of each fuzzy set $A_i \in RHS$. The expectation $\mathbb{E}[\ufset]$ for each PWFTPG $\ufset$ is constant and can be pre-computed. The final forecast $\estimate$ then is the sum of these expectations weighted by $P( y(t) | \ufset)$ probability, as shown in Equation \eqref{eqn:pwfts_point}. A sample of the PWFTS point forecasting for one step ahead can be seen in Figure \ref{fig:pwfts_sample_onestep}.
@@ -271,13 +271,13 @@ To produce point forecasts $\estimate$ from the existing distribution $P(\cdot|y
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{PWFTS extensions}
+\section{PWFTS extensions}\index{PWFTS extensions}
 \label{sec:pwfts_extensions}
 
 In the next subsections the basic first-order and one-step-ahead method is extended to higher orders and wider forecasting horizons in order to increase PWFTS method flexibility and versatility.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Many steps ahead forecasting}
+\subsection{Many steps ahead forecasting}\index{Many steps ahead forecast}
 \label{sec:pwfts_many_step}
 
 The forecasting procedures listed in Section \ref{sec:pwfts_forecasting} are one step ahead methods. To extend the forecasting procedures to many steps ahead forecasting, an iterative approach is adopted, in which the $t+1$ step is computed with the previously presented methods and its output is fed back as input to the next $H$ steps. From the step $t+2$ on, let $h \in [t+2, t+H]$ be the new time indexer. The simpler approach is to perform the point forecast of $y(h+1)$  with the input $y(h)$.
@@ -319,7 +319,7 @@ P(y(h+1) | y(h))  = \displaystyle \sum_{\ufset \in \ulvar} \frac{ P(y(h)| y(h-1)
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{High order models}
+\subsection{High order models}\index{High Order Models}
 \label{sec:pwfts_high_order}
 
 The PWFTS method described in Section \ref{sec:pwfts_training} is a first order method, i.e., it just needs $y(t)$ to forecast $\estimate$, while high order models use $\Omega$ time lags, whose indexes are stored on vector $L$. To extend the standard approach to high order  modification in Step 5 of the Training procedure is needed to adapt the FTPs and FTPGs to store $\Omega$ fuzzy sets on their LHS.
@@ -331,9 +331,10 @@ In Step 5 the FTPs will have the format $\ufset^{L(\Omega)}, \ufset^{L(\Omega-1)
 In Step 7 the $\pi_j$ weight is replaced by $\pi_{LHS}$ that aggregates the $\mu_{LHS}$ memberships of each FTPG for the samples. Given a sample $y(t-\Omega),\dots,y(t) \in Y$ with $\Omega$ lags, their membership grades with an FTPG is the product T-norm between all memberships of the LHS: 
 
 \begin{equation}
-\displaystyle  \mu_{LHS}(y(t-L(\Omega)),\ldots,y(t-L(0)) = \bigcap_{i = \Omega}^0 \mu_{\ufset}(y(t-L(i)))
+\displaystyle  \mu_{LHS}(y(t-L(\Omega)),\ldots,y(t-L(0)) = \prod_{i = \Omega}^0 \mu_{\ufset}(y(t-L(i)))
 \label{eqn:extension_highorder_mu}
 \end{equation}
+\index{T-norm}\index{Triangular norm}
 
 In the forecasting procedure, the Step 1 requires a sample with $\Omega$ lags that will generate $\Omega$ fuzzyfied values. In Step 2, all combinations between the fuzzy sets of each fuzzyfied lag will be the LHS of the affected PWFTPGs. In Step 3, in Equations \eqref{eqn:pwfts_probabilistic}, \eqref{eqn:pwfts_interval} and \eqref{eqn:pwfts_point}, the empirical conditional probability $P(y(t)|A_i)$ will be replaced by $P(y(t-m),...,y(t) | LHS)$, the empirical conditional probability of the sample $y(t-m),...,y(t)$ given the LHS of the PWFTPG.
 
@@ -346,7 +347,7 @@ In the forecasting procedure, the Step 1 requires a sample with $\Omega$ lags th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Computational Experiments}
+\section{Computational Experiments}\index{Computational Experiments}
 \label{sec:pwfts_experiments}
 
 This section presents an empirical study of the PWFTS performance using the same datasets, design of experiments and statistical tests employed in Sections \ref{sec:fts_experiments} and \ref{sec:prob_experiments}. PWFTS method can forecast points, intervals, and probability distributions, then the following sections will present all these compared results.
@@ -356,11 +357,12 @@ To measure the performance of the proposed models, ARIMA, QAR, kNN/KDE, and BSTS
 In Section \ref{sec:pwfts_hyperparameters}, the accuracy sensitivity regarding to the hyperparameters of the proposed methods are analyzed using a grid search. The result of the experiments are presented in Sections \ref{sec:pwfts_experiments_point} for point forecasting, \ref{sec:pwfts_experiments_interval} for interval forecasting  and  \ref{sec:pwfts_experiments_probabilistic}, for probabilistic forecasting.
 
 In order to contribute with the replication of all the results in the research, all data and source codes employed in this chapter are available at the URL:
-\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chap4}}
+\texttt{\url{http://bit.ly/scalable_probabilistic_fts_chapter4}}
+\index{Reproducibility}\index{Source codes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Hyperparameter Grid Search}
+\subsection{Hyperparameter Grid Search}\index{Hyperparameter Grid Search}\index{Hyperparameter Optimization}\index{Hyperparameter}
 \label{sec:pwfts_hyperparameters}
 
 In order to assess the impact of the hyperparameters on PWFTS accuracy, a Grid Search was performed for each benchmark dataset, using the same search spaces contained in Table \ref{tab:ifts_gridsearch} of Section \ref{sec:prob_hyperparameters}. But, different from the previous experiments this grid search was performed for point, interval and probabilistic forecasting, in order to chose the hyperparameter values that best fit all cases.
@@ -394,7 +396,7 @@ Since several numbers of partitions and order values achieved very close accurac
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Point Forecasting Benchmarks}
+\subsection{Point Forecasting Benchmarks}\index{Point Forecasting Benchmarks}
 \label{sec:pwfts_experiments_point}
 
 The RMSE results for each method and dataset are presented in Table \ref{tab:pwfts_point_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_point_ranks} and the test statistic for these results is $Q = 13.903114186851207$, where the p-value is $P(\chi^2_{df} < Q) = 0.030737356514312197$, with $df=7$ degrees of freedom. For this statistic the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is difference between the means of the competitor models.
@@ -426,7 +428,7 @@ The statistical tests were employed to one step ahead forecasts. Figure \ref{fig
     \centering
     \begin{tabular}{|c|c|}
 \hline
-       METHOD &       RANK \\
+       \textbf{Method} &       \textbf{Rank} \\
 \hline
 QAR &   6.333333 \\
 ARIMA &   7.333333 \\
@@ -444,17 +446,17 @@ BSTS &  20.000000 \\
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-    \begin{tabular}{llrrrl}
-\toprule
-{} &       COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
-\midrule
-0 &    PWFTS vs BSTS &  2.302831 &  0.021288 &          0.121122 &  H0 Accepted \\
-1 &     PWFTS vs kNN &  0.855337 &  0.392364 &          0.775648 &  H0 Accepted \\
-2 &   PWFTS vs HOFTS &  0.723747 &  0.469221 &          0.775648 &  H0 Accepted \\
-3 &     PWFTS vs QAR &  0.394771 &  0.693012 &          0.829909 &  H0 Accepted \\
-4 &  PWFTS vs WHOFTS &  0.394771 &  0.693012 &          0.829909 &  H0 Accepted \\
-5 &   PWFTS vs ARIMA &  0.197386 &  0.843526 &          0.843526 &  H0 Accepted \\
-\bottomrule
+    \begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} &   \textbf{z-Value} &   \textbf{p-Value} &  \textbf{Adjusted p-Value} &       \textbf{Result} \\
+\hline
+PWFTS vs BSTS &  2.302831 &  0.021288 &          0.121122 &  H0 Accepted \\
+PWFTS vs kNN &  0.855337 &  0.392364 &          0.775648 &  H0 Accepted \\
+PWFTS vs HOFTS &  0.723747 &  0.469221 &          0.775648 &  H0 Accepted \\
+PWFTS vs QAR &  0.394771 &  0.693012 &          0.829909 &  H0 Accepted \\
+PWFTS vs WHOFTS &  0.394771 &  0.693012 &          0.829909 &  H0 Accepted \\
+PWFTS vs ARIMA &  0.197386 &  0.843526 &          0.843526 &  H0 Accepted \\
+\hline
 \end{tabular}
 }
     \caption{Post-hoc tests using PWFTS as control method}
@@ -470,7 +472,7 @@ BSTS &  20.000000 \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Residual Analysis}
+\subsubsection{Residual Analysis}\index{Residual Analysis}
 \label{sec:pwfts_residual}
 
 The residuals of the models are presented in Figure \ref{fig:pwfts_residual} and the Ljung-Box tests for the 3 first lags are presented in Table \ref{tab:pwfts_residual} , showing the good fit of the model. 
@@ -484,14 +486,14 @@ The residuals of the models are presented in Figure \ref{fig:pwfts_residual} and
 
 \begin{table}[htb]
     \centering
-\begin{tabular}{lrrrrl}
-\toprule
-Lag &  Statistic &       p-Value &  Critical Value &       Result \\
-\midrule
+\begin{tabular}{|l|c|c|c|c|l|}
+\hline
+\textbf{Lag} &  \textbf{Statistic} & \textbf{p-Value} &  \textbf{Critical Value} &       \textbf{Result} \\
+\hline
 1 &  34.846143 &  3.568157e-09 &        3.841459 &  H0 accepted \\
 2 &  35.497255 &  1.958254e-08 &        5.991465 &  H0 accepted \\
 3 &  35.871542 &  7.971605e-08 &        7.814728 &  H0 accepted \\
-\bottomrule
+\hline
 \end{tabular}
     \caption{Ljung-Box Test for the 3 first lags}
     \label{tab:pwfts_residual}
@@ -499,7 +501,7 @@ Lag &  Statistic &       p-Value &  Critical Value &       Result \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Interval Forecasting Benchmarks}
+\subsection{Interval Forecasting Benchmarks}\index{Interval Forecasting Benchmarks}
 \label{sec:pwfts_experiments_interval}
 
 The Winkler Score Mean results for each method and dataset are presented in Table \ref{tab:pwfts_interval_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_interval_ranks} and the test statistic for these results is $Q = 14.812664$, where the p-Value is $P(\chi^2_{df} < Q) = 0.038477$, with $df=7$ degrees of freedom. For this statistic, the $H_0$ is rejected at the $\alpha=.05$ confidence level, indicating that there is a difference between the means of the competitor models.
@@ -531,7 +533,7 @@ The statistical tests were employed on the one-step ahead forecasts. Figure \ref
     \centering
     \begin{tabular}{|c|c|}
 \hline
-       METHOD &       RANK \\
+       \textbf{Method} & \textbf{Rank} \\
 \hline
 PWFTS &   6.000000 \\
 QAR &   6.666667 \\
@@ -550,10 +552,10 @@ BSTS &  21.666667 \\
 \begin{table}[htb]
 \resizebox{\textwidth}{!}{% <------ Don't forget this %
     \centering
-\begin{tabular}{lrrrl}
-\toprule
-COMPARISON &   Z-VALUE &   P-VALUE &  ADJUSTED P-VALUE &       Result \\
-\midrule
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Comparison} &   \textbf{z-Value} &   \textbf{p-Value} &  \textbf{Adjusted p-Value} &       \textbf{Result} \\
+\hline
 PWFTS vs BSTS &  2.713546 &  0.006657 &          0.045677 &  H0 Rejected \\
 PWFTS vs EnsembleFTS &  2.367136 &  0.017926 &          0.061349 &  H0 Accepted \\
 PWFTS vs IFTS &  1.847521 &  0.064672 &          0.144442 &  H0 Accepted \\
@@ -561,7 +563,7 @@ PWFTS vs ARIMA &  1.212436 &  0.225346 &          0.360355 &  H0 Accepted \\
 PWFTS vs kNN &  0.461880 &  0.644167 &          0.764634 &  H0 Accepted \\
 PWFTS vs WIFTS &  0.288675 &  0.772830 &          0.822550 &  H0 Accepted \\
 PWFTS vs QAR &  0.115470 &  0.908073 &          0.908073 &  H0 Accepted \\
-\bottomrule
+\hline
 \end{tabular}
 }
     \caption{Post-hoc tests using PWFTS as control method}
@@ -577,7 +579,7 @@ PWFTS vs QAR &  0.115470 &  0.908073 &          0.908073 &  H0 Accepted \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Probabilistic Forecasting Benchmarks}
+\subsection{Probabilistic Forecasting Benchmarks}\index{Probabilistic Forecasting Benchmarks}
 \label{sec:pwfts_experiments_probabilistic}
 
 The CRPS Mean results for each method and dataset are presented in Table \ref{tab:pwfts_probabilistic_results}. The Friedman Aligned Ranks of the methods are presented in Table \ref{tab:pwfts_probabilistic_ranks} and the test statistic for these results is $Q = 10.352711804324706$, where the p-Value is $P(\chi ^2_{df} < Q) = 0.06583635032195168$, with $df=5$ degrees of freedom. For this statistic the $H_0$ is accepted at the $\alpha = .05$ confidence level, indicating that there is no significant difference between the means of the competitor models. This result discards the need to employ \textit{post-hoc} tests and shows that there is no prevalence of one method over others, showing also that PWFTS probabilistic forecasting method performed satisfactorily when compared with the standard methods in the literature. 
@@ -607,7 +609,7 @@ The statistical tests were employed on the one-step ahead forecasts. Figure \ref
     \centering
     \begin{tabular}{|c|c|}
 \hline
-       METHOD &       RANK \\
+       \textbf{Method} & \textbf{Rank} \\
 \hline
 PWFTS &   3.333333 \\
 QAR &   5.666667 \\
@@ -640,7 +642,7 @@ Computational experiments were performed to evaluate the accuracy of the propose
 
 The proposed PWFTS method extends FTS methods to deal with interval and probabilistic forecasting applications, which is the major contribution of this research. Moreover, PWFTS improves on former FTS methods in the literature by considering the concept of fuzzy frequency and empirical probabilities in the generation of the rule knowledge base. The proposed method improves previous FTS methods by aggregating probabilistic and interval forecasting capabilities into a single model, being useful for a wide range of applications and user needs.
 
-\subsection{Method limitations}
+\subsection{Method limitations}\index{Limitations of proposed methods}
 
 As in previous FTS methods, the PWFTS accuracy depends on the hyperparameter fine tunning. The method does not embody this optimization and it is advisable that this fine tunning be performed. Another issue about the model optimization is the parsimony: PWFTS weights may vanish as the number of rules increases. The weights precision is limited by the computational numerical precision. 
 
