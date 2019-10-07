@@ -82,24 +82,29 @@ The advantage of this approach is the convenience to obtain $P(\ufset)$ from a s
 
 The training procedure is a seven step method to learn the temporal dynamics of the time series training data $Y$ and represent it on a fuzzy-probabilistic model, namely the Probabilistic Weighted Fuzzy Temporal Pattern Group - PWFTPG. The steps of the method are listed below :
 
-\begin{enumerate}
-\item[Step 1] \textit{Define the universe of discourse}: Define $U$ as the sample space of in-sample training data $Y$, such that $U = [\min(Y) - D_1, \max(Y)+D_2]$, where $[\min(Y), \max(Y)]$ is the range of in-sample data and $D_1$ and $D_2$ are numbers used to extrapolate this range, for instance $D_1 = 0.1\cdot\min(Y)$ and $D_2 = 0.1\cdot\max(Y)$;
+\begin{enumerate}\index{$U$}
+\item[Step 1] \textit{Define the universe of discourse}: Define $U$ as the sample space of in-sample training data $Y$, such that $U = [\min(Y) - D_1, \max(Y)+D_2]$, where $[\min(Y), \max(Y)]$ is the range of in-sample data and $D_1$ and $D_2$ are numbers used to extrapolate this range, for instance $D_1 = 0.2\cdot\min(Y)$ and $D_2 = 0.2\cdot\max(Y)$;
 
+\index{Partitioning}
 \item[Step 2] \textit{Partitioning}: split $U$ in $k$ even length intervals $u_i$, for $i = 1,\ldots,k$, with midpoints $mp_i$;
 
+\index{$\ulvar$}\index{Linguistic variable}
 \item[Step 3] \textit{Define the linguistic variable $\ulvar$}: Create $k$ overlapping fuzzy sets $\ufset$, with membership functions $\mu_{\ufset}$, related to an interval $u_j$, and midpoints $mp_j$. Each fuzzy set $\ufset \in \ulvar$ is a linguistic term of the linguistic variable $\ulvar$;
 
+\index{Fuzzyfication}
 \item[Step 4] \textit{Fuzzyfication}: Transform the original numeric time series $Y$ into the FTS $F$, whose each data point $f(t) \in F$ is a $k$-tuple with the membership value of $y(t)$ with respect to each linguistic term $\ufset \in \ulvar$, such that:
 
 \begin{equation}
 f(t) = \left[\mu_{A_1}(y(t)),\ \mu_{A_2}(y(t)),\ \ldots,\ \mu_{A_k}(y(t)) \right]
 \end{equation}
 
+\index{Rule induction}
 \item[Step 5] \textit{Generate the FTP set}: The Fuzzy Temporal Pattern - FTP\footnote{This nomenclature is adopted in replacement of Fuzzy Logical Relationships (FLR) used in \cite{song1993fuzzy}, to avoid misunderstandings with the terms ``logical" and ``relationship" with their classical meanings in fuzzy theory literature.} is a fuzzy rule with format $A_i \rightarrow A_k$ that indicates a temporal succession where the precedent (or the Left Hand Side - LHS) is $A_i \in f(t)$ and the consequent (or the Right Hand Side - RHS) is $A_k \in f(t+1)$, for each possible pair of $A_i \times A_k$ of membership values greater than zero, i.e.,  $\{A_i \rightarrow A_k\}$ $\forall A_i \in f(t)\ |\ \mu_{A_i}(y(t)) > 0$ and $\forall A_k \in f(t+1)\ |\ \mu_{A_k}(y(t+1)) > 0 $. . Therefore, $A_i \rightarrow A_k$ can be read as ``IF $y(t)$ is $A_i$ THEN $y(t+1)$ is $A_k$''.
 As each $f(t) \in F$ is a sparse $k$-vector of membership values, there will be many possible fuzzy sets combinations of two sequential vectors $f(t)$ and $f(t+1)$. Then for each sequential pair on $F$ possibly more than one FTP will be generated;
 
 \item[Step 6] \textit{Generate the FTPG set}: A Fuzzy Temporal Pattern Group - FTPG\footnote{In replacement of Fuzzy Logical Relationship Group - FLRG used in \cite{Chen2006}.} represents the set of all FTPs with the same LHS and the union of their RHS, with the format $A_i \rightarrow A_k, A_j,...$, where the LHS is $f(t) = A_i$ and the RHS is $f(t+1) \in \{A_k, A_j,...\}$. Each FTPG can be understood as the set of possibilities which may happen at time $t+1$ (the consequent) when a certain set $A_i$ is identified at time $t$ (the precedent).
 
+\index{Empirical Probabilities}\index{Fuzzy Empirical Probabilities}
 \item[Step 7] \textit{Calculate empirical probabilities}: The Probabilistic Weighted FTPG - PWFTPG adds weights on the LHS and the RHS that measure their fuzzy empirical probabilities. Each PWFTPG has the format $\pi_j \cdot A_j \rightarrow  w_{j0} \cdot A_0, ..., w_{jk} \cdot A_k$ for $j = 1,\ldots, k$. The set of all  PWFTPG, shown in Equation \eqref{eqn:ftpg}, form the model $\model$. Its size depends on the number of partitions $k$, and it could be represented in matrix form but the weights $w_{ij}$ form a very sparse matrix, which justifies using optimized data structures for its representation.
 
 \begin{equation}
@@ -163,6 +168,7 @@ The forecasting procedure is a four step procedure listed in this section, which
 
 \begin{enumerate}
 \item[Step 1] \textit{Fuzzyfication}: For a given input value $y(t) \in Y$, find the fuzzyfied values $f(t) = \{\ufset \ |\ \mu_{\ufset}(y(t)) > \alpha\}$;
+\index{Rule matching}
 \item[Step 2] \textit{Pattern matching}:  Locate all the PWFTPG's whose the LHS is $f(t)$.
 \item[Step 3] \textit{Forecast}: The distribution of $f(t+1)$ is given by the RHS sets of each PWFTPG matched;
 \item[Step 4] \textit{Defuzzyfication}: 

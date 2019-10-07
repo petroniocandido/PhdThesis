@@ -39,12 +39,20 @@ The definition of Fuzzy Time Series, from \cite{song1993fuzzy}, starts with a un
 
 \begin{figure}[htb]
     \centering
+    \includegraphics[width=\textwidth]{figures/fts_simplified.pdf}
+    \caption{Simplified rule based and time invariant Fuzzy Time Series training procedure}
+    \label{fig:fts_simplified}
+\end{figure}
+
+
+\begin{figure}[htb]
+    \centering
     \includegraphics[width=\textwidth]{figures/fts_training.pdf}
-    \caption{Generic time invariant Fuzzy Time Series training procedure and its components}
+    \caption{Detailed time invariant Fuzzy Time Series training procedure and its components}
     \label{fig:fts_training}
 \end{figure}
 
-\cite{Song1993partI} proposed the first FTS methodology and the following authors basically extended or modified some steps of the method. A generic method can be extracted from the wide range of variations of FTS methods by splitting the FTS approach in two main procedures, the training and forecasting methods. The training method, illustrated in Figure \ref{fig:fts_training}, has the basic objective to create the linguistic variable $\ulvar$ and a knowledge representation of the time series dynamics. These two objects compose the FTS model $\model$. The main components of this process are listed below:
+\cite{Song1993partI} proposed the first FTS methodology and the following authors basically extended or modified some steps of the method, as illustrated in Figure \ref{fig:fts_simplified}. A generic method can be extracted from the wide range of variations of FTS methods by splitting the FTS approach in two main procedures, the training and forecasting methods. The training method, illustrated in Figure \ref{fig:fts_training}, has the basic objective to create the linguistic variable $\ulvar$ and a knowledge representation of the time series dynamics. These two objects compose the FTS model $\model$. The main components of this process are listed below:
 
 \begin{enumerate}
     \item[Step 1] - \textbf{Pre-processing}: First, one or more pre-processing data transformations can be applied to input data $Y$, responsible to reduce noise, detrending, or de-seasonalize, or change the $U$, etc. Several methods contain these operators and their impact will be discussed in detail in Section \ref{sec:fts_transformations}.
@@ -70,7 +78,7 @@ Once the linguistic variable $\ulvar$ is defined and the FTS model $\model$ was 
     \item [Step 5] - \textbf{Post-processing}: Finally, one or more post-processing data transformations can be applied to output forecast $\estimate$  (the data transformations are discussed in Section \ref{sec:fts_transformations}).
 \end{enumerate}
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth,height=12cm]{figures/fts_forecasting.pdf}
     \caption{Generic time invariant Fuzzy Time Series forecasting procedure and its components}
@@ -110,9 +118,9 @@ This process aims to split the Universe of Discourse $U$ and to create the lingu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Universe of Discourse $U$}
-\label{sec:fts_uod} \index{Universe of Discourse}\index{$U$}\index{UoD}
+\label{sec:fts_uod} \index{Universe of Discourse} \index{$U$} \index{UoD}
 
-The natural definition of the Universe of Discourse is $U = [\min(Y),\max(Y)]$, but it is common that the upper and lower bounds be exceeded by a confidence margin. Then, it can be established as $U = [\underline{l}, \overline{u}]$, with the lower bound as $\underline{l} = \min(Y) + l_d$, where $l_d = \min(Y)\cdot 0.2$ (exceeding the original lower bound by 20\%) and the upper bound as $\overline{u} = \max(Y) + u_d$, where $u_d = \max(Y)\cdot 0.2$ (exceeding the original upper bound by 20\%). 
+The natural definition of the Universe of Discourse is $U = [\min(Y),\max(Y)]$, but it is common that the upper and lower bounds be exceeded by a confidence margin. Then, it can be established as $U = [\underline{l}, \overline{u}]$, with the lower bound as $\underline{l} = \min(Y) - l_d$, where $l_d = \min(Y)\cdot 0.2$ (exceeding the original lower bound by 20\%) and the upper bound as $\overline{u} = \max(Y) + u_d$, where $u_d = \max(Y)\cdot 0.2$ (exceeding the original upper bound by 20\%). 
 
 Even considering just time invariant methods in this work and a stationary time series $Y$, it is natural that the testing $U$ will be a little different from the training $U$, sometimes by a small fraction of the original values. Even on stationary processes the presence of outliers cannot be discarded. The objective of these exceeding margins $l_d$ and $u_d$ is to help in the fuzzyfication process of the forecasting procedure, in order to accommodate fluctuations in the bounds of the known $U$.
 
@@ -464,6 +472,20 @@ Not only the differentiation is used to transform $U$ in a smaller interval and 
 
 There are transformations only for post-processing as the Adpative Expectation, defined as $AE(t+1) = y(t) + h\cdot(\estimate - y(t))$, where $h$ is a weight that balances the impact of $\estimate$ in the last known value $y(t)$. The Adpative Expectation is a conservative weighted persistence model, where the predicted value $\estimate$ is used only to change last known value. This method is employed in \cite{Cheng2008, Huang2011, Enayatifar2013, sadaei2014short, Singh2015, Sadaei2016, Ye2016, Yang2017, Bose2017}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Many Steps Ahead Forecasting And The Forecasting Horizon $H$}
+\label{sec:forecasting_horizon}\index{Forecasting horizon}\index{$H$}\index{Many steps ahead forecast}
+
+The forecasting horizon $H \in \mathbb{N}^+$ is the number of steps ahead to forecast, or the number time lags to forecast after the last known input samples $y(t - L(0)),..., y(t-L(\Omega))$.  The feedback method is the usual approach adopted by the forecasting literature and consists in to introduce the output forecasted values back in the input, appending them at the begin of the input sample. This simple method is widely adopted due its simplicity and efficiency.
+
+\index{Feedback method}
+
+A known effect of large values of forecasting horizon, as $H\rightarrow\infty$, is that the forecasted value $\hat{y}(t+H)$ tends to the unconditional expected value of the time series, such that $\lim_{H\rightarrow\infty} \hat{y}(t+H) = \mathbb{E}[Y]$, as discussed in \cite[p. 34]{Gourieroux2001FinancialMethods}. This effect is caused by the losing of recent information and the growth of uncertainty in each forecasted step, and the velocity in which $\hat{y}(t+H)$ converge to the unconditional mean depends on the $Y$ properties.
+
+In the FTS literature the methods are usually designed for one step ahead forecasts ($H = 1$), and the literature is vague about many steps ahead forecasting methods. Even so, it is not difficult to adapt the FTS methods to forecast for $H > 1$ by using the feedback method.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -507,12 +529,14 @@ The methods below take as input a training sample $Y$, the number of partitions 
 
 
 \begin{enumerate}
-\item[Step 1] \textit{Partitioning}:
+\item[Step 1] \textit{Partitioning}:\index{Partitioning}\index{$U$}
 \begin{enumerate}
 \item \textit{Defining $U$}: The UoD defines the sample space, i.e., the known bounds of time series $Y$, such that $U = [\min(Y)-D_1, \max(Y)+D_2]$, where $D_1 = \min(Y)\times 0.2$ and $D_2 = \max(Y)\times 0.2$ are used to extrapolate the known bounds as a safe margin. 
 
+\index{Fuzzy Set}
 \item \textit{UoD Partitioning}: Split $U$ in $k$ intervals $U_i$ with midpoints $c_i$, by invocation of the partitioning method $\Pi$, which will define the lengths of all intervals;
 
+\index{linguistic variable}\index{$\Tilde{A}$}
 \item \textit{Define the linguistic variable $\Tilde{A}$}: For each interval $U_i$ create an overlapping fuzzy set $A_i$, with the membership function $\mu_{A_i}$. The midpoint of the fuzzy set $A_i$ is going to be $c_i$, the lower bound $l_i = c_{i-1}$ and the upper bound $u_i = c_{i+1}$ $\forall$ $i >0$ and $i < k$, and $l_0 = \min U$, $l_k = \max U$. Each fuzzy set $A_i \in \Tilde{A}$ is a linguistic term of the linguistic variable $\Tilde{A}$;
 \end{enumerate}
 
@@ -525,6 +549,7 @@ Transform the original numeric time series $Y$ into a fuzzy time series $F$, whe
 \begin{enumerate}
 \item \textit{Generate the high order temporal patterns}: The fuzzy temporal patterns have format $A_{i0},...,A_{i\Omega} \rightarrow A_j$, where the precedent (or Left Hand Side) is $f(t - L(\Omega)) = A_{i0}$, $f(t - L(\Omega-1)) = A_{i1}$, ..., $f(t - L(0)) = A_{i\Omega}$, and the consequent (or RHS) is $f(t+1) = A_j$.
 
+\index{$\model$}
 \item \textit{Generate the rule base $\model$}: Select all temporal patterns with the same precedent and group their consequent sets  creating a rule with the format $A_{i0},...,A_{i\Omega} \rightarrow  A_k, A_j,...$, where the LHS is $f(t - L(\Omega)) = A_{i0}$, $f(t - L(\Omega-1)) = A_{i1}$, ..., $f(t - L(0)) = A_{i\Omega}$ and the RHS is $f(t+1) \in \{A_k, A_j,...\}$. Each rule can be understood as the weighted set of possibilities which may happen on time $t+1$ (the consequent) when a certain precedent $A_{i0},...,A_{i\Omega}$ is identified in previous $L$ lags (the precedent).
 \end{enumerate}
 \end{enumerate}
